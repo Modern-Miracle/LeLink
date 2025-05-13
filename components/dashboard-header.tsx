@@ -1,5 +1,7 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,10 +9,28 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Shield, Bell, User, Settings, LogOut } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { Shield, Bell, User, Settings, LogOut } from "lucide-react";
+import {
+  APPOINTMENTS_PATH,
+  DASHBOARD_PATH,
+  RECORDS_PATH,
+  TRIAGE_PATH,
+} from "@/lib/paths";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { label: "Dashboard", href: DASHBOARD_PATH },
+  { label: "Triage", href: TRIAGE_PATH },
+  { label: "Appointments", href: APPOINTMENTS_PATH },
+  { label: "Records", href: RECORDS_PATH },
+];
 
 export default function DashboardHeader() {
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href;
+
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
       <div className="container flex h-16 items-center justify-between">
@@ -21,18 +41,20 @@ export default function DashboardHeader() {
           </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/dashboard" className="text-sm font-medium">
-            Dashboard
-          </Link>
-          <Link href="/dashboard/triage" className="text-sm font-medium text-muted-foreground">
-            Triage
-          </Link>
-          <Link href="/dashboard/appointments" className="text-sm font-medium text-muted-foreground">
-            Appointments
-          </Link>
-          <Link href="/dashboard/records" className="text-sm font-medium text-muted-foreground">
-            Records
-          </Link>
+          {navLinks.map(({ label, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive(href)
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" aria-label="Notifications">
@@ -65,6 +87,5 @@ export default function DashboardHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }
-
