@@ -1,0 +1,41 @@
+import axios from "axios";
+import { getAzureAccessToken, getManagedIdentityToken } from "./azure-auth";
+
+const baseUrl = process.env.FHIR_BASE_URL!;
+
+export async function getPatient(id: string) {
+  const token = await getAzureAccessToken();
+  const res = await axios.get(`${baseUrl}/Patient/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/fhir+json",
+    },
+  });
+  return res.data;
+}
+
+export async function createPatient(data: any) {
+  const token = await getAzureAccessToken();
+  const res = await axios.post(`${baseUrl}/Patient`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/fhir+json",
+    },
+  });
+  return res.data;
+}
+
+export async function getAllPatients() {
+  const token = await getManagedIdentityToken();
+  console.log(token);
+  const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/fhir+json",
+    },
+    cache: "no-store",
+  });
+  console.log(res, "res");
+  const fhir = await res.json();
+  return fhir.entry?.map((e: any) => e.resource) || [];
+}
