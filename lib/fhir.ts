@@ -1,10 +1,10 @@
 import axios from "axios";
-import { getAzureAccessToken, getManagedIdentityToken } from "./azure-auth";
+import { getAzureCliAccessToken } from "./azure-cli-auth";
 
 const baseUrl = process.env.FHIR_BASE_URL!;
 
 export async function getPatient(id: string) {
-  const token = await getAzureAccessToken();
+  const token = await getAzureCliAccessToken();
   const res = await axios.get(`${baseUrl}/Patient/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -15,7 +15,7 @@ export async function getPatient(id: string) {
 }
 
 export async function createPatient(data: any) {
-  const token = await getAzureAccessToken();
+  const token = await getAzureCliAccessToken();
   const res = await axios.post(`${baseUrl}/Patient`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ export async function createPatient(data: any) {
 }
 
 export async function getAllPatients() {
-  const token = await getManagedIdentityToken();
+  const token = await getAzureCliAccessToken();
   console.log(token);
   const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
     headers: {
