@@ -27,7 +27,6 @@ export async function createPatient(data: any) {
 
 export async function getAllPatients() {
   const token = await getAzureCliAccessToken();
-  console.log(token);
   try {
     const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
       headers: {
@@ -36,8 +35,8 @@ export async function getAllPatients() {
       },
       cache: "no-store",
     });
-    console.log("res", res);
     const fhir = await res.json();
+    console.log(fhir);
     return fhir.entry?.map((e: any) => e.resource);
   } catch (e) {
     console.log(e);

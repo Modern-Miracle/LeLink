@@ -1,0 +1,314 @@
+{
+  "resourceType": "Bundle",
+  "id": "d8f8e7c1-a2b3-4c5d-8e9f-0a1b2c3d4e5f",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:c1a9f8e7-d6b5-4c3a-b2e1-0f9e8d7c6b5a",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "c1a9f8e7-d6b5-4c3a-b2e1-0f9e8d7c6b5a",
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "system": "urn:oid:1.2.36.146.595.217.0.1",
+            "value": "MRN-78102"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Williams",
+            "given": [
+              "John"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-567-8901",
+            "use": "mobile"
+          },
+          {
+            "system": "email",
+            "value": "john.williams@example.com"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1978-05-15",
+        "address": [
+          {
+            "use": "home",
+            "line": [
+              "123 Oak St"
+            ],
+            "city": "Springfield",
+            "state": "IL",
+            "postalCode": "62704",
+            "country": "US"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b2d1e0f9-c8a7-4b6e-a5d4-1c0b9a8f7e6d",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "b2d1e0f9-c8a7-4b6e-a5d4-1c0b9a8f7e6d",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/c1a9f8e7-d6b5-4c3a-b2e1-0f9e8d7c6b5a"
+        },
+        "effectiveDateTime": "2023-03-10T10:15:00Z",
+        "issued": "2025-05-14T11:07:00Z",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "Heart rate"
+            }
+          ]
+        },
+        "valueQuantity": {
+          "value": 72,
+          "unit": "beats/minute",
+          "system": "http://unitsofmeasure.org",
+          "code": "/min"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a3e2f108-b9d6-4a7f-b4c3-2d1c0a9f8e7c",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "a3e2f108-b9d6-4a7f-b4c3-2d1c0a9f8e7c",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Ambulatory"
+        },
+        "subject": {
+          "reference": "Patient/c1a9f8e7-d6b5-4c3a-b2e1-0f9e8d7c6b5a"
+        },
+        "period": {
+          "start": "2024-01-20T09:00:00Z",
+          "end": "2024-01-20T10:00:00Z"
+        },
+        "location": [
+          {
+            "location": {
+              "display": "General Clinic Room 101"
+            }
+          }
+        ],
+        "serviceProvider": {
+          "display": "Example General Hospital"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f4b5c6a7-e8d9-4c3b-a2e1-0f9e8d7c6b5a",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f4b5c6a7-e8d9-4c3b-a2e1-0f9e8d7c6b5a",
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "system": "urn:oid:1.2.36.146.595.217.0.1",
+            "value": "MRN-12345"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Doe",
+            "given": [
+              "Jane"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-123-4567",
+            "use": "mobile"
+          },
+          {
+            "system": "email",
+            "value": "jane.doe@example.com"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1990-10-25",
+        "address": [
+          {
+            "use": "home",
+            "line": [
+              "456 Pine Ave"
+            ],
+            "city": "Metropolis",
+            "state": "NY",
+            "postalCode": "10001",
+            "country": "US"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e5c6d7b8-f9a0-4b3c-a2e1-1f0e9d8c7b6a",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e5c6d7b8-f9a0-4b3c-a2e1-1f0e9d8c7b6a",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/f4b5c6a7-e8d9-4c3b-a2e1-0f9e8d7c6b5a"
+        },
+        "effectiveDateTime": "2022-11-05T14:30:00Z",
+        "issued": "2025-05-14T11:07:00Z",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood pressure panel with all children optional"
+            }
+          ]
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 120,
+              "unit": "mmHg",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 80,
+              "unit": "mmHg",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Observation"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d6b7c8a9-e0f1-4a3b-b2e1-2f1e0d9c8b7a",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "d6b7c8a9-e0f1-4a3b-b2e1-2f1e0d9c8b7a",
+        "status": "in-progress",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "IMP",
+          "display": "Inpatient encounter"
+        },
+        "subject": {
+          "reference": "Patient/f4b5c6a7-e8d9-4c3b-a2e1-0f9e8d7c6b5a"
+        },
+        "period": {
+          "start": "2023-07-01T16:00:00Z",
+          "end": "2023-07-05T10:00:00Z"
+        },
+        "location": [
+          {
+            "location": {
+              "display": "General Hospital Ward 3B, Room 305"
+            }
+          }
+        ],
+        "serviceProvider": {
+          "display": "Example General Hospital"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    }
+  ]
+}
+
