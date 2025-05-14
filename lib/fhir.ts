@@ -28,14 +28,19 @@ export async function createPatient(data: any) {
 export async function getAllPatients() {
   const token = await getAzureCliAccessToken();
   console.log(token);
-  const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/fhir+json",
-    },
-    cache: "no-store",
-  });
-  console.log(res, "res");
-  const fhir = await res.json();
-  return fhir.entry?.map((e: any) => e.resource) || [];
+  try {
+    const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/fhir+json",
+      },
+      cache: "no-store",
+    });
+    console.log("res", res);
+    const fhir = await res.json();
+    return fhir.entry?.map((e: any) => e.resource);
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 }
