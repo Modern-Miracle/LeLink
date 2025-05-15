@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Bell,
@@ -38,10 +38,29 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import DashboardHeader from "@/components/dashboard-header";
+import { RecordItem } from "@/lib/types/record";
 
 export default function RecordsPage() {
   const [showNewRecord, setShowNewRecord] = useState(false);
+  const [records, setRecords] = useState<RecordItem[]>([]);
+  const [filtered, setFiltered] = useState<RecordItem[]>([]);
+  const [filter, setFilter] = useState("all");
 
+  useEffect(() => {
+    async function load() {
+      const res = await fetch("/api/records");
+      const data = await res.json();
+      setRecords(data);
+      setFiltered(data);
+    }
+    load();
+  }, []);
+
+  useEffect(() => {
+    setFiltered(
+      filter === "all" ? records : records.filter((r) => r.type === filter)
+    );
+  }, [filter, records]);
   return (
     <div className="flex min-h-screen flex-col">
       <DashboardHeader />
@@ -67,7 +86,7 @@ export default function RecordsPage() {
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
-            <Select defaultValue="all">
+            <Select defaultValue="all" onValueChange={(val) => setFilter(val)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Record type" />
               </SelectTrigger>
@@ -76,7 +95,6 @@ export default function RecordsPage() {
                 <SelectItem value="examination">Examinations</SelectItem>
                 <SelectItem value="lab">Lab Results</SelectItem>
                 <SelectItem value="imaging">Imaging</SelectItem>
-                <SelectItem value="prescription">Prescriptions</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -99,7 +117,7 @@ export default function RecordsPage() {
           <TabsList className="w-full max-w-md bg-muted/50">
             <TabsTrigger value="all" className="flex-1">
               All Records
-              <Badge className="ml-2 bg-teal-600">7</Badge>
+              <Badge className="ml-2 bg-teal-600">{records.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="recent" className="flex-1">
               Recent
@@ -116,214 +134,54 @@ export default function RecordsPage() {
               </CardHeader>
               <CardContent>
                 <div className="rounded-md border">
-                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-100 text-teal-700">
-                      <FileText className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">General Check-up</h3>
-                        <Badge className="bg-teal-100 text-teal-800">
-                          Examination
-                        </Badge>
-                      </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span>March 28, 2025</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Tag className="h-3.5 w-3.5" />
-                          <span>Dr. Sarah Johnson</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5"
+                  {filtered.map((rec) => (
+                    <div
+                      key={rec.resource.id}
+                      className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4"
+                    >
+                      <div
+                        className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                          rec.type === "lab"
+                            ? "bg-blue-100 text-blue-700"
+                            : rec.type === "imaging"
+                            ? "bg-purple-100 text-purple-700"
+                            : rec.type === "prescription"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-teal-100 text-teal-700"
+                        }`}
                       >
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <path d="M3 15h6" />
-                        <path d="M9 17v-4" />
-                        <path d="M13 13v4h4" />
-                        <path d="M13 17h4" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">Blood Test Results</h3>
-                        <Badge className="bg-blue-100 text-blue-800">
-                          Lab Results
-                        </Badge>
+                        <FileText className="h-5 w-5" />
                       </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span>March 25, 2025</span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold">{rec.title}</h3>
+                          <Badge>{rec.type}</Badge>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Tag className="h-3.5 w-3.5" />
-                          <span>Dr. Emily Rodriguez</span>
+                        <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-3.5 w-3.5" />
+                            <span>
+                              {new Date(rec.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                          {rec.performer && (
+                            <div className="flex items-center gap-1">
+                              <Tag className="h-3.5 w-3.5" />
+                              <span>{rec.performer}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-purple-700">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5"
-                      >
-                        <rect width="18" height="18" x="3" y="3" rx="2" />
-                        <path d="M3 9h18" />
-                        <path d="M9 21V9" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">Chest X-Ray</h3>
-                        <Badge className="bg-purple-100 text-purple-800">
-                          Imaging
-                        </Badge>
-                      </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span>March 20, 2025</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Tag className="h-3.5 w-3.5" />
-                          <span>Dr. James Wilson</span>
-                        </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          View
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Download className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5"
-                      >
-                        <path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12" />
-                        <circle cx="17" cy="7" r="5" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">
-                          Prescription - Amoxicillin
-                        </h3>
-                        <Badge className="bg-amber-100 text-amber-800">
-                          Prescription
-                        </Badge>
-                      </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span>March 15, 2025</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Tag className="h-3.5 w-3.5" />
-                          <span>Dr. Sarah Johnson</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-100 text-teal-700">
-                      <FileText className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">Dental Check-up</h3>
-                        <Badge className="bg-teal-100 text-teal-800">
-                          Examination
-                        </Badge>
-                      </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span>February 10, 2025</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Tag className="h-3.5 w-3.5" />
-                          <span>Dr. Michael Chen</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>

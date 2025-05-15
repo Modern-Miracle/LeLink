@@ -16,6 +16,7 @@ import {
   DASHBOARD_PATH,
   RECORDS_PATH,
   TRIAGE_PATH,
+  PATIENTS_PATH,
 } from "@/lib/paths";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ const navLinks = [
   { label: "Triage", href: TRIAGE_PATH },
   { label: "Appointments", href: APPOINTMENTS_PATH },
   { label: "Records", href: RECORDS_PATH },
+  { label: "Patients", href: PATIENTS_PATH },
 ];
 
 export default function DashboardHeader() {

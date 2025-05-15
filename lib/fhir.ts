@@ -3,43 +3,58 @@ import { getAzureCliAccessToken } from "./azure-cli-auth";
 
 const baseUrl = process.env.FHIR_BASE_URL!;
 
-export async function getPatient(id: string) {
+export async function useFHIRApi<T = any>(
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  route: string,
+  body?: any
+): Promise<T> {
   const token = await getAzureCliAccessToken();
-  const res = await axios.get(`${baseUrl}/Patient/${id}`, {
+  const config = {
+    method,
+    url: `${baseUrl}${route}`,
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/fhir+json",
     },
-  });
+    ...(body && { data: body }),
+  };
+  const res = await axios(config);
   return res.data;
+}
+
+export async function getPatient(id: string) {
+  return useFHIRApi("GET", `/Patient/${id}`);
 }
 
 export async function createPatient(data: any) {
-  const token = await getAzureCliAccessToken();
-  const res = await axios.post(`${baseUrl}/Patient`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/fhir+json",
-    },
-  });
-  return res.data;
+  return useFHIRApi("POST", `/Patient`, data);
 }
 
 export async function getAllPatients() {
-  const token = await getAzureCliAccessToken();
   try {
-    const res = await fetch(`${process.env.FHIR_BASE_URL}/Patient`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/fhir+json",
-      },
-      cache: "no-store",
-    });
-    const fhir = await res.json();
-    console.log(fhir);
-    return fhir.entry?.map((e: any) => e.resource);
+    const result = await useFHIRApi("GET", `/Patient`);
+    return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
-    console.log(e);
+    console.error(e);
+    return [];
+  }
+}
+
+export async function getAllEncounters() {
+  try {
+    const result = await useFHIRApi("GET", `/Encounter`);
+    return result.entry?.map((e: any) => e.resource) || [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
+export async function getAllAppointments() {
+  try {
+    const result = await useFHIRApi("GET", `/Encounter`);
+    return result.entry?.map((e: any) => e.resource) || [];
+  } catch (e) {
+    console.error(e);
     return [];
   }
 }
