@@ -1,0 +1,16 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "contractAddress": "0xE8d7eEA78Faa6934802c43eB79f14609C4d1E854",
+  "deployer": "0x04E1B236182b9703535ecB490697b79B45453Ba1",
+  "deploymentDate": "2025-05-30T19:22:21.912Z",
+  "blockNumber": 8441197,
+  "transactionHash": "0x36b15acab13ff1715e50111bb8b2491146b9efdc662c47eccb49353afbb86d8f",
+  "gasUsed": "1870718",
+  "gasPrice": "20.0",
+  "currentGasPrice": "0.001011774",
+  "contractName": "LeLink",
+  "compilerVersion": "0.8.28",
+  "optimizerEnabled": true,
+  "optimizerRuns": 200
+}

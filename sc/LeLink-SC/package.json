@@ -9,25 +9,37 @@
     "test:coverage": "hardhat coverage",
     "test:gas": "REPORT_GAS=true hardhat test",
     "deploy:localhost": "hardhat run scripts/deploy.ts --network localhost",
-    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
-    "deploy:mainnet": "hardhat run scripts/deploy.ts --network mainnet",
+    "deploy:sepolia": "hardhat run scripts/deploy-with-verification.ts --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy-with-verification.ts --network mainnet",
+    "deploy:polygon": "hardhat run scripts/deploy-with-verification.ts --network polygon",
+    "deploy:arbitrum": "hardhat run scripts/deploy-with-verification.ts --network arbitrum",
+    "deploy:optimism": "hardhat run scripts/deploy-with-verification.ts --network optimism",
     "deploy:js:localhost": "hardhat run scripts/deploy.js --network localhost",
     "deploy:js:sepolia": "hardhat run scripts/deploy.js --network sepolia",
     "deploy:js:mainnet": "hardhat run scripts/deploy.js --network mainnet",
     "node": "hardhat node",
     "clean": "hardhat clean",
     "verify": "hardhat verify",
-    "size": "hardhat size-contracts",
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "verify:mainnet": "hardhat verify --network mainnet",
+    "size": "npx hardhat size-contracts",
     "typechain": "hardhat typechain",
     "prettier": "prettier --write 'contracts/**/*.sol' 'test/**/*.ts' 'scripts/**/*.ts'",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "lint:ts": "eslint 'test/**/*.ts' 'scripts/**/*.ts'",
     "lint": "npm run lint:sol && npm run lint:ts",
     "format": "npm run prettier",
+    "gas-report": "REPORT_GAS=true hardhat test",
     "full-test": "npm run clean && npm run compile && npm run test && npm run test:coverage",
     "prepare": "npm run compile",
     "dev": "hardhat node",
-    "setup": "npm install && npm run compile"
+    "setup": "npm install && npm run compile",
+    "check": "hardhat run scripts/pre-deployment-check.ts",
+    "check:sepolia": "hardhat run scripts/pre-deployment-check.ts --network sepolia",
+    "check:mainnet": "hardhat run scripts/pre-deployment-check.ts --network mainnet",
+    "pre-deploy": "npm run clean && npm run compile && npm run test && npm run size",
+    "deploy:sepolia:safe": "npm run pre-deploy && npm run deploy:sepolia",
+    "deploy:mainnet:safe": "npm run pre-deploy && npm run deploy:mainnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
@@ -43,8 +55,10 @@
     "@types/mocha": ">=9.1.0",
     "@types/node": "^20.0.0",
     "chai": "^4.2.0",
+    "chalk": "^5.4.1",
     "ethers": "^6.4.0",
     "hardhat": "^2.24.0",
+    "hardhat-contract-sizer": "^2.10.0",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.0",
     "ts-node": "^10.9.0",
@@ -52,6 +66,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.3.0"
+    "@openzeppelin/contracts": "^5.3.0",
+    "install": "^0.13.0",
+    "npm": "^11.4.1"
   }
 }
