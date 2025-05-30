@@ -1,31 +1,31 @@
+import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 
-import { auth } from './lib/auth';
-
-import {
-  AuthenticatedNextRequest,
-  isPublicRoute,
-  redirectToSignIn,
-  redirectToWelcome,
-} from './lib/types/middleware.types';
+export default withAuth(
+  function middleware(req) {
+    // Allow the request to continue
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        const pathname = req.nextUrl.pathname;
+        
+        // Public routes that don't require authentication
+        const publicRoutes = ['/login', '/register', '/'];
+        if (publicRoutes.includes(pathname)) {
+          return true;
+        }
+        
+        // All other routes require authentication
+        return !!token;
+      },
+    },
+  }
+);
 
 export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 };
-
-export default auth((req: AuthenticatedNextRequest) => {
-  const { nextUrl } = req;
-  const isAuthenticated = !!req.auth?.user;
-  const isValidPublicRoute = isPublicRoute(nextUrl.pathname);
-
-  if (isValidPublicRoute && isAuthenticated) {
-    return redirectToWelcome(nextUrl);
-  }
-
-  if (!isAuthenticated && !isValidPublicRoute) {
-    return redirectToSignIn(nextUrl);
-  }
-
-  return NextResponse.next();
-});
