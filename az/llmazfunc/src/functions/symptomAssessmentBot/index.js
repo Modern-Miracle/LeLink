@@ -17,10 +17,15 @@ const config = require('../../utils/config');
 module.exports = async function (context, req) {
   const correlationId = context.executionContext.invocationId;
   const logger = new Logger({ correlationId });
+  
+  // Declare variables outside try block for error logging access
+  let message, patientId, threadId;
+  
   logger.info('Received symptom assessment request', { 
     correlationId,
     headers: req.headers,
-    method: req.method
+    method: req.method,
+    body: req.body
   });
 
   try {
@@ -29,7 +34,16 @@ module.exports = async function (context, req) {
       throw new ValidationError('Invalid request body');
     }
     
-    let { message, patientId, threadId } = req.body;
+    // Extract values from request body
+    ({ message, patientId, threadId } = req.body);
+    
+    logger.info('Extracted request parameters', { 
+      hasMessage: !!message,
+      hasPatientId: !!patientId,
+      hasThreadId: !!threadId,
+      messageLength: message?.length || 0,
+      correlationId
+    });
     
     if (!message || typeof message !== 'string') {
       throw new ValidationError('Message is required and must be a string');
@@ -45,9 +59,15 @@ module.exports = async function (context, req) {
       throw new ValidationError('Patient ID is required and must be a string');
     }
     
-    logger.info('Request validated', { patientId, hasThreadId: !!threadId, correlationId });
+    logger.info('Request validated', { 
+      patientId, 
+      hasThreadId: !!threadId, 
+      messagePreview: message.substring(0, 50) + '...',
+      correlationId 
+    });
 
     // Initialize LeLink Triage Assistant
+    logger.info('Initializing triage assistant', { correlationId });
     const triageAssistant = new LekinkTriageAssistant(
       openAIService,
       logger
@@ -56,9 +76,12 @@ module.exports = async function (context, req) {
     // Get or create thread
     let currentThreadId = threadId;
     if (!currentThreadId) {
+      logger.info('Creating new thread', { correlationId });
       const thread = await openAIService.createThread();
       currentThreadId = thread.id;
       logger.info('Created new thread', { threadId: currentThreadId, correlationId });
+    } else {
+      logger.info('Using existing thread', { threadId: currentThreadId, correlationId });
     }
 
     // Process the message
