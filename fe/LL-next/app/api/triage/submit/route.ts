@@ -1,30 +1,32 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 
-const BACKEND_URL = process.env.AZURE_FUNCTIONS_URL + '/api/symptomAssessmentBot';
+const AZURE_FUNCTIONS_URL = process.env.AZURE_FUNCTIONS_URL || 'http://localhost:7071';
+const BACKEND_URL = AZURE_FUNCTIONS_URL + '/api/symptomAssessmentBot';
 
 export async function POST(req: NextRequest) {
   try {
     const { message, threadId, patientId } = await req.json();
-    
+
     // Call Azure Functions backend
     const response = await fetch(BACKEND_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         ...(process.env.AZURE_FUNCTIONS_API_KEY && {
-          'x-api-key': process.env.AZURE_FUNCTIONS_API_KEY
-        })
+          'x-api-key': process.env.AZURE_FUNCTIONS_API_KEY,
+        }),
       },
       body: JSON.stringify({
         message,
         threadId: threadId || undefined,
         patientId: patientId || undefined,
-        includeResources: true
-      })
+        includeResources: true,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Backend responded with status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`Backend responded with status: ${response.status} - ${errorText}`);
     }
 
     // Check if response is streaming
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
         headers: {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
+          Connection: 'keep-alive',
         },
       });
     }
@@ -44,16 +46,19 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     return new Response(JSON.stringify(data), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
     console.error('Triage API Error:', err);
-    return new Response(JSON.stringify({ 
-      error: err.message || 'Failed to process triage request',
-      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
-    }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        error: err.message || 'Failed to process triage request',
+        details: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 }
