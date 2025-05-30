@@ -1,0 +1,49 @@
+{
+  "resourceType": "Observation",
+  "id": "1747723381638-8m9kohe5h",
+  "status": "preliminary",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "30999-2",
+        "display": "Wound observation"
+      }
+    ],
+    "text": "Observation of Wound"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "identifier": [
+    {
+      "system": "urn:uuid",
+      "value": "54321"
+    }
+  ],
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "clinical",
+          "display": "Clinical"
+        }
+      ],
+      "text": "Clinical"
+    }
+  ],
+  "effectiveDateTime": "2023-10-04T12:00:00Z",
+  "performer": [
+    {
+      "reference": "Practitioner/1",
+      "display": "LeLink Triage Assistant"
+    }
+  ],
+  "valueString": "20-year-old male with a small cut on the finger. Minimal bleeding reported, mild pain (2/10). No visible signs of infection. Wound not cleaned yet.",
+  "note": [
+    {
+      "text": "Next steps include cleaning the wound, applying antiseptic, and dressing the wound. Consider tetanus shot if last one is not recent."
+    }
+  ]
+}

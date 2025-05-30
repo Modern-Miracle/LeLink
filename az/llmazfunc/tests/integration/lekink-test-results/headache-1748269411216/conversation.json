@@ -1,0 +1,246 @@
+{
+  "patientId": "29e5cdee-995d-4616-8050-15868cecba29",
+  "scenario": "Severe Headache",
+  "messages": [
+    {
+      "sent": "I'm a 28 year old female. Throbbing headache on right side, sensitivity to light, mild nausea",
+      "received": {
+        "reply": "I'm sorry to hear that you're experiencing these symptoms. Let's gather some more information to assess your situation properly.\n\n1. **Headache Details**: \n   - How long have you been experiencing the headache?\n   - On a scale of 1 to 10, how severe is the pain?\n   - Have you had similar headaches in the past?\n\n2. **Nausea**: \n   - Is the nausea constant, or does it come and go?\n   - Have you vomited or felt like you might vomit?\n\n3. **Light Sensitivity**: \n   - Is the sensitivity to light affecting your ability to do daily activities?\n   - Are there any other symptoms accompanying the light sensitivity, such as blurred vision or visual disturbances?\n\n4. **Red Flag Symptoms**: \n   - Have you experienced any sudden changes in vision, weakness, confusion, or difficulty speaking?\n   - Do you have a history of migraines or any other medical conditions?\n\nYour responses will help me assess your risk level and provide appropriate guidance.",
+        "threadId": "thread_JcTjnL4JfCTwvs4yk3qO3RmD",
+        "patientId": "29e5cdee-995d-4616-8050-15868cecba29",
+        "sessionId": "4b41dbf6-7d73-4774-9799-b23da5661a76",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:22:47.153Z"
+    },
+    {
+      "sent": "The headache started about 3 hours ago and it's really intense, I'd say a 7 out of 10. I've had similar headaches before, my doctor said they were migraines. \n\nThe nausea isn't constant, but it seems to get worse when the headache does. I haven't actually vomited, just feel like I might. \n\nThe light sensitivity is making it hard to do anything. I've been in a dark room most of the day. I haven't noticed any blurred vision or visual disturbances though. \n\nAs for red flag symptoms, I haven't experienced any sudden changes in vision, weakness, confusion, or difficulty speaking. I do have a history of migraines, but no other medical conditions.",
+      "received": {
+        "reply": "Thank you for providing that information. Based on your symptoms and history, it appears that you are experiencing a migraine attack. Here’s a summary of your symptoms:\n\n- **Throbbing headache** on the right side, rated 7/10 in intensity.\n- **Sensitivity to light**, making it difficult to engage in daily activities.\n- **Mild nausea** that worsens with the headache but no vomiting.\n- A history of similar headaches diagnosed as migraines.\n- No red flag symptoms such as sudden changes in vision, weakness, confusion, or difficulty speaking.\n\nGiven the intensity of your headache and the associated symptoms, I would assess your risk level as **medium**. This indicates that you should seek medical attention, but it is not an emergency situation.\n\nBefore we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_JcTjnL4JfCTwvs4yk3qO3RmD",
+        "patientId": "29e5cdee-995d-4616-8050-15868cecba29",
+        "sessionId": "a78971d3-0e76-4b41-a606-c8b0699f132a",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:23:02.347Z"
+    },
+    {
+      "sent": "No, I think that covers everything. I appreciate your help with this. It's really difficult to deal with these headaches. I'll seek medical attention as you suggested. Thank you.",
+      "received": {
+        "reply": "I've documented your symptoms and assessed your risk level as **medium**. Here’s a summary of the actions taken:\n\n1. **Risk Assessment**: Documented your risk level and rationale for seeking medical attention.\n2. **Observation**: Captured key findings from our conversation regarding your headache, light sensitivity, and nausea.\n\nIt's important to follow up with a healthcare provider for further evaluation and management of your migraine. If you experience any worsening symptoms or new concerning symptoms, please seek immediate medical attention.\n\nThank you for reaching out, and I hope you find relief soon! If you have any more questions or need assistance in the future, feel free to ask.",
+        "threadId": "thread_JcTjnL4JfCTwvs4yk3qO3RmD",
+        "patientId": "29e5cdee-995d-4616-8050-15868cecba29",
+        "sessionId": "e5e96247-a2d9-4050-a88b-d3e4fbfcb9ff",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "moderate",
+            "probability": 50,
+            "condition": "Migraine",
+            "outcome": "Migraine attack requiring medical attention."
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1748269410206-km68msdxx",
+            "status": "preliminary",
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "occurrenceDateTime": "2023-10-05T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/condition",
+                      "code": "migraine",
+                      "display": "Migraine"
+                    }
+                  ],
+                  "text": "Migraine"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk",
+                      "code": "medium",
+                      "display": "Medium"
+                    }
+                  ],
+                  "text": "Medium"
+                },
+                "rationale": "Patient presents with a history of migraines, currently experiencing a severe headache (7/10), light sensitivity, and mild nausea."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "RA-12345"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment",
+                  "code": "triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage risk assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/67890",
+              "display": "LeLink Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1748269410206-ktdm0kiev",
+            "status": "preliminary",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "431855005",
+                  "display": "Headache"
+                }
+              ],
+              "text": "Headache"
+            },
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "OBS-12345"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "symptom",
+                    "display": "Symptom"
+                  }
+                ],
+                "text": "Symptom"
+              }
+            ],
+            "effectiveDateTime": "2023-10-05T12:00:00Z",
+            "valueString": "Throbbing headache on right side, intensity 7/10, sensitivity to light, mild nausea."
+          }
+        }
+      },
+      "timestamp": "2025-05-26T14:23:30.213Z"
+    }
+  ],
+  "startTime": "2025-05-26T14:22:35.849Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1748269410206-km68msdxx",
+      "status": "preliminary",
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "occurrenceDateTime": "2023-10-05T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition",
+                "code": "migraine",
+                "display": "Migraine"
+              }
+            ],
+            "text": "Migraine"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk",
+                "code": "medium",
+                "display": "Medium"
+              }
+            ],
+            "text": "Medium"
+          },
+          "rationale": "Patient presents with a history of migraines, currently experiencing a severe headache (7/10), light sensitivity, and mild nausea."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "http://hospital.smarthealthit.org",
+          "value": "RA-12345"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment",
+            "code": "triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage risk assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/67890",
+        "display": "LeLink Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1748269410206-ktdm0kiev",
+      "status": "preliminary",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "431855005",
+            "display": "Headache"
+          }
+        ],
+        "text": "Headache"
+      },
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "identifier": [
+        {
+          "system": "http://hospital.smarthealthit.org",
+          "value": "OBS-12345"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "symptom",
+              "display": "Symptom"
+            }
+          ],
+          "text": "Symptom"
+        }
+      ],
+      "effectiveDateTime": "2023-10-05T12:00:00Z",
+      "valueString": "Throbbing headache on right side, intensity 7/10, sensitivity to light, mild nausea."
+    }
+  ],
+  "threadId": "thread_JcTjnL4JfCTwvs4yk3qO3RmD"
+}

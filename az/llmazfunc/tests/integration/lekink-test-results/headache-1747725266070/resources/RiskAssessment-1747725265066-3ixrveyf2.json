@@ -1,0 +1,92 @@
+{
+  "resourceType": "RiskAssessment",
+  "id": "1747725265066-3ixrveyf2",
+  "status": "final",
+  "subject": {
+    "reference": "Patient/12345"
+  },
+  "occurrenceDateTime": "2023-10-10T15:00:00Z",
+  "prediction": [
+    {
+      "outcome": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "431855005",
+            "display": "Migraine attack"
+          }
+        ],
+        "text": "Potential migraine attack"
+      },
+      "qualitativeRisk": {
+        "coding": [
+          {
+            "system": "http://terminologies.com",
+            "code": "moderate",
+            "display": "Moderate"
+          }
+        ],
+        "text": "Moderate risk"
+      },
+      "rationale": "The patient has a history of migraines, presents with moderate pain, and is experiencing associated symptoms of light sensitivity and mild nausea."
+    }
+  ],
+  "identifier": [
+    {
+      "system": "https://example.org/riskassessment",
+      "value": "RA-1001"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http:// terminologies.com",
+        "code": "migraine",
+        "display": "Migraine"
+      }
+    ],
+    "text": "Migraine Risk Assessment"
+  },
+  "performer": {
+    "reference": "Practitioner/67890",
+    "display": "LeLink Triage Assistant"
+  },
+  "reason": [
+    {
+      "concept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "19240000",
+            "display": "Headache"
+          }
+        ],
+        "text": "Headache assessment"
+      }
+    },
+    {
+      "concept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "25064002",
+            "display": "Migraine"
+          }
+        ],
+        "text": "Migraine history"
+      }
+    },
+    {
+      "concept": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "56952-0",
+            "display": "Headache Intensity"
+          }
+        ],
+        "text": "Headache intensity"
+      }
+    }
+  ]
+}

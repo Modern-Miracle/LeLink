@@ -1,0 +1,281 @@
+{
+  "patientId": "62a288c4-8dbf-4b67-a1fe-bb45ae02f5a1",
+  "scenario": "Minor Cut",
+  "messages": [
+    {
+      "sent": "I'm a 20 year old male. Small cut on finger from kitchen knife, minimal bleeding",
+      "received": {
+        "reply": "Thank you for sharing that information. Let's gather some more details to assess your situation properly.\n\n1. Can you describe the size and depth of the cut? \n2. Are you experiencing any pain at the site of the cut? If so, how would you rate it on a scale of 1 to 10?\n3. Have you cleaned the cut? If yes, how did you clean it?\n4. Do you have any signs of infection, such as redness, swelling, or pus?\n5. Are you up to date on your tetanus vaccinations? \n\nThese details will help me assess the risk level associated with your cut.",
+        "threadId": "thread_eoAloV8SutWvJpp3w0HDuqX2",
+        "patientId": "62a288c4-8dbf-4b67-a1fe-bb45ae02f5a1",
+        "sessionId": "80256d67-3909-41d8-a30d-ae0ffbc6cc10",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:36:10.658Z"
+    },
+    {
+      "sent": "The cut is about an inch long, not very deep though. I would rate the pain as 2 out of 10. Yes, I washed the cut under running water, but nothing more than that. I haven't noticed any signs of infection like redness, swelling, or pus. As for my tetanus vaccination, I believe I am up to date. My last shot was about 5 years ago.",
+      "received": {
+        "reply": "Thank you for providing that information. Based on what you've shared, here’s a summary of your situation:\n\n- **Cut Size and Depth**: Approximately 1 inch long, not very deep.\n- **Pain Level**: 2 out of 10.\n- **Cleaning**: Washed under running water.\n- **Signs of Infection**: No redness, swelling, or pus observed.\n- **Tetanus Vaccination**: Up to date (last shot 5 years ago).\n\nGiven these details, it appears that your cut is minor and does not currently show signs of infection. However, it's important to monitor it for any changes.\n\nBefore we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_eoAloV8SutWvJpp3w0HDuqX2",
+        "patientId": "62a288c4-8dbf-4b67-a1fe-bb45ae02f5a1",
+        "sessionId": "c5530e3d-979b-4a88-bf4d-2b81e5f6bdfd",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:36:33.437Z"
+    },
+    {
+      "sent": "No, I think that covers everything. I'll keep an eye on the cut and make sure it doesn't get infected. Thank you for your help.",
+      "received": {
+        "reply": "I've documented your assessment and created the necessary records. Here’s a summary of your situation:\n\n- **Risk Level**: Low\n- **Condition**: Minor cut on finger\n- **Outcome**: No signs of infection, manageable with self-care\n\nPlease keep an eye on the cut for any changes, and don't hesitate to seek medical attention if you notice any signs of infection or if the condition worsens.\n\nThank you for using our service, and take care!",
+        "threadId": "thread_eoAloV8SutWvJpp3w0HDuqX2",
+        "patientId": "62a288c4-8dbf-4b67-a1fe-bb45ae02f5a1",
+        "sessionId": "7fc0d840-a79d-42c3-96af-6bbd1cad3a66",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "low",
+            "probability": 25,
+            "condition": "minor cut",
+            "outcome": "no signs of infection, manageable with self-care"
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1748270233995-tlbzgysrs",
+            "status": "final",
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "occurrenceDateTime": "2023-10-05T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-outcome",
+                      "code": "minor-injury",
+                      "display": "Minor Injury"
+                    }
+                  ],
+                  "text": "Minor Injury"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-qualitative",
+                      "code": "low",
+                      "display": "Low"
+                    }
+                  ],
+                  "text": "Low"
+                },
+                "rationale": "The cut is minor, not deep, with minimal pain and no signs of infection."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "urn:uuid",
+                "value": "12345"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+                  "code": "Triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage risk assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/1",
+              "display": "LeLink Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1748270233995-zy5bk9cv4",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "44249-1",
+                  "display": "Wound assessment"
+                }
+              ],
+              "text": "Wound assessment"
+            },
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "identifier": [
+              {
+                "system": "urn:uuid",
+                "value": "67890"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "social-history",
+                    "display": "Social History"
+                  }
+                ],
+                "text": "Social History"
+              }
+            ],
+            "effectiveDateTime": "2023-10-05T12:00:00Z",
+            "issued": "2023-10-05T12:00:00Z",
+            "performer": [
+              {
+                "reference": "Practitioner/1",
+                "display": "LeLink Triage Assistant"
+              }
+            ],
+            "valueString": "1 inch long cut on finger, minimal bleeding, pain level 2/10, cleaned with running water, no signs of infection, tetanus vaccination up to date."
+          }
+        },
+        "blockchain": {
+          "success": true,
+          "results": [
+            {
+              "resourceId": "RiskAssessment-1748270233995-tlbzgysrs",
+              "dataHash": "22d56a33c6ba26863d6b780d717a60bffa5d7732a5820e569b8fb61c07984bbc",
+              "transactionHash": "0xf549c71b79a3fe778ff8fc287a4f9a35c541551f9fad909a28c8789516d3468b",
+              "blockNumber": 8,
+              "gasUsed": "105726"
+            },
+            {
+              "resourceId": "Observation-1748270233995-zy5bk9cv4",
+              "dataHash": "179685e92a3af216cb4464fb8af8f9bf9096faf0d8ceb172e7d457964a72e4fb",
+              "transactionHash": "0xc9fb66865c30607fe6420167ddca150063f18e0280d90c3ba48f6de28407a79d",
+              "blockNumber": 9,
+              "gasUsed": "105690"
+            }
+          ],
+          "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          "network": "localhost"
+        }
+      },
+      "timestamp": "2025-05-26T14:37:22.287Z"
+    }
+  ],
+  "startTime": "2025-05-26T14:35:56.698Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1748270233995-tlbzgysrs",
+      "status": "final",
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "occurrenceDateTime": "2023-10-05T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-outcome",
+                "code": "minor-injury",
+                "display": "Minor Injury"
+              }
+            ],
+            "text": "Minor Injury"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-qualitative",
+                "code": "low",
+                "display": "Low"
+              }
+            ],
+            "text": "Low"
+          },
+          "rationale": "The cut is minor, not deep, with minimal pain and no signs of infection."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "urn:uuid",
+          "value": "12345"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+            "code": "Triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage risk assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/1",
+        "display": "LeLink Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1748270233995-zy5bk9cv4",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "44249-1",
+            "display": "Wound assessment"
+          }
+        ],
+        "text": "Wound assessment"
+      },
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "identifier": [
+        {
+          "system": "urn:uuid",
+          "value": "67890"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "social-history",
+              "display": "Social History"
+            }
+          ],
+          "text": "Social History"
+        }
+      ],
+      "effectiveDateTime": "2023-10-05T12:00:00Z",
+      "issued": "2023-10-05T12:00:00Z",
+      "performer": [
+        {
+          "reference": "Practitioner/1",
+          "display": "LeLink Triage Assistant"
+        }
+      ],
+      "valueString": "1 inch long cut on finger, minimal bleeding, pain level 2/10, cleaned with running water, no signs of infection, tetanus vaccination up to date."
+    }
+  ],
+  "threadId": "thread_eoAloV8SutWvJpp3w0HDuqX2"
+}

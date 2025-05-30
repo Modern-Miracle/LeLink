@@ -1,0 +1,26 @@
+{
+  "resourceType": "Observation",
+  "id": "1747723322576-9q1dvagk3",
+  "status": "preliminary",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "22510000105101",
+        "display": "Abdominal pain observation"
+      }
+    ],
+    "text": "Abdominal pain observation"
+  },
+  "subject": {
+    "reference": "Patient/001"
+  },
+  "identifier": [
+    {
+      "system": "example",
+      "value": "observation-001"
+    }
+  ],
+  "effectiveDateTime": "2023-10-04T12:34:00Z",
+  "valueString": "Dull ache in the lower right abdomen, mild nausea."
+}

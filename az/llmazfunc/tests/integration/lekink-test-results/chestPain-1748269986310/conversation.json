@@ -1,0 +1,181 @@
+{
+  "patientId": "7d6a6ff6-1188-47f4-8a25-46bd93f1f671",
+  "scenario": "Acute Chest Pain",
+  "messages": [
+    {
+      "sent": "I'm a 45 year old male. Sharp chest pain on the left side, shortness of breath, sweating",
+      "received": {
+        "reply": "I have documented your symptoms and assessed the risk level as \"emergency\" due to the serious nature of your symptoms. Please seek immediate medical attention.\n\nIf you have any further questions or need assistance, feel free to ask. Take care and please prioritize your health.",
+        "threadId": "thread_9WR2lrbC7lSDmYUqym1Y8Pnj",
+        "patientId": "7d6a6ff6-1188-47f4-8a25-46bd93f1f671",
+        "sessionId": "22a18fd8-8bc4-4bb3-b3c4-9f0303547dd8",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "emergency",
+            "probability": 90,
+            "condition": "Chest pain",
+            "outcome": "Potential acute myocardial infarction"
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1748269977970-iety9cl6x",
+            "status": "registered",
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "occurrenceDateTime": "2023-10-03T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "431855005",
+                      "display": "Acute myocardial infarction"
+                    }
+                  ],
+                  "text": "Acute myocardial infarction"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                      "code": "emergency",
+                      "display": "Emergency"
+                    }
+                  ],
+                  "text": "Emergency"
+                },
+                "rationale": "Patient presents with sharp chest pain, shortness of breath, and sweating, which are indicative of a potential acute myocardial infarction."
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment",
+                  "code": "emergency",
+                  "display": "Emergency"
+                }
+              ],
+              "text": "Emergency Risk Assessment"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1748269977970-6be0s2mfu",
+            "status": "registered",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "75302-0",
+                  "display": "Chest pain"
+                }
+              ],
+              "text": "Chest pain observation"
+            },
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "effectiveDateTime": "2023-10-03T12:00:00Z",
+            "valueString": "Sharp chest pain on the left side, shortness of breath, sweating."
+          }
+        },
+        "blockchain": {
+          "success": true,
+          "results": [
+            {
+              "resourceId": "RiskAssessment-1748269977970-iety9cl6x",
+              "dataHash": "32250e492baadceda53d05324ea087ed696bb7855ed0feb9cf3623e8d5a88088",
+              "transactionHash": "0x44b6deee8510598e8e95eacabfe53ff1173941a4fc4e73aed9928340560a62ba",
+              "blockNumber": 2,
+              "gasUsed": "122826"
+            },
+            {
+              "resourceId": "Observation-1748269977970-6be0s2mfu",
+              "dataHash": "a462c93214a1906be3b92068a093b22fb5d3ecf70b1b1030309136ef7ddbe5b6",
+              "transactionHash": "0xa170a5d11f9722cbb5555f04b8d9ba0b64a82eea76205f20b14acfc5e66fa649",
+              "blockNumber": 3,
+              "gasUsed": "105690"
+            }
+          ],
+          "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          "network": "localhost"
+        }
+      },
+      "timestamp": "2025-05-26T14:33:06.309Z"
+    }
+  ],
+  "startTime": "2025-05-26T14:32:35.087Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1748269977970-iety9cl6x",
+      "status": "registered",
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "occurrenceDateTime": "2023-10-03T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "431855005",
+                "display": "Acute myocardial infarction"
+              }
+            ],
+            "text": "Acute myocardial infarction"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                "code": "emergency",
+                "display": "Emergency"
+              }
+            ],
+            "text": "Emergency"
+          },
+          "rationale": "Patient presents with sharp chest pain, shortness of breath, and sweating, which are indicative of a potential acute myocardial infarction."
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment",
+            "code": "emergency",
+            "display": "Emergency"
+          }
+        ],
+        "text": "Emergency Risk Assessment"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1748269977970-6be0s2mfu",
+      "status": "registered",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "75302-0",
+            "display": "Chest pain"
+          }
+        ],
+        "text": "Chest pain observation"
+      },
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "effectiveDateTime": "2023-10-03T12:00:00Z",
+      "valueString": "Sharp chest pain on the left side, shortness of breath, sweating."
+    }
+  ],
+  "threadId": "thread_9WR2lrbC7lSDmYUqym1Y8Pnj"
+}

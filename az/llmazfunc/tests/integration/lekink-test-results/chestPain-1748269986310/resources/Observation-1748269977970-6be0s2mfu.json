@@ -1,0 +1,20 @@
+{
+  "resourceType": "Observation",
+  "id": "1748269977970-6be0s2mfu",
+  "status": "registered",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "75302-0",
+        "display": "Chest pain"
+      }
+    ],
+    "text": "Chest pain observation"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "effectiveDateTime": "2023-10-03T12:00:00Z",
+  "valueString": "Sharp chest pain on the left side, shortness of breath, sweating."
+}

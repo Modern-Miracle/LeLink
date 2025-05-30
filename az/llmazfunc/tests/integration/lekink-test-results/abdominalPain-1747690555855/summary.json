@@ -1,0 +1,21 @@
+{
+  "scenario": "abdominalPain",
+  "timestamp": "2025-05-19T21:35:55.857Z",
+  "patientId": "6af7d1b1-4f37-49be-be18-417ca805bf19",
+  "threadId": "thread_wFLil9w1QR4q8M7WVV0aIhev",
+  "messageCount": 5,
+  "resourcesGenerated": [
+    {
+      "type": "RiskAssessment",
+      "id": "1747690554846-yawhmnxol",
+      "status": "registered",
+      "filePath": "resources/RiskAssessment-1747690554846-yawhmnxol.json"
+    },
+    {
+      "type": "Observation",
+      "id": "1747690554846-lle2f48sl",
+      "status": "registered",
+      "filePath": "resources/Observation-1747690554846-lle2f48sl.json"
+    }
+  ]
+}

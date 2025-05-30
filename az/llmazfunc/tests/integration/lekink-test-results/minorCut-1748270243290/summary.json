@@ -1,0 +1,21 @@
+{
+  "scenario": "minorCut",
+  "timestamp": "2025-05-26T14:37:23.297Z",
+  "patientId": "62a288c4-8dbf-4b67-a1fe-bb45ae02f5a1",
+  "threadId": "thread_eoAloV8SutWvJpp3w0HDuqX2",
+  "messageCount": 3,
+  "resourcesGenerated": [
+    {
+      "type": "RiskAssessment",
+      "id": "1748270233995-tlbzgysrs",
+      "status": "final",
+      "filePath": "resources/RiskAssessment-1748270233995-tlbzgysrs.json"
+    },
+    {
+      "type": "Observation",
+      "id": "1748270233995-zy5bk9cv4",
+      "status": "final",
+      "filePath": "resources/Observation-1748270233995-zy5bk9cv4.json"
+    }
+  ]
+}

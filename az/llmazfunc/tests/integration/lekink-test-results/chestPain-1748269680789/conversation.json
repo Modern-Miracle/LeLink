@@ -1,0 +1,255 @@
+{
+  "patientId": "9e11d0f9-1b94-45f9-a1de-b5dcd8c00067",
+  "scenario": "Acute Chest Pain",
+  "messages": [
+    {
+      "sent": "I'm a 45 year old male. Sharp chest pain on the left side, shortness of breath, sweating",
+      "received": {
+        "reply": "It sounds like you are experiencing some concerning symptoms. Sharp chest pain, especially on the left side, along with shortness of breath and sweating can be indicative of a serious condition. \n\nI must advise you to seek emergency medical attention immediately. Please call 911 or go to the nearest emergency room.\n\nI will document your symptoms for medical records. \n\nLet's proceed with the necessary documentation. \n\n### Emergency Symptoms:\n- Sharp chest pain on the left side\n- Shortness of breath\n- Sweating\n\nNow, I will create the risk assessment and observation for your symptoms. Please hold on for a moment. \n\n### Creating Risk Assessment and Observation...",
+        "threadId": "thread_9R2oCvpMKeEVohMrL1YrPh7J",
+        "patientId": "9e11d0f9-1b94-45f9-a1de-b5dcd8c00067",
+        "sessionId": "e42df69b-5941-4d3f-93a4-afd0bea3dd29",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:27:42.141Z"
+    },
+    {
+      "sent": "I understand this is serious. I'll call 911 right away. Thank you.",
+      "received": {
+        "reply": "I have documented your symptoms and the urgency of your situation. Here’s a summary of what has been recorded:\n\n### Risk Assessment:\n- **Risk Level:** Emergency\n- **Rationale:** You presented with sharp chest pain on the left side, shortness of breath, and sweating, indicating a potential life-threatening condition.\n\n### Observation:\n- **Symptoms Documented:** Sharp chest pain on the left side, shortness of breath, sweating.\n- **Advice Given:** You were advised to seek emergency medical attention immediately.\n\nPlease ensure you call 911 or have someone take you to the nearest emergency room right away. Your health and safety are the top priority. \n\nIf you have any further questions or need assistance, feel free to ask. Take care!",
+        "threadId": "thread_9R2oCvpMKeEVohMrL1YrPh7J",
+        "patientId": "9e11d0f9-1b94-45f9-a1de-b5dcd8c00067",
+        "sessionId": "faf14309-7796-4a0e-81b0-da881d81e729",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "emergency",
+            "probability": 90,
+            "condition": "chest pain",
+            "outcome": "potential life-threatening condition"
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1748269680746-6igoqd3p4",
+            "status": "registered",
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "occurrenceDateTime": "2023-10-01T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-outcome",
+                      "code": "emergency",
+                      "display": "Emergency situation"
+                    }
+                  ],
+                  "text": "Emergency situation"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                      "code": "emergency",
+                      "display": "Emergency"
+                    }
+                  ],
+                  "text": "Emergency"
+                },
+                "rationale": "Patient presents with sharp chest pain on the left side, shortness of breath, and sweating, indicating a potential life-threatening condition."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "hospital",
+                "value": "emergency-001"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+                  "code": "triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Emergency symptoms assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/67890",
+              "display": "LeLink Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1748269680746-qk1wett6w",
+            "status": "registered",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "75310-5",
+                  "display": "Chest pain"
+                }
+              ],
+              "text": "Chest pain observation"
+            },
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "identifier": [
+              {
+                "system": "hospital",
+                "value": "observation-001"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "clinical",
+                    "display": "Clinical"
+                  }
+                ],
+                "text": "Clinical"
+              }
+            ],
+            "effectiveDateTime": "2023-10-01T12:00:00Z",
+            "issued": "2023-10-01T12:00:00Z",
+            "performer": [
+              {
+                "reference": "Practitioner/67890",
+                "display": "LeLink Triage Assistant"
+              }
+            ],
+            "valueString": "Sharp chest pain on the left side, shortness of breath, sweating",
+            "note": [
+              {
+                "text": "Patient advised to seek emergency medical attention immediately."
+              }
+            ]
+          }
+        }
+      },
+      "timestamp": "2025-05-26T14:28:00.789Z"
+    }
+  ],
+  "startTime": "2025-05-26T14:27:33.897Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1748269680746-6igoqd3p4",
+      "status": "registered",
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "occurrenceDateTime": "2023-10-01T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-outcome",
+                "code": "emergency",
+                "display": "Emergency situation"
+              }
+            ],
+            "text": "Emergency situation"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                "code": "emergency",
+                "display": "Emergency"
+              }
+            ],
+            "text": "Emergency"
+          },
+          "rationale": "Patient presents with sharp chest pain on the left side, shortness of breath, and sweating, indicating a potential life-threatening condition."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "hospital",
+          "value": "emergency-001"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+            "code": "triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Emergency symptoms assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/67890",
+        "display": "LeLink Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1748269680746-qk1wett6w",
+      "status": "registered",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "75310-5",
+            "display": "Chest pain"
+          }
+        ],
+        "text": "Chest pain observation"
+      },
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "identifier": [
+        {
+          "system": "hospital",
+          "value": "observation-001"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "clinical",
+              "display": "Clinical"
+            }
+          ],
+          "text": "Clinical"
+        }
+      ],
+      "effectiveDateTime": "2023-10-01T12:00:00Z",
+      "issued": "2023-10-01T12:00:00Z",
+      "performer": [
+        {
+          "reference": "Practitioner/67890",
+          "display": "LeLink Triage Assistant"
+        }
+      ],
+      "valueString": "Sharp chest pain on the left side, shortness of breath, sweating",
+      "note": [
+        {
+          "text": "Patient advised to seek emergency medical attention immediately."
+        }
+      ]
+    }
+  ],
+  "threadId": "thread_9R2oCvpMKeEVohMrL1YrPh7J"
+}

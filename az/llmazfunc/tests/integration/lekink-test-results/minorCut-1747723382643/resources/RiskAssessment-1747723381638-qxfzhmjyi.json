@@ -1,0 +1,59 @@
+{
+  "resourceType": "RiskAssessment",
+  "id": "1747723381638-qxfzhmjyi",
+  "status": "preliminary",
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "occurrenceDateTime": "2023-10-04T12:00:00Z",
+  "prediction": [
+    {
+      "outcome": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/risk-assessment-outcome",
+            "code": "minor-injury",
+            "display": "Minor Injury"
+          }
+        ],
+        "text": "Minor Injury"
+      },
+      "qualitativeRisk": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/risk-level",
+            "code": "low",
+            "display": "Low Risk"
+          }
+        ],
+        "text": "Low Risk"
+      },
+      "rationale": "The patient has a small cut on the finger with minimal bleeding and is not showing signs of infection."
+    }
+  ],
+  "identifier": [
+    {
+      "system": "urn:uuid",
+      "value": "12345"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/risk-assessment-category",
+        "code": "triage",
+        "display": "Triage risk assessment"
+      }
+    ],
+    "text": "Triage risk assessment"
+  },
+  "performer": {
+    "reference": "Practitioner/1",
+    "display": "LeLink Triage Assistant"
+  },
+  "note": [
+    {
+      "text": "Recommendation includes proper wound care and consideration for tetanus vaccination if not up to date."
+    }
+  ]
+}

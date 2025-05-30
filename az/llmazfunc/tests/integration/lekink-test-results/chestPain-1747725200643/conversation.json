@@ -1,0 +1,327 @@
+{
+  "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+  "scenario": "Acute Chest Pain",
+  "messages": [
+    {
+      "sent": "I'm a 45 year old male. Sharp chest pain on the left side, shortness of breath, sweating",
+      "received": {
+        "reply": "It's concerning to hear about your symptoms, especially since you mentioned sharp chest pain on the left side, shortness of breath, and sweating. These could potentially indicate a serious condition. \n\nI need to emphasize that you should seek emergency medical care immediately. Please call for help or have someone take you to the nearest emergency department right away.\n\nYour health and safety are paramount.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "98fe15ad-21db-445d-a6ff-8bd7f1f6323c",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:11:34.420Z"
+    },
+    {
+      "sent": "I understand the concern. The pain is 8/10 pain scale and Sharp chest pain on the left side, shortness of breath, sweating. I need to know if I should go to the hospital right away.",
+      "received": {
+        "reply": "Yes, given the severity of your symptoms — sharp chest pain rated at 8 out of 10, shortness of breath, and sweating — it is crucial that you seek emergency medical care immediately. These symptoms could indicate a serious condition, such as a heart attack.\n\nPlease call for emergency assistance or have someone take you to the hospital right away. Your health and safety are the top priority, and this situation requires urgent attention.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "6e1a3fd0-f031-4721-b37c-a7859a395d60",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:11:43.862Z"
+    },
+    {
+      "sent": "I understand. I'll call for an ambulance right away. Thank you for your help.",
+      "received": {
+        "reply": "You're welcome. It's the right decision to call for an ambulance. Please ensure you're in a safe place while you wait for help. If there’s someone with you, have them stay with you until emergency services arrive. Take care, and I hope you receive the care you need quickly.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "31485b49-8478-4602-aff4-e211f5eb272b",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:11:53.751Z"
+    },
+    {
+      "sent": "Thank you, I appreciate your advice. I've called for an ambulance and I'm waiting for them to arrive. I'm not alone, my neighbor is with me. Thanks again for your help.",
+      "received": {
+        "reply": "You're doing the right thing by being proactive and having support during this time. It's great to hear that your neighbor is with you. If you experience any changes in your symptoms or have any concerns while you wait, please inform the paramedics as soon as they arrive. \n\nTake care, and I wish you a swift recovery. If there's anything else you need, don't hesitate to ask.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "482c3d65-57f3-4ed9-8601-9133e238df12",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:08.728Z"
+    },
+    {
+      "sent": "Thank you for your reassurance. I'll make sure to tell the paramedics about any changes in symptoms. I appreciate your help and advice during this scary time.",
+      "received": {
+        "reply": "You're very welcome. I'm glad to hear that you're prepared to communicate any changes to the paramedics. It's perfectly normal to feel scared in situations like this, but you're handling it well by seeking help and having someone with you. \n\nPlease take deep breaths and try to stay as calm as possible while you wait for the ambulance. If you need any final assistance or information, don't hesitate to reach out. Wishing you the best in your care.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "55677ca8-ba35-47c8-88e9-b4e25dabef92",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:18.801Z"
+    },
+    {
+      "sent": "Thank you for your kindness and understanding. I'm trying to stay calm and take deep breaths like you suggested. My neighbor is here with me so I'm not alone. I really appreciate your help.",
+      "received": {
+        "reply": "I'm truly glad to hear that you’re focusing on your breathing and that your neighbor is there with you for support. This can make a significant difference. It's important to remain as calm as possible while you wait for help.\n\nIf you have any other questions or concerns, please feel free to ask. I'm here for you. Remember, the ambulance is on its way, and you will soon be in capable hands. Take care!",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "5f727a04-9a84-49da-9207-b481ee8f7a22",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:29.101Z"
+    },
+    {
+      "sent": "Thank you, I don't think I have any questions right now. I'm just trying to stay calm while waiting for the ambulance. Thanks again for your help and advice.",
+      "received": {
+        "reply": "You're very welcome. I'm relieved to hear that you're focusing on staying calm while waiting for the ambulance. You've taken the right steps by seeking help. \n\nIf you think of anything else or need support, feel free to reach out. Wishing you a smooth and swift transport to the hospital. Take care, and please keep communicating with the paramedics when they arrive.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "a19527d2-8096-4417-a4e8-1713a926aaef",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:38.147Z"
+    },
+    {
+      "sent": "Thank you for your care and guidance throughout this. I will definitely keep communicating with the paramedics when they arrive. I appreciate your support and help.",
+      "received": {
+        "reply": "It’s my pleasure to assist you. I’m really glad to hear that you're feeling supported and are prepared to communicate with the paramedics. Your health and safety are what matters most right now. \n\nPlease stay safe, and I wish you a smooth experience as you receive care. If there’s anything else you need, don’t hesitate to ask. Take care!",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "29f6daa7-e336-4e27-90f3-3e154169a89d",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:45.948Z"
+    },
+    {
+      "sent": "I think I've told you everything. Thank you for your help and advice.",
+      "received": {
+        "reply": "I've collected information about your symptoms: sharp chest pain on the left side rated 8/10, shortness of breath, and sweating. Before we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "befc00b4-8a76-43dd-99de-8db54360c814",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:12:54.495Z"
+    },
+    {
+      "sent": "No, that's all. Thank you for your help.",
+      "received": {
+        "reply": "Thank you for confirming. I've documented your symptoms and created the appropriate assessments. \n\nYour situation has been marked as an emergency due to the severity of your chest pain, shortness of breath, and sweating. It's crucial that you receive immediate medical attention, and I'm glad you're already taking steps to do so. \n\nIf you have any further questions in the future or need assistance, don't hesitate to reach out. Please take care of yourself, and I'm wishing you a swift recovery.",
+        "threadId": "thread_GcD79SFVN0igp94OsW45BvTs",
+        "patientId": "8d4912e2-ef10-40ca-8817-fde57962e16d",
+        "sessionId": "3fcf860d-e839-4260-9934-27cc7c25dcd8",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "emergency",
+            "probability": 90,
+            "condition": "chest pain",
+            "outcome": "potential cardiac event requiring immediate care"
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1747725200640-oiwol4v3k",
+            "status": "registered",
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "occurrenceDateTime": "2023-10-03T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                      "code": "chest-pain",
+                      "display": "Chest Pain"
+                    }
+                  ],
+                  "text": "Chest Pain"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-RiskAssessmentLikelihood",
+                      "code": "emergency",
+                      "display": "Emergency"
+                    }
+                  ],
+                  "text": "Emergency"
+                },
+                "rationale": "The presence of severe chest pain, shortness of breath, and sweating indicates a potential cardiac event, which can be life-threatening and requires immediate emergency care."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "http://example.org/riskassessment",
+                "value": "12345"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+                  "code": "triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage Risk Assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/1",
+              "display": "Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1747725200640-5tr69nucn",
+            "status": "preliminary",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "35100-8",
+                  "display": "Chest pain"
+                }
+              ],
+              "text": "Observation of Chest Pain"
+            },
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "identifier": [
+              {
+                "system": "http://example.org/observation",
+                "value": "12345"
+              }
+            ],
+            "effectiveDateTime": "2023-10-03T12:00:00Z",
+            "valueString": "Sharp chest pain on left side rated 8/10, shortness of breath, sweating."
+          }
+        }
+      },
+      "timestamp": "2025-05-20T07:13:20.642Z"
+    }
+  ],
+  "startTime": "2025-05-20T07:11:28.506Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1747725200640-oiwol4v3k",
+      "status": "registered",
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "occurrenceDateTime": "2023-10-03T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                "code": "chest-pain",
+                "display": "Chest Pain"
+              }
+            ],
+            "text": "Chest Pain"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RiskAssessmentLikelihood",
+                "code": "emergency",
+                "display": "Emergency"
+              }
+            ],
+            "text": "Emergency"
+          },
+          "rationale": "The presence of severe chest pain, shortness of breath, and sweating indicates a potential cardiac event, which can be life-threatening and requires immediate emergency care."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "http://example.org/riskassessment",
+          "value": "12345"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+            "code": "triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage Risk Assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/1",
+        "display": "Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1747725200640-5tr69nucn",
+      "status": "preliminary",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "35100-8",
+            "display": "Chest pain"
+          }
+        ],
+        "text": "Observation of Chest Pain"
+      },
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "identifier": [
+        {
+          "system": "http://example.org/observation",
+          "value": "12345"
+        }
+      ],
+      "effectiveDateTime": "2023-10-03T12:00:00Z",
+      "valueString": "Sharp chest pain on left side rated 8/10, shortness of breath, sweating."
+    }
+  ],
+  "threadId": "thread_GcD79SFVN0igp94OsW45BvTs"
+}

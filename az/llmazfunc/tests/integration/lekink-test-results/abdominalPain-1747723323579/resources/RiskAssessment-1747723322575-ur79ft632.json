@@ -1,0 +1,29 @@
+{
+  "resourceType": "RiskAssessment",
+  "id": "1747723322575-ur79ft632",
+  "status": "preliminary",
+  "subject": {
+    "reference": "Patient/001"
+  },
+  "occurrenceDateTime": "2023-10-04T12:34:00Z",
+  "prediction": [
+    {
+      "outcome": {
+        "text": "Appendicitis or ovarian issues"
+      },
+      "qualitativeRisk": {
+        "text": "moderate"
+      },
+      "rationale": "Symptoms of dull lower right abdominal pain, constant pain, mild nausea, and menstrual irregularity."
+    }
+  ],
+  "identifier": [
+    {
+      "system": "example",
+      "value": "risk-assessment-001"
+    }
+  ],
+  "code": {
+    "text": "Triage risk assessment"
+  }
+}

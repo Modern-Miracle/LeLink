@@ -1,0 +1,260 @@
+{
+  "patientId": "dc2b2eb9-1eb4-4631-b512-e065f272e44a",
+  "scenario": "Minor Cut",
+  "messages": [
+    {
+      "sent": "I'm a 20 year old male. Small cut on finger from kitchen knife, minimal bleeding",
+      "received": {
+        "reply": "Thank you for sharing that information. To better assess your situation, I’ll need to ask a few more questions.\n\n1. Is the cut deep, or does it appear shallow?\n2. Are you experiencing any pain in the area of the cut? If so, how would you rate your pain on a scale of 0 to 10?\n3. Have you noticed any signs of infection, such as redness, warmth, swelling, or pus around the cut?\n4. Are you up to date with your tetanus vaccinations, and was the knife you used clean?\n5. Have you experienced any other symptoms, such as dizziness or fainting?\n\nYour feedback will help me assess the risk level accordingly.",
+        "threadId": "thread_63sdP60Zb3qc5pz19iHzlScr",
+        "patientId": "dc2b2eb9-1eb4-4631-b512-e065f272e44a",
+        "sessionId": "4d930105-6321-4420-b582-39fca2ee0ed6",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:15:46.549Z"
+    },
+    {
+      "sent": "The cut doesn't seem deep, it's quite shallow. The pain is around 2 out of 10. I don't see any signs of infection like redness or swelling. The knife was clean, and yes, I'm up to date with my tetanus shots. No other symptoms like dizziness or fainting, just the cut.",
+      "received": {
+        "reply": "Thank you for providing that information. To summarize:\n\n- You have a shallow cut on your finger from a kitchen knife.\n- Pain level is around 2 out of 10.\n- There are no signs of infection (redness, swelling, or pus).\n- The knife was clean, and you are up to date with your tetanus vaccinations.\n- You have not experienced any other symptoms such as dizziness or fainting.\n\nBefore we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_63sdP60Zb3qc5pz19iHzlScr",
+        "patientId": "dc2b2eb9-1eb4-4631-b512-e065f272e44a",
+        "sessionId": "5baa7456-aa7c-4d71-ab31-3bda58a6141c",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T07:15:55.855Z"
+    },
+    {
+      "sent": "No, that's all the information I have right now. Thank you.",
+      "received": {
+        "reply": "Thank you for your patience. I have documented your case, and here's a summary of the assessment:\n\n- A FHIR-compliant RiskAssessment has been created, indicating a low risk for complications given the shallow cut with minimal bleeding and no signs of infection.\n- An Observation has been documented noting the details of the cut, pain level, and current state of the injury.\n\nIf you have any further questions or need assistance, feel free to reach out. Take care!",
+        "threadId": "thread_63sdP60Zb3qc5pz19iHzlScr",
+        "patientId": "dc2b2eb9-1eb4-4631-b512-e065f272e44a",
+        "sessionId": "4c10a333-145c-4d1d-a5d3-0b9fcfbe4f73",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "low",
+            "probability": 25,
+            "condition": "Minor Injury",
+            "outcome": "Low risk for complications from a superficial cut."
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1747725388560-2lje2ibs4",
+            "status": "final",
+            "subject": {
+              "reference": "Patient/20-year-old-male"
+            },
+            "occurrenceDateTime": "2023-10-03T00:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/condition",
+                      "code": "MinorInjury",
+                      "display": "Minor Injury"
+                    }
+                  ],
+                  "text": "Minor Injury"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                      "code": "low",
+                      "display": "Low"
+                    }
+                  ],
+                  "text": "Low"
+                },
+                "rationale": "The cut is shallow with minimal pain and no signs of infection or other concerning symptoms."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "urn:example",
+                "value": "risk-assessment-001"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+                  "code": "Triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage risk assessment for minor cut"
+            },
+            "performer": {
+              "reference": "Practitioner/triage-assistant",
+              "display": "Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1747725388560-klt98omjn",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "431855005",
+                  "display": "Skin lesion on finger"
+                }
+              ],
+              "text": "Observation of cut on finger"
+            },
+            "subject": {
+              "reference": "Patient/20-year-old-male"
+            },
+            "identifier": [
+              {
+                "system": "urn:example",
+                "value": "observation-001"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "1001002",
+                    "display": "Physical Exam"
+                  }
+                ],
+                "text": "Physical Exam"
+              }
+            ],
+            "effectiveDateTime": "2023-10-03T00:00:00Z",
+            "issued": "2023-10-03T00:00:00Z",
+            "performer": [
+              {
+                "reference": "Practitioner/triage-assistant",
+                "display": "Triage Assistant"
+              }
+            ],
+            "valueString": "Shallow cut on finger, minimal bleeding, pain level 2, no signs of infection."
+          }
+        }
+      },
+      "timestamp": "2025-05-20T07:16:28.563Z"
+    }
+  ],
+  "startTime": "2025-05-20T07:15:38.889Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1747725388560-2lje2ibs4",
+      "status": "final",
+      "subject": {
+        "reference": "Patient/20-year-old-male"
+      },
+      "occurrenceDateTime": "2023-10-03T00:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition",
+                "code": "MinorInjury",
+                "display": "Minor Injury"
+              }
+            ],
+            "text": "Minor Injury"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/risk-level",
+                "code": "low",
+                "display": "Low"
+              }
+            ],
+            "text": "Low"
+          },
+          "rationale": "The cut is shallow with minimal pain and no signs of infection or other concerning symptoms."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "urn:example",
+          "value": "risk-assessment-001"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+            "code": "Triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage risk assessment for minor cut"
+      },
+      "performer": {
+        "reference": "Practitioner/triage-assistant",
+        "display": "Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1747725388560-klt98omjn",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "431855005",
+            "display": "Skin lesion on finger"
+          }
+        ],
+        "text": "Observation of cut on finger"
+      },
+      "subject": {
+        "reference": "Patient/20-year-old-male"
+      },
+      "identifier": [
+        {
+          "system": "urn:example",
+          "value": "observation-001"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "1001002",
+              "display": "Physical Exam"
+            }
+          ],
+          "text": "Physical Exam"
+        }
+      ],
+      "effectiveDateTime": "2023-10-03T00:00:00Z",
+      "issued": "2023-10-03T00:00:00Z",
+      "performer": [
+        {
+          "reference": "Practitioner/triage-assistant",
+          "display": "Triage Assistant"
+        }
+      ],
+      "valueString": "Shallow cut on finger, minimal bleeding, pain level 2, no signs of infection."
+    }
+  ],
+  "threadId": "thread_63sdP60Zb3qc5pz19iHzlScr"
+}

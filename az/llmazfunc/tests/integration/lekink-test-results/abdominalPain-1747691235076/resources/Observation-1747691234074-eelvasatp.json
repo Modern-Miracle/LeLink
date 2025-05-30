@@ -1,0 +1,38 @@
+{
+  "resourceType": "Observation",
+  "id": "1747691234074-eelvasatp",
+  "status": "preliminary",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "75322-0",
+        "display": "Abdominal pain - right lower quadrant"
+      }
+    ],
+    "text": "Lower right abdominal pain"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "identifier": [
+    {
+      "system": "urn:uuid",
+      "value": "67890"
+    }
+  ],
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "symptom",
+          "display": "Symptom"
+        }
+      ],
+      "text": "Symptoms"
+    }
+  ],
+  "effectiveDateTime": "2023-10-06T00:00:00Z",
+  "valueString": "Constant dull ache in lower right abdomen, mild nausea, increased tiredness, no changes in bowel habits, no unusual vaginal discharge or bleeding, no noticeable urinary issues."
+}

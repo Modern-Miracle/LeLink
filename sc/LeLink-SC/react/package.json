@@ -1,0 +1,81 @@
+{
+  "name": "@lelink/react",
+  "version": "1.0.0",
+  "description": "React integration for LeLink smart contract",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "react",
+    "ethereum",
+    "smart-contract",
+    "lelink",
+    "web3",
+    "wagmi",
+    "viem",
+    "tanstack-query"
+  ],
+  "author": "LeLink Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "@tanstack/react-query": ">=4.0.0",
+    "wagmi": ">=1.0.0",
+    "viem": ">=1.0.0",
+    "zod": ">=3.20.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    },
+    "./config": {
+      "types": "./config.d.ts",
+      "import": "./config.js",
+      "require": "./config.cjs"
+    },
+    "./hooks": {
+      "types": "./hooks/index.d.ts",
+      "import": "./hooks/index.js",
+      "require": "./hooks/index.cjs"
+    },
+    "./actions": {
+      "types": "./actions/index.d.ts",
+      "import": "./actions/index.js",
+      "require": "./actions/index.cjs"
+    }
+  },
+  "files": [
+    "*.ts",
+    "*.d.ts",
+    "actions/",
+    "hooks/",
+    "abi/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/lelink.git",
+    "directory": "react"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/lelink/issues"
+  },
+  "homepage": "https://github.com/your-org/lelink#readme"
+}

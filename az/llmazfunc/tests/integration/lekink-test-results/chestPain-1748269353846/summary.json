@@ -1,0 +1,21 @@
+{
+  "scenario": "chestPain",
+  "timestamp": "2025-05-26T14:22:33.847Z",
+  "patientId": "067144ac-ed10-414e-9b1a-5edda2092dd0",
+  "threadId": "thread_EYRj3AflKNVHvwFJQUDgySil",
+  "messageCount": 1,
+  "resourcesGenerated": [
+    {
+      "type": "RiskAssessment",
+      "id": "1748269353790-bl0crlmqs",
+      "status": "registered",
+      "filePath": "resources/RiskAssessment-1748269353790-bl0crlmqs.json"
+    },
+    {
+      "type": "Observation",
+      "id": "1748269353790-4sbazordp",
+      "status": "registered",
+      "filePath": "resources/Observation-1748269353790-4sbazordp.json"
+    }
+  ]
+}

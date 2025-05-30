@@ -1,0 +1,44 @@
+{
+  "resourceType": "Observation",
+  "id": "1747691164335-a06kezg0u",
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "431855005",
+        "display": "Headache"
+      }
+    ],
+    "text": "Headache"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "identifier": [
+    {
+      "system": "urn:uuid",
+      "value": "67890"
+    }
+  ],
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "symptom",
+          "display": "Symptom"
+        }
+      ],
+      "text": "Symptoms"
+    }
+  ],
+  "effectiveDateTime": "2023-10-06T12:00:00Z",
+  "issued": "2023-10-06T12:00:00Z",
+  "valueString": "Throbbing headache on right side, severity 7/10, severe sensitivity to light, mild nausea, history of migraines.",
+  "note": [
+    {
+      "text": "Patient reports increased stress and inadequate hydration as potential triggers."
+    }
+  ]
+}

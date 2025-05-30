@@ -1,0 +1,45 @@
+{
+  "resourceType": "Observation",
+  "id": "1748270233995-zy5bk9cv4",
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "44249-1",
+        "display": "Wound assessment"
+      }
+    ],
+    "text": "Wound assessment"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "identifier": [
+    {
+      "system": "urn:uuid",
+      "value": "67890"
+    }
+  ],
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "social-history",
+          "display": "Social History"
+        }
+      ],
+      "text": "Social History"
+    }
+  ],
+  "effectiveDateTime": "2023-10-05T12:00:00Z",
+  "issued": "2023-10-05T12:00:00Z",
+  "performer": [
+    {
+      "reference": "Practitioner/1",
+      "display": "LeLink Triage Assistant"
+    }
+  ],
+  "valueString": "1 inch long cut on finger, minimal bleeding, pain level 2/10, cleaned with running water, no signs of infection, tetanus vaccination up to date."
+}

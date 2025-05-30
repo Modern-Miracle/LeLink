@@ -1,0 +1,21 @@
+{
+  "scenario": "headache",
+  "timestamp": "2025-05-19T21:46:05.339Z",
+  "patientId": "c0cc165e-b753-452a-9285-fd435625ce4c",
+  "threadId": "thread_6EhflOop3CZL4fV6Sv8NPrwe",
+  "messageCount": 4,
+  "resourcesGenerated": [
+    {
+      "type": "RiskAssessment",
+      "id": "1747691164335-xpceb07dz",
+      "status": "final",
+      "filePath": "resources/RiskAssessment-1747691164335-xpceb07dz.json"
+    },
+    {
+      "type": "Observation",
+      "id": "1747691164335-a06kezg0u",
+      "status": "final",
+      "filePath": "resources/Observation-1747691164335-a06kezg0u.json"
+    }
+  ]
+}

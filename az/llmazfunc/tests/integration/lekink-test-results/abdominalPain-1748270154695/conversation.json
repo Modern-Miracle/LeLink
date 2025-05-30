@@ -1,0 +1,282 @@
+{
+  "patientId": "c6079209-7388-4cee-82d6-3677dab94a08",
+  "scenario": "Abdominal Pain",
+  "messages": [
+    {
+      "sent": "I'm a 35 year old female. Lower right abdominal pain, no fever, mild nausea",
+      "received": {
+        "reply": "Thank you for sharing your symptoms. Let's gather some more information to assess your situation properly.\n\n1. **Pain Characteristics**: Can you describe the pain? Is it sharp, dull, cramping, or constant? Does it come and go?\n2. **Duration**: How long have you been experiencing this pain?\n3. **Location**: Is the pain localized to the lower right abdomen, or does it radiate to other areas?\n4. **Nausea**: How severe is your nausea? Have you vomited?\n5. **Bowel Movements**: Have you noticed any changes in your bowel habits, such as diarrhea or constipation?\n6. **Menstrual History**: Are you currently menstruating, or is there any chance you could be pregnant?\n7. **Other Symptoms**: Have you experienced any other symptoms, such as changes in appetite, weight loss, or urinary symptoms?\n\nPlease provide as much detail as you can.",
+        "threadId": "thread_ekhLDCQIbKK2jbN3URu2OJOy",
+        "patientId": "c6079209-7388-4cee-82d6-3677dab94a08",
+        "sessionId": "ba7dc89d-a0d7-41ee-8571-315926b63ce6",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:34:41.003Z"
+    },
+    {
+      "sent": "The pain is sharp and it comes and goes. It's been happening since yesterday. The pain is just in my lower right abdomen, it doesn't spread to other areas. My nausea is mild, I haven't vomited but I feel a little queasy. No changes in bowel movements, everything seems normal there. I just finished my period last week and I'm not pregnant. I haven't noticed any changes in my appetite or weight, and no urinary symptoms.",
+      "received": {
+        "reply": "Thank you for providing that detailed information. Based on your symptoms, I will assess the risk level.\n\n1. **Pain Characteristics**: Sharp, intermittent pain in the lower right abdomen.\n2. **Duration**: Symptoms have been present since yesterday.\n3. **Nausea**: Mild, with no vomiting.\n4. **Bowel Movements**: Normal.\n5. **Menstrual History**: Recently finished your period, and no possibility of pregnancy.\n6. **Other Symptoms**: No changes in appetite, weight, or urinary symptoms.\n\nGiven the sharp pain in the lower right abdomen, it is important to consider potential conditions such as appendicitis or ovarian issues, especially since you are experiencing nausea. However, the absence of fever and other severe symptoms may indicate a lower risk.\n\nI will proceed with the following risk assessment:\n- **Risk Level**: Medium (due to the sharp pain and nausea, but no severe symptoms).\n- **Rationale**: Sharp lower right abdominal pain with mild nausea warrants further evaluation, but the absence of fever and other alarming symptoms reduces the immediate risk.\n\nNow, I will generate the necessary FHIR resources. Before we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_ekhLDCQIbKK2jbN3URu2OJOy",
+        "patientId": "c6079209-7388-4cee-82d6-3677dab94a08",
+        "sessionId": "8650859e-72e5-4d33-a07f-026a0e2634f0",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:34:56.093Z"
+    },
+    {
+      "sent": "I think you've covered everything. I'm just really worried about this pain. It's unlike anything I've felt before.",
+      "received": {
+        "reply": "I understand your concern, and it's completely normal to feel worried about new and unusual pain. It's important to monitor your symptoms closely. If the pain worsens, if you develop a fever, or if you experience any other concerning symptoms, please seek medical attention promptly.\n\nNow, I will proceed to create the FHIR resources for your assessment. Thank you for your patience.\n\n### Creating FHIR Resources\n\n1. **Risk Assessment**: Medium risk due to sharp lower right abdominal pain and mild nausea.\n2. **Observation**: Documenting the key findings from our conversation.\n\nLet's proceed with the documentation.",
+        "threadId": "thread_ekhLDCQIbKK2jbN3URu2OJOy",
+        "patientId": "c6079209-7388-4cee-82d6-3677dab94a08",
+        "sessionId": "78cc221b-ce9d-495f-8437-72ce08035319",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-26T14:35:10.434Z"
+    },
+    {
+      "sent": "Thank you for understanding. I'll be sure to keep an eye on my symptoms and seek immediate help if anything changes or worsens. I appreciate your help.",
+      "received": {
+        "reply": "I have successfully documented your assessment. Here’s a summary of what we have done:\n\n1. **Risk Assessment**: Documented as medium risk due to sharp lower right abdominal pain and mild nausea.\n2. **Observation**: Recorded the key findings from our conversation, including the nature of your pain and associated symptoms.\n\nIf you notice any changes or worsening of your symptoms, please do not hesitate to seek medical attention. Thank you for reaching out, and take care of yourself! If you have any more questions or concerns in the future, feel free to ask.",
+        "threadId": "thread_ekhLDCQIbKK2jbN3URu2OJOy",
+        "patientId": "c6079209-7388-4cee-82d6-3677dab94a08",
+        "sessionId": "0927e467-958b-440a-9042-4bec067447e6",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "moderate",
+            "probability": 50,
+            "condition": "Abdominal pain",
+            "outcome": "Medium risk due to sharp lower right abdominal pain and mild nausea."
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1748270145447-m97wos2zv",
+            "status": "preliminary",
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "occurrenceDateTime": "2023-10-05T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                      "code": "medium",
+                      "display": "Medium Risk"
+                    }
+                  ],
+                  "text": "Medium Risk"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                      "code": "medium",
+                      "display": "Medium"
+                    }
+                  ],
+                  "text": "Medium"
+                },
+                "rationale": "Sharp lower right abdominal pain with mild nausea warrants further evaluation, but the absence of fever and other alarming symptoms reduces the immediate risk."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "RA-12345"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+                  "code": "triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage risk assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/67890",
+              "display": "LeLink Triage Assistant"
+            }
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1748270145447-gbvltmjvm",
+            "status": "preliminary",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "431855005",
+                  "display": "Abdominal pain"
+                }
+              ],
+              "text": "Abdominal pain"
+            },
+            "subject": {
+              "reference": "Patient/12345"
+            },
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "OBS-12345"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "symptom",
+                    "display": "Symptom"
+                  }
+                ],
+                "text": "Symptom"
+              }
+            ],
+            "effectiveDateTime": "2023-10-05T12:00:00Z",
+            "valueString": "Sharp, intermittent pain in the lower right abdomen since yesterday, with mild nausea. No changes in bowel movements or urinary symptoms. Recently finished period, not pregnant."
+          }
+        },
+        "blockchain": {
+          "success": true,
+          "results": [
+            {
+              "resourceId": "RiskAssessment-1748270145447-m97wos2zv",
+              "dataHash": "5eb85f013bdf3ece0ca7fbd5816c142b71f506d018dab8213b5d9b9fd16b6b59",
+              "transactionHash": "0xdfbc1d0716a2952312b83d4f45f2cf603ab2c2fa6d3795067ae15f2a83056c69",
+              "blockNumber": 6,
+              "gasUsed": "105726"
+            },
+            {
+              "resourceId": "Observation-1748270145447-gbvltmjvm",
+              "dataHash": "dbfe0a49eab67955f2c0f81eea9030109d491ef5f8e5b3a0322e5b0185b98bdb",
+              "transactionHash": "0x568deb3c7233bed67773efe5d4546d3eb7c683aa0ce8dec52801c55a6123bcfa",
+              "blockNumber": 7,
+              "gasUsed": "105690"
+            }
+          ],
+          "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          "network": "localhost"
+        }
+      },
+      "timestamp": "2025-05-26T14:35:53.693Z"
+    }
+  ],
+  "startTime": "2025-05-26T14:34:11.553Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1748270145447-m97wos2zv",
+      "status": "preliminary",
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "occurrenceDateTime": "2023-10-05T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                "code": "medium",
+                "display": "Medium Risk"
+              }
+            ],
+            "text": "Medium Risk"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                "code": "medium",
+                "display": "Medium"
+              }
+            ],
+            "text": "Medium"
+          },
+          "rationale": "Sharp lower right abdominal pain with mild nausea warrants further evaluation, but the absence of fever and other alarming symptoms reduces the immediate risk."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "http://hospital.smarthealthit.org",
+          "value": "RA-12345"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+            "code": "triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage risk assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/67890",
+        "display": "LeLink Triage Assistant"
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1748270145447-gbvltmjvm",
+      "status": "preliminary",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "431855005",
+            "display": "Abdominal pain"
+          }
+        ],
+        "text": "Abdominal pain"
+      },
+      "subject": {
+        "reference": "Patient/12345"
+      },
+      "identifier": [
+        {
+          "system": "http://hospital.smarthealthit.org",
+          "value": "OBS-12345"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "symptom",
+              "display": "Symptom"
+            }
+          ],
+          "text": "Symptom"
+        }
+      ],
+      "effectiveDateTime": "2023-10-05T12:00:00Z",
+      "valueString": "Sharp, intermittent pain in the lower right abdomen since yesterday, with mild nausea. No changes in bowel movements or urinary symptoms. Recently finished period, not pregnant."
+    }
+  ],
+  "threadId": "thread_ekhLDCQIbKK2jbN3URu2OJOy"
+}

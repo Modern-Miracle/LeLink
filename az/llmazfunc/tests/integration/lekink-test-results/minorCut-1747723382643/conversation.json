@@ -1,0 +1,278 @@
+{
+  "patientId": "a9e6ea24-53bd-40a8-8ec8-8ca7902a3ef1",
+  "scenario": "Minor Cut",
+  "messages": [
+    {
+      "sent": "I'm a 20 year old male. Small cut on finger from kitchen knife, minimal bleeding",
+      "received": {
+        "reply": "Thank you for sharing that information. I’d like to ask a few more questions to assess your situation more thoroughly.\n\n1. Is the cut deep or superficial?\n2. How long ago did you injure your finger?\n3. Have you cleaned the wound? If so, how did you do it?\n4. Are you experiencing any pain, swelling, or signs of infection (such as redness or warmth around the wound)?\n5. Have you had any tetanus vaccinations in the last 5 years?\n   \nPlease respond with whatever details you can provide.",
+        "threadId": "thread_eIkwmsZ1skErZXCZLJvLr6rW",
+        "patientId": "a9e6ea24-53bd-40a8-8ec8-8ca7902a3ef1",
+        "sessionId": "cd432d79-f213-4fcd-bacd-2497f661e4c9",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T06:42:13.599Z"
+    },
+    {
+      "sent": "1. The cut is not too deep, it's just a small one.\n2. I got it just a few minutes ago while I was preparing dinner.\n3. No, I haven't cleaned it yet, I just wrapped it with a paper towel.\n4. There's a bit of pain, it's like a 2 out of 10. No swelling or any signs of infection so far.\n5. About the tetanus shot, I think I had one when I was a kid but not in the last 5 years.",
+      "received": {
+        "reply": "Thank you for providing those details. Based on what you've shared, here’s a summary of your situation:\n\n- You are a 20-year-old male with a small, not too deep cut on your finger from a kitchen knife that occurred a few minutes ago.\n- The wound has minimal bleeding, and you have wrapped it with a paper towel.\n- You haven’t cleaned the wound yet.\n- You are experiencing mild pain (2 out of 10), but there are no signs of swelling or infection.\n- You haven’t had a tetanus shot in the last 5 years.\n\nBefore we conclude, is there anything else you'd like to add?",
+        "threadId": "thread_eIkwmsZ1skErZXCZLJvLr6rW",
+        "patientId": "a9e6ea24-53bd-40a8-8ec8-8ca7902a3ef1",
+        "sessionId": "94e68a6c-f63f-461a-ba82-b08541a27fc1",
+        "completionStatus": {
+          "isComplete": false,
+          "status": "completed",
+          "risk": null
+        }
+      },
+      "timestamp": "2025-05-20T06:42:27.585Z"
+    },
+    {
+      "sent": "No, I think that's everything. Just wondering what I should do next to take care of this cut?",
+      "received": {
+        "reply": "Thank you for your patience. I've collected the necessary information and completed the assessment. The following was documented:\n\n- **Risk Assessment**: A preliminary assessment was made, determining the risk level as low due to the nature of the minor cut. The advice includes proper wound care and considering a tetanus shot.\n  \n- **Observation**: Observations were recorded indicating that you have a small cut with minimal bleeding and mild pain.\n\nWith that, your intake conversation is now complete. If you have any further questions or concerns, feel free to reach out. Take care!",
+        "threadId": "thread_eIkwmsZ1skErZXCZLJvLr6rW",
+        "patientId": "a9e6ea24-53bd-40a8-8ec8-8ca7902a3ef1",
+        "sessionId": "0301d645-efaa-473b-8dff-243b1ab1c818",
+        "completionStatus": {
+          "isComplete": true,
+          "status": "completed",
+          "risk": {
+            "level": "low",
+            "probability": 25,
+            "condition": "minor cut",
+            "outcome": "no significant complications expected with proper care"
+          }
+        },
+        "resources": {
+          "RiskAssessment": {
+            "resourceType": "RiskAssessment",
+            "id": "1747723381638-qxfzhmjyi",
+            "status": "preliminary",
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "occurrenceDateTime": "2023-10-04T12:00:00Z",
+            "prediction": [
+              {
+                "outcome": {
+                  "coding": [
+                    {
+                      "system": "http://hl7.org/fhir/risk-assessment-outcome",
+                      "code": "minor-injury",
+                      "display": "Minor Injury"
+                    }
+                  ],
+                  "text": "Minor Injury"
+                },
+                "qualitativeRisk": {
+                  "coding": [
+                    {
+                      "system": "http://hl7.org/fhir/risk-level",
+                      "code": "low",
+                      "display": "Low Risk"
+                    }
+                  ],
+                  "text": "Low Risk"
+                },
+                "rationale": "The patient has a small cut on the finger with minimal bleeding and is not showing signs of infection."
+              }
+            ],
+            "identifier": [
+              {
+                "system": "urn:uuid",
+                "value": "12345"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/risk-assessment-category",
+                  "code": "triage",
+                  "display": "Triage risk assessment"
+                }
+              ],
+              "text": "Triage risk assessment"
+            },
+            "performer": {
+              "reference": "Practitioner/1",
+              "display": "LeLink Triage Assistant"
+            },
+            "note": [
+              {
+                "text": "Recommendation includes proper wound care and consideration for tetanus vaccination if not up to date."
+              }
+            ]
+          },
+          "Observation": {
+            "resourceType": "Observation",
+            "id": "1747723381638-8m9kohe5h",
+            "status": "preliminary",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "30999-2",
+                  "display": "Wound observation"
+                }
+              ],
+              "text": "Observation of Wound"
+            },
+            "subject": {
+              "reference": "Patient/1"
+            },
+            "identifier": [
+              {
+                "system": "urn:uuid",
+                "value": "54321"
+              }
+            ],
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/observation-category",
+                    "code": "clinical",
+                    "display": "Clinical"
+                  }
+                ],
+                "text": "Clinical"
+              }
+            ],
+            "effectiveDateTime": "2023-10-04T12:00:00Z",
+            "performer": [
+              {
+                "reference": "Practitioner/1",
+                "display": "LeLink Triage Assistant"
+              }
+            ],
+            "valueString": "20-year-old male with a small cut on the finger. Minimal bleeding reported, mild pain (2/10). No visible signs of infection. Wound not cleaned yet.",
+            "note": [
+              {
+                "text": "Next steps include cleaning the wound, applying antiseptic, and dressing the wound. Consider tetanus shot if last one is not recent."
+              }
+            ]
+          }
+        }
+      },
+      "timestamp": "2025-05-20T06:43:01.641Z"
+    }
+  ],
+  "startTime": "2025-05-20T06:42:05.581Z",
+  "resources": [
+    {
+      "resourceType": "RiskAssessment",
+      "id": "1747723381638-qxfzhmjyi",
+      "status": "preliminary",
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "occurrenceDateTime": "2023-10-04T12:00:00Z",
+      "prediction": [
+        {
+          "outcome": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/risk-assessment-outcome",
+                "code": "minor-injury",
+                "display": "Minor Injury"
+              }
+            ],
+            "text": "Minor Injury"
+          },
+          "qualitativeRisk": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/risk-level",
+                "code": "low",
+                "display": "Low Risk"
+              }
+            ],
+            "text": "Low Risk"
+          },
+          "rationale": "The patient has a small cut on the finger with minimal bleeding and is not showing signs of infection."
+        }
+      ],
+      "identifier": [
+        {
+          "system": "urn:uuid",
+          "value": "12345"
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/risk-assessment-category",
+            "code": "triage",
+            "display": "Triage risk assessment"
+          }
+        ],
+        "text": "Triage risk assessment"
+      },
+      "performer": {
+        "reference": "Practitioner/1",
+        "display": "LeLink Triage Assistant"
+      },
+      "note": [
+        {
+          "text": "Recommendation includes proper wound care and consideration for tetanus vaccination if not up to date."
+        }
+      ]
+    },
+    {
+      "resourceType": "Observation",
+      "id": "1747723381638-8m9kohe5h",
+      "status": "preliminary",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "30999-2",
+            "display": "Wound observation"
+          }
+        ],
+        "text": "Observation of Wound"
+      },
+      "subject": {
+        "reference": "Patient/1"
+      },
+      "identifier": [
+        {
+          "system": "urn:uuid",
+          "value": "54321"
+        }
+      ],
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/observation-category",
+              "code": "clinical",
+              "display": "Clinical"
+            }
+          ],
+          "text": "Clinical"
+        }
+      ],
+      "effectiveDateTime": "2023-10-04T12:00:00Z",
+      "performer": [
+        {
+          "reference": "Practitioner/1",
+          "display": "LeLink Triage Assistant"
+        }
+      ],
+      "valueString": "20-year-old male with a small cut on the finger. Minimal bleeding reported, mild pain (2/10). No visible signs of infection. Wound not cleaned yet.",
+      "note": [
+        {
+          "text": "Next steps include cleaning the wound, applying antiseptic, and dressing the wound. Consider tetanus shot if last one is not recent."
+        }
+      ]
+    }
+  ],
+  "threadId": "thread_eIkwmsZ1skErZXCZLJvLr6rW"
+}

@@ -1,0 +1,54 @@
+{
+  "resourceType": "RiskAssessment",
+  "id": "1748269740571-pr0fgvv0d",
+  "status": "preliminary",
+  "subject": {
+    "reference": "Patient/12345"
+  },
+  "occurrenceDateTime": "2023-10-05T12:00:00Z",
+  "prediction": [
+    {
+      "outcome": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "medium",
+            "display": "Medium"
+          }
+        ],
+        "text": "Medium"
+      },
+      "qualitativeRisk": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "medium",
+            "display": "Medium"
+          }
+        ],
+        "text": "Medium"
+      },
+      "rationale": "The patient presents with a throbbing headache rated 7/10, sensitivity to light, and mild nausea, indicating a medium risk for a migraine or other headache disorder."
+    }
+  ],
+  "identifier": [
+    {
+      "system": "hospital",
+      "value": "RA-12345"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/risk-assessment-type",
+        "code": "triage",
+        "display": "Triage risk assessment"
+      }
+    ],
+    "text": "Triage risk assessment"
+  },
+  "performer": {
+    "reference": "Practitioner/67890",
+    "display": "LeLink Triage Assistant"
+  }
+}
