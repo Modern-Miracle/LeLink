@@ -238,7 +238,7 @@ export default function TriagePage() {
       </div>
 
       <div className="flex-1 bg-gray-50 dark:bg-gray-900 relative overflow-hidden mb-1">
-        <div className="max-w-4xl mx-auto h-full flex flex-col pb-[12px] mt-2 ">
+        <div className="max-w-4xl mx-auto h-full flex flex-col pb-[50px] mt-2 ">
           <ScrollArea className="flex-1 border shadow-md">
             <div className="p-3 sm:p-6 space-y-3 sm:space-y-4">
               <AnimatePresence initial={false}>
