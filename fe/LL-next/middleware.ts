@@ -1,20 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { auth } from "./lib/auth";
+import { auth } from './lib/auth';
 
 import {
   AuthenticatedNextRequest,
   isPublicRoute,
   redirectToSignIn,
   redirectToWelcome,
-} from "./lib/types/middleware.types";
+} from './lib/types/middleware.types';
 
 export const config = {
   // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
 
 export default auth((req: AuthenticatedNextRequest) => {
+  return NextResponse.next();
   const { nextUrl } = req;
   const isAuthenticated = !!req.auth?.user;
   const isValidPublicRoute = isPublicRoute(nextUrl.pathname);
