@@ -13,6 +13,7 @@ import {
   FileText,
   MoreHorizontal,
 } from "lucide-react";
+import { useOffline } from "@/hooks/use-offline";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -48,15 +49,31 @@ import { calculateAge, getFullName, getInitials } from "@/lib/utils";
 export default function PatientsPage() {
   const [showNewPatient, setShowNewPatient] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
+  const isOffline = useOffline();
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("/api/patients"); // Your custom API wrapper
-      const data = await res.json();
-      setPatients(data);
+    // Try to load cached patients from localStorage first
+    const cachedPatients = localStorage.getItem('cached-patients');
+    if (cachedPatients) {
+      setPatients(JSON.parse(cachedPatients));
     }
-    fetchData();
-  }, []);
+
+    // Then fetch fresh data if online
+    if (!isOffline) {
+      async function fetchData() {
+        try {
+          const res = await fetch("/api/patients");
+          const data = await res.json();
+          setPatients(data);
+          // Cache the data for offline use
+          localStorage.setItem('cached-patients', JSON.stringify(data));
+        } catch (error) {
+          console.error('Failed to fetch patients:', error);
+        }
+      }
+      fetchData();
+    }
+  }, [isOffline]);
   return (
     <div className="flex min-h-screen flex-col">
       <DashboardHeader />
@@ -66,6 +83,7 @@ export default function PatientsPage() {
             <h1 className="text-3xl font-bold text-teal-700">Patients</h1>
             <p className="text-muted-foreground">
               Manage and view patient information
+              {isOffline && " (Offline - Showing cached data)"}
             </p>
           </div>
           <Button

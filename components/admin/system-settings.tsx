@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,10 +9,51 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Settings, Shield, Bell, Database, Clock, Save } from "lucide-react"
+import { Settings, Shield, Bell, Database, Clock, Save, Wallet, CheckCircle, AlertCircle } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { blockchainService } from "@/lib/services/blockchain"
 
 export default function SystemSettings() {
   const [isLoading, setIsLoading] = useState(false)
+  const [blockchainConnected, setBlockchainConnected] = useState(false)
+  const [walletAddress, setWalletAddress] = useState<string | null>(null)
+  const [contractStatus, setContractStatus] = useState<any>(null)
+  const [blockchainError, setBlockchainError] = useState<string | null>(null)
+
+  useEffect(() => {
+    checkBlockchainConnection()
+  }, [])
+
+  const checkBlockchainConnection = async () => {
+    try {
+      const address = await blockchainService.getConnectedAddress()
+      setBlockchainConnected(!!address)
+      setWalletAddress(address)
+      
+      if (address) {
+        const status = await blockchainService.getContractStatus()
+        setContractStatus(status)
+      }
+    } catch (error) {
+      console.error('Failed to check blockchain connection:', error)
+    }
+  }
+
+  const connectBlockchainWallet = async () => {
+    setBlockchainError(null)
+    try {
+      const address = await blockchainService.connectWallet()
+      if (address) {
+        setBlockchainConnected(true)
+        setWalletAddress(address)
+        const status = await blockchainService.getContractStatus()
+        setContractStatus(status)
+      }
+    } catch (error: any) {
+      setBlockchainError(error.message || 'Failed to connect wallet')
+    }
+  }
 
   const handleSave = () => {
     setIsLoading(true)
@@ -468,33 +509,122 @@ export default function SystemSettings() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Blockchain Integration</h3>
 
-              <div className="space-y-2">
-                <Label htmlFor="blockchain-provider">Blockchain Provider</Label>
-                <Select defaultValue="ethereum">
-                  <SelectTrigger id="blockchain-provider">
-                    <SelectValue placeholder="Select provider" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ethereum">Ethereum</SelectItem>
-                    <SelectItem value="hyperledger">Hyperledger Fabric</SelectItem>
-                    <SelectItem value="corda">R3 Corda</SelectItem>
-                    <SelectItem value="polygon">Polygon</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {blockchainError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{blockchainError}</AlertDescription>
+                </Alert>
+              )}
 
-              <div className="space-y-2">
-                <Label htmlFor="blockchain-endpoint">Blockchain Endpoint</Label>
-                <Input id="blockchain-endpoint" defaultValue="https://mainnet.infura.io/v3/your-api-key" />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="blockchain-enabled">Enable Blockchain</Label>
-                  <p className="text-sm text-muted-foreground">Use blockchain for secure patient data storage</p>
+              {!blockchainConnected ? (
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg bg-muted/50">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Connect your wallet to enable blockchain audit logging for healthcare data
+                    </p>
+                    <Button
+                      onClick={connectBlockchainWallet}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Wallet className="mr-2 h-4 w-4" />
+                      Connect Wallet
+                    </Button>
+                  </div>
                 </div>
-                <Switch id="blockchain-enabled" defaultChecked />
-              </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg bg-green-50 dark:bg-green-950/20">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <span className="font-medium">Wallet Connected</span>
+                      </div>
+                      <Badge variant="secondary" className="font-mono text-xs">
+                        {walletAddress && `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {contractStatus && (
+                    <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                      <div>
+                        <Label className="text-muted-foreground">Contract Address</Label>
+                        <p className="font-mono text-xs mt-1">
+                          {contractStatus.address.slice(0, 10)}...{contractStatus.address.slice(-8)}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground">Total Records</Label>
+                        <p className="font-medium mt-1">{contractStatus.recordCount}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground">Contract Owner</Label>
+                        <p className="font-mono text-xs mt-1">
+                          {contractStatus.owner.slice(0, 10)}...{contractStatus.owner.slice(-8)}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground">Status</Label>
+                        <Badge 
+                          variant={contractStatus.paused ? "destructive" : "default"}
+                          className="mt-1"
+                        >
+                          {contractStatus.paused ? "Paused" : "Active"}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="blockchain-endpoint">Blockchain RPC Endpoint</Label>
+                    <Input 
+                      id="blockchain-endpoint" 
+                      defaultValue={process.env.NEXT_PUBLIC_BLOCKCHAIN_RPC_URL || "http://localhost:8545"}
+                      disabled={blockchainConnected}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contract-address">LeLink Contract Address</Label>
+                    <Input 
+                      id="contract-address" 
+                      defaultValue={process.env.NEXT_PUBLIC_LELINK_CONTRACT_ADDRESS || ""}
+                      disabled={blockchainConnected}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="blockchain-enabled">Enable Blockchain Logging</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically log all FHIR resources to blockchain
+                      </p>
+                    </div>
+                    <Switch id="blockchain-enabled" defaultChecked />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="verify-integrity">Verify Data Integrity</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Check blockchain hashes against stored data
+                      </p>
+                    </div>
+                    <Switch id="verify-integrity" defaultChecked />
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={checkBlockchainConnection}
+                    className="w-full"
+                  >
+                    <Shield className="mr-2 h-4 w-4" />
+                    Refresh Blockchain Status
+                  </Button>
+                </div>
+              )}
 
               <h3 className="text-lg font-medium mt-6">AI Integration</h3>
 

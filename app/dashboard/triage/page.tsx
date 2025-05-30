@@ -1,21 +1,22 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Loader2, Send } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ArrowRight, Loader2, Send, AlertCircle } from "lucide-react"
 import DashboardHeader from "@/components/dashboard-header"
-import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+import { ResourceList } from "@/components/fhir/ResourceList"
+import { AnyFhirResource } from "@/lib/types/fhir"
 
 type Message = {
   id: string
   role: "user" | "assistant"
   content: string
+  resources?: AnyFhirResource[] // FHIR resources from backend
 }
 
 export default function TriagePage() {
@@ -29,9 +30,20 @@ export default function TriagePage() {
   ])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [threadId, setThreadId] = useState<string | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   const handleSend = async () => {
     if (input.trim() === "") return
+
+    // Clear any previous errors
+    setError(null)
 
     // Add user message
     const userMessage: Message = {
@@ -45,31 +57,96 @@ export default function TriagePage() {
     setIsLoading(true)
 
     try {
-      // Create the prompt from conversation history
-      const conversationHistory = messages
-        .map((msg) => `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`)
-        .join("\n")
-
-      const prompt = `${conversationHistory}\nUser: ${input}\nAssistant:`
-
-      // Generate response using AI SDK
-      const { text } = await generateText({
-        model: openai("gpt-4o"),
-        prompt,
-        system:
-          "You are a medical triage assistant for LeLink, a healthcare platform for refugees. Your job is to assess symptoms, ask relevant follow-up questions, and recommend appropriate care. Be compassionate, thorough, and focused on healthcare. Do not diagnose but help determine urgency and next steps.",
+      // Call backend API
+      const response = await fetch("/api/triage/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: input,
+          threadId: threadId,
+          // patientId can be added here when available from user context
+        }),
       })
 
-      // Add assistant response
-      const assistantMessage: Message = {
-        id: Date.now().toString(),
-        role: "assistant",
-        content: text,
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to get response")
       }
 
-      setMessages((prev) => [...prev, assistantMessage])
+      // Check if response is streaming
+      const contentType = response.headers.get("content-type")
+      
+      if (contentType?.includes("text/event-stream")) {
+        // Handle streaming response
+        const reader = response.body?.getReader()
+        const decoder = new TextDecoder()
+        let assistantContent = ""
+        let resources: any[] = []
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+
+            const chunk = decoder.decode(value)
+            const lines = chunk.split("\n")
+
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                const data = line.slice(6)
+                if (data === "[DONE]") continue
+
+                try {
+                  const parsed = JSON.parse(data)
+                  
+                  // Handle different event types
+                  if (parsed.type === "content") {
+                    assistantContent += parsed.content
+                  } else if (parsed.type === "threadId") {
+                    setThreadId(parsed.threadId)
+                  } else if (parsed.type === "resources") {
+                    resources = parsed.resources
+                  }
+                } catch (e) {
+                  // Handle non-JSON data
+                  assistantContent += data
+                }
+              }
+            }
+          }
+        }
+
+        // Add assistant response
+        const assistantMessage: Message = {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: assistantContent || "I received your message. Let me help you with that.",
+          resources: resources.length > 0 ? resources : undefined,
+        }
+
+        setMessages((prev) => [...prev, assistantMessage])
+      } else {
+        // Handle JSON response
+        const data = await response.json()
+        
+        const assistantMessage: Message = {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: data.message || data.content || "I received your message. Let me help you with that.",
+          resources: data.resources,
+        }
+
+        if (data.threadId) {
+          setThreadId(data.threadId)
+        }
+
+        setMessages((prev) => [...prev, assistantMessage])
+      }
     } catch (error) {
       console.error("Error generating response:", error)
+      setError(error instanceof Error ? error.message : "An unexpected error occurred")
 
       // Add error message
       const errorMessage: Message = {
@@ -102,28 +179,48 @@ export default function TriagePage() {
               Back to Dashboard
             </Button>
           </div>
+
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
           <Card className="h-[calc(100vh-12rem)]">
             <CardHeader>
               <CardTitle>Triage Conversation</CardTitle>
-              <CardDescription>Describe your symptoms and our AI assistant will help assess your needs</CardDescription>
+              <CardDescription>
+                Describe your symptoms and our AI assistant will help assess your needs
+                {threadId && <span className="ml-2 text-xs text-muted-foreground">(Session ID: {threadId})</span>}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 overflow-y-auto p-4">
+            <CardContent className="flex-1 overflow-y-auto p-4" style={{ maxHeight: "calc(100vh - 20rem)" }}>
               <div className="space-y-4">
                 {messages.map((message) => (
-                  <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                    <div
-                      className={`flex max-w-[80%] items-start gap-3 rounded-lg px-4 py-2 ${
-                        message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                      }`}
-                    >
-                      {message.role === "assistant" && (
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src="/placeholder.svg?height=32&width=32" alt="AI" />
-                          <AvatarFallback>AI</AvatarFallback>
-                        </Avatar>
-                      )}
-                      <div className="text-sm">{message.content}</div>
+                  <div key={message.id}>
+                    <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                      <div
+                        className={`flex max-w-[80%] items-start gap-3 rounded-lg px-4 py-2 ${
+                          message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+                        }`}
+                      >
+                        {message.role === "assistant" && (
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src="/placeholder.svg?height=32&width=32" alt="AI" />
+                            <AvatarFallback>AI</AvatarFallback>
+                          </Avatar>
+                        )}
+                        <div className="text-sm">{message.content}</div>
+                      </div>
                     </div>
+                    
+                    {/* Display FHIR resources if available */}
+                    {message.resources && message.resources.length > 0 && (
+                      <div className="mt-4 ml-12">
+                        <ResourceList resources={message.resources} />
+                      </div>
+                    )}
                   </div>
                 ))}
                 {isLoading && (
@@ -137,6 +234,7 @@ export default function TriagePage() {
                     </div>
                   </div>
                 )}
+                <div ref={messagesEndRef} />
               </div>
             </CardContent>
             <CardFooter className="border-t p-4">
@@ -171,4 +269,3 @@ export default function TriagePage() {
     </div>
   )
 }
-
