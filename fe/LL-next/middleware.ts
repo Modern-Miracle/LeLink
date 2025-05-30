@@ -15,7 +15,6 @@ export const config = {
 };
 
 export default auth((req: AuthenticatedNextRequest) => {
-  return NextResponse.next();
   const { nextUrl } = req;
   const isAuthenticated = !!req.auth?.user;
   const isValidPublicRoute = isPublicRoute(nextUrl.pathname);
