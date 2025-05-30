@@ -58,3 +58,23 @@ export async function getAllAppointments() {
     return [];
   }
 }
+
+export async function getAllObservations() {
+  try {
+    const result = await useFHIRApi("GET", `/Observation`);
+    return result.entry?.map((e: any) => e.resource) || [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
+
+export async function getAllRiskAssessments() {
+  try {
+    const result = await useFHIRApi("GET", `/RiskAssessment`);
+    return result.entry?.map((e: any) => e.resource) || [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
