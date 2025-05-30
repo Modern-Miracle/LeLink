@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import DashboardHeader from "@/components/dashboard-header";
+import DashboardHeaderWithModal from "@/components/dashboard-header-with-modal";
 
 export default function AppointmentsPage() {
   const [currentMonth, setCurrentMonth] = useState("May 2025");
@@ -42,7 +42,7 @@ export default function AppointmentsPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <DashboardHeader />
+      <DashboardHeaderWithModal />
 
       <main className="flex-1 p-4 sm:p-6">
         <div className="mb-8 flex items-center justify-between">

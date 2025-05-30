@@ -4,6 +4,11 @@
 .env.production
 .env.development
 
+# Claude AI files
+CLAUDE.md
+.claude/
+.claude
+
 # Logs
 logs/
 *.log

@@ -37,7 +37,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import DashboardHeader from "@/components/dashboard-header";
+import DashboardHeaderWithModal from "@/components/dashboard-header-with-modal";
 import { RecordItem } from "@/lib/types/record";
 
 export default function RecordsPage() {
@@ -48,10 +48,25 @@ export default function RecordsPage() {
 
   useEffect(() => {
     async function load() {
-      const res = await fetch("/api/records");
-      const data = await res.json();
-      setRecords(data);
-      setFiltered(data);
+      try {
+        const res = await fetch("/api/records");
+        const data = await res.json();
+        
+        // Check if data is an array or if it's an error response
+        if (Array.isArray(data)) {
+          setRecords(data);
+          setFiltered(data);
+        } else {
+          // Handle error response
+          console.error("Error loading records:", data.error);
+          setRecords([]);
+          setFiltered([]);
+        }
+      } catch (error) {
+        console.error("Failed to load records:", error);
+        setRecords([]);
+        setFiltered([]);
+      }
     }
     load();
   }, []);
@@ -63,7 +78,7 @@ export default function RecordsPage() {
   }, [filter, records]);
   return (
     <div className="flex min-h-screen flex-col">
-      <DashboardHeader />
+      <DashboardHeaderWithModal />
 
       <main className="flex-1 p-4 sm:p-6">
         <div className="mb-8 flex items-center justify-between">
@@ -134,7 +149,12 @@ export default function RecordsPage() {
               </CardHeader>
               <CardContent>
                 <div className="rounded-md border">
-                  {filtered.map((rec) => (
+                  {filtered.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground">
+                      No medical records found.
+                    </div>
+                  ) : (
+                    filtered.map((rec) => (
                     <div
                       key={rec.resource.id}
                       className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b p-4"
@@ -181,7 +201,7 @@ export default function RecordsPage() {
                         </Button>
                       </div>
                     </div>
-                  ))}
+                  )))}
                 </div>
               </CardContent>
             </Card>

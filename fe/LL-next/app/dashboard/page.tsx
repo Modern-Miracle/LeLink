@@ -1,28 +1,33 @@
-import Link from "next/link"
+"use client"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, MessageSquare, Shield, AlertTriangle, CheckCircle } from "lucide-react"
-import DashboardHeader from "@/components/dashboard-header"
+import DashboardHeaderWithModal from "@/components/dashboard-header-with-modal"
 import MedicalHistoryList from "@/components/medical-history-list"
 import { Progress } from "@/components/ui/progress"
+import TriageModal from "@/components/triage-modal"
 
 export default function DashboardPage() {
+  const [triageOpen, setTriageOpen] = useState(false)
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-white to-teal-50/30">
-      <DashboardHeader />
+      <DashboardHeaderWithModal triageOpen={triageOpen} onTriageOpenChange={setTriageOpen} />
       <main className="flex-1 space-y-8 p-6 md:p-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-teal-800 to-teal-600">Dashboard</h1>
             <p className="text-muted-foreground mt-1">Welcome back, John Doe</p>
           </div>
-          <Link href="/dashboard/triage">
-            <Button className="rounded-full px-6 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 shadow-md hover:shadow-lg transition-all duration-300 h-11">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Start Triage Chat
-            </Button>
-          </Link>
+          <Button 
+            onClick={() => setTriageOpen(true)}
+            className="rounded-full px-6 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 shadow-md hover:shadow-lg transition-all duration-300 h-11"
+          >
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Start Triage Chat
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -288,6 +293,8 @@ export default function DashboardPage() {
           </TabsContent>
         </Tabs>
       </main>
+      
+      <TriageModal open={triageOpen} onOpenChange={setTriageOpen} />
     </div>
   )
 }

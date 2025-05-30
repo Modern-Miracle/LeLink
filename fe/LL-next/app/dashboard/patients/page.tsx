@@ -42,7 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DashboardHeader from "@/components/dashboard-header";
+import DashboardHeaderWithModal from "@/components/dashboard-header-with-modal";
 import { Patient } from "@/lib/types/patient";
 import { calculateAge, getFullName, getInitials } from "@/lib/utils";
 
@@ -76,7 +76,7 @@ export default function PatientsPage() {
   }, [isOffline]);
   return (
     <div className="flex min-h-screen flex-col">
-      <DashboardHeader />
+      <DashboardHeaderWithModal />
       <main className="flex-1 p-4 sm:p-6">
         <div className="mb-8 flex items-center justify-between">
           <div>
