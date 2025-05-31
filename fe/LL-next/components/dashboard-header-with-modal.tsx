@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,43 +10,38 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Shield, Bell, User, Settings, LogOut } from "lucide-react";
-import {
-  APPOINTMENTS_PATH,
-  DASHBOARD_PATH,
-  RECORDS_PATH,
-  PATIENTS_PATH,
-} from "@/lib/paths";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { signOut } from "next-auth/react";
-import TriageModal from "@/components/triage-modal";
+} from '@/components/ui/dropdown-menu';
+import { Shield, Bell, User, Settings, LogOut } from 'lucide-react';
+import { APPOINTMENTS_PATH, DASHBOARD_PATH, RECORDS_PATH, PATIENTS_PATH } from '@/lib/paths';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { signOut } from 'next-auth/react';
+import TriageModal from '@/components/triage-modal';
 
 interface DashboardHeaderWithModalProps {
   triageOpen?: boolean;
   onTriageOpenChange?: (open: boolean) => void;
 }
 
-export default function DashboardHeaderWithModal({ 
-  triageOpen: externalTriageOpen, 
-  onTriageOpenChange 
+export default function DashboardHeaderWithModal({
+  triageOpen: externalTriageOpen,
+  onTriageOpenChange,
 }: DashboardHeaderWithModalProps) {
   const pathname = usePathname();
   const [internalTriageOpen, setInternalTriageOpen] = useState(false);
-  
+
   // Use external state if provided, otherwise use internal state
   const triageOpen = externalTriageOpen !== undefined ? externalTriageOpen : internalTriageOpen;
   const setTriageOpen = onTriageOpenChange || setInternalTriageOpen;
-  
+
   const isActive = (href: string) => pathname === href;
 
   const navLinks = [
-    { label: "Dashboard", href: DASHBOARD_PATH },
-    { label: "Triage", href: null, onClick: () => setTriageOpen(true) },
-    { label: "Appointments", href: APPOINTMENTS_PATH },
-    { label: "Records", href: RECORDS_PATH },
-    { label: "Patients", href: PATIENTS_PATH },
+    { label: 'Dashboard', href: DASHBOARD_PATH },
+    { label: 'Triage', href: null, onClick: () => setTriageOpen(true) },
+    { label: 'Appointments', href: APPOINTMENTS_PATH },
+    { label: 'Records', href: RECORDS_PATH },
+    { label: 'Patients', href: PATIENTS_PATH },
   ];
 
   return (
@@ -60,16 +55,14 @@ export default function DashboardHeaderWithModal({
             </Link>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map(({ label, href, onClick }) => (
+            {navLinks.map(({ label, href, onClick }) =>
               href ? (
                 <Link
                   key={label}
                   href={href}
                   className={cn(
-                    "text-sm font-medium transition-colors",
-                    isActive(href)
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                    'text-sm font-medium transition-colors',
+                    isActive(href) ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
                   {label}
@@ -83,7 +76,7 @@ export default function DashboardHeaderWithModal({
                   {label}
                 </button>
               )
-            ))}
+            )}
           </nav>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" aria-label="Notifications">
@@ -116,11 +109,9 @@ export default function DashboardHeaderWithModal({
           </div>
         </div>
       </header>
-      
+
       {/* Only render modal if using internal state */}
-      {externalTriageOpen === undefined && (
-        <TriageModal open={triageOpen} onOpenChange={setTriageOpen} />
-      )}
+      {externalTriageOpen === undefined && <TriageModal open={triageOpen} onOpenChange={setTriageOpen} />}
     </>
   );
 }

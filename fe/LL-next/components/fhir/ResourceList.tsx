@@ -31,17 +31,13 @@ function GenericResourceCard({ resource, className }: { resource: AnyFhirResourc
         <CardDescription>
           FHIR Resource
           {resource.meta?.lastUpdated && (
-            <span className="ml-2 text-xs">
-              Updated: {new Date(resource.meta.lastUpdated).toLocaleDateString()}
-            </span>
+            <span className="ml-2 text-xs">Updated: {new Date(resource.meta.lastUpdated).toLocaleDateString()}</span>
           )}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="text-sm text-muted-foreground">
-          <pre className="bg-muted p-2 rounded-md overflow-x-auto">
-            {JSON.stringify(resource, null, 2)}
-          </pre>
+          <pre className="bg-muted p-2 rounded-md overflow-x-auto">{JSON.stringify(resource, null, 2)}</pre>
         </div>
       </CardContent>
     </Card>
@@ -72,27 +68,21 @@ function ConditionCard({ condition, className }: { condition: Condition; classNa
         {condition.severity && (
           <div>
             <span className="text-sm font-medium text-muted-foreground">Severity: </span>
-            <span className="text-sm">
-              {condition.severity.text || condition.severity.coding?.[0]?.display}
-            </span>
+            <span className="text-sm">{condition.severity.text || condition.severity.coding?.[0]?.display}</span>
           </div>
         )}
-        
+
         {condition.onsetDateTime && (
           <div>
             <span className="text-sm font-medium text-muted-foreground">Onset: </span>
-            <span className="text-sm">
-              {new Date(condition.onsetDateTime).toLocaleDateString()}
-            </span>
+            <span className="text-sm">{new Date(condition.onsetDateTime).toLocaleDateString()}</span>
           </div>
         )}
 
         {condition.note && condition.note.length > 0 && (
           <div>
             <div className="text-sm font-medium text-muted-foreground mb-1">Notes</div>
-            <p className="text-sm text-muted-foreground">
-              {condition.note[0].text}
-            </p>
+            <p className="text-sm text-muted-foreground">{condition.note[0].text}</p>
           </div>
         )}
 
@@ -111,26 +101,22 @@ function ConditionCard({ condition, className }: { condition: Condition; classNa
 
 export function ResourceList({ resources, className }: ResourceListProps) {
   if (!resources || resources.length === 0) {
-    return (
-      <div className={`text-center text-muted-foreground py-8 ${className}`}>
-        No FHIR resources available
-      </div>
-    );
+    return <div className={`text-center text-muted-foreground py-8 ${className}`}>No FHIR resources available</div>;
   }
 
   const renderResource = (resource: AnyFhirResource, index: number) => {
     const key = resource.id || `resource-${index}`;
-    
+
     switch (resource.resourceType) {
       case 'Observation':
         return <ObservationCard key={key} observation={resource as Observation} />;
-      
+
       case 'RiskAssessment':
         return <RiskAssessmentCard key={key} riskAssessment={resource as RiskAssessment} />;
-      
+
       case 'Condition':
         return <ConditionCard key={key} condition={resource as Condition} />;
-      
+
       default:
         return <GenericResourceCard key={key} resource={resource} />;
     }
