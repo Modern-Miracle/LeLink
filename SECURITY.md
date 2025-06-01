@@ -21,16 +21,6 @@ LeLink is designed to serve **people in crisis situations and vulnerable populat
 - **System Resilience**: Designed to remain secure even under high-stress conditions
 - **Multi-Factor Authentication**: Robust access controls for sensitive medical systems
 
-## 🆘 **Supported Versions**
-
-Given the critical nature of crisis healthcare, we provide security support for:
-
-| Version | Supported          | Crisis Support Level |
-| ------- | ------------------ | -------------------- |
-| Latest  | ✅ **Full Support**  | 24/7 Critical Issues |
-| v1.x    | ✅ **Security Only** | Business Hours       |
-| < 1.0   | ❌ **No Support**    | None                 |
-
 ## 🚨 **Reporting Security Vulnerabilities**
 
 ### **🔴 CRITICAL: Crisis-Affecting Vulnerabilities**
