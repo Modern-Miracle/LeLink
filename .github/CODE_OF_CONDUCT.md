@@ -56,8 +56,8 @@ This Code of Conduct applies within all project spaces, and also applies when an
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at:
 
 ### **Primary Contacts**
-- **Hora e.V.**: [conduct@hora-ev.eu](mailto:conduct@hora-ev.eu)
-- **Modern Miracle**: [conduct@modern-miracle.com](mailto:conduct@modern-miracle.com)
+- **Hora e.V.**: [info@hora-ev.eu](mailto:info@hora-ev.eu)
+- **Modern Miracle**: [helo@modern-miracle.com](mailto:hello@modern-miracle.com)
 
 ### **Crisis-Related Issues**
 For urgent matters affecting crisis healthcare functionality:
