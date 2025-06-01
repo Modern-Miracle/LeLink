@@ -1,25 +1,36 @@
-# LeLink - Privacy-Preserving Healthcare Data Management System
+# LeLink - Privacy-Preserving Healthcare Data Management for Crisis Situations
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![NGI Sargasso](https://img.shields.io/badge/NGI-Sargasso-blue.svg)](https://ngisargasso.eu/)
+[![EU Funding](https://img.shields.io/badge/EU-Horizon%20Europe-yellow.svg)](https://ec.europa.eu/info/research-and-innovation/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe_en)
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.28-purple.svg)](https://soliditylang.org/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-black.svg)](https://openai.com/)
+[![FHIR](https://img.shields.io/badge/FHIR-R4-red.svg)](https://hl7.org/fhir/)
+[![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-blue.svg)](https://ethereum.org/)
 
-**LeLink** is an open-source, full-stack healthcare application that combines AI-powered medical triage, FHIR-compliant data storage, and blockchain audit trails to create a secure, transparent, and interoperable healthcare data management platform.
+**LeLink** is a privacy-preserving healthcare data management system specifically designed for **people in crisis situations**. This open-source platform combines AI-powered medical triage, FHIR-compliant resource generation, blockchain audit trails, and secure data storage to provide immediate, transparent, and trustworthy healthcare assistance when it's needed most.
+
+> **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
+
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative healthcare solutions for vulnerable populations.
 
 > **📋 License**: This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.en.html). This ensures that any modifications or network-based services using this code must also be open source.
 
-## 🌟 **Key Features**
+## 🌟 **Key Features for Crisis Healthcare**
 
-- 🏥 **AI-Powered Medical Triage** - Intelligent symptom assessment using OpenAI's GPT models
-- 📊 **FHIR Compliance** - Standards-compliant healthcare resource generation and storage
-- 🔗 **Blockchain Audit Trails** - Immutable logging of data access for transparency and security
-- 💾 **Flexible Storage** - Support for both local development (Azurite) and production (Azure FHIR Service)
-- 🌐 **Modern Web Interface** - Next.js 15 PWA with offline support and real-time updates
-- 🔒 **Enterprise Authentication** - Azure AD/Entra ID integration with multi-provider support
-- 📱 **Progressive Web App** - Install and use offline on any device
-- 🏗️ **Microservices Architecture** - Scalable, containerized services ready for cloud deployment
+- 🆘 **Crisis-Focused Design** - Optimized for emergency and vulnerable population healthcare needs
+- 🏥 **AI-Powered Medical Triage** - Intelligent symptom assessment using OpenAI's GPT models for immediate guidance
+- 📊 **FHIR Compliance** - Standards-compliant healthcare resource generation and secure storage
+- 🔗 **Blockchain Audit Trails** - Immutable logging of data access ensuring transparency and data integrity
+- 💾 **Secure FHIR Storage** - Dual-mode support: Azurite (development) and Azure FHIR Service (production)
+- 🌐 **Accessible Web Interface** - Next.js 15 PWA with offline support for areas with limited connectivity
+- 🔒 **Privacy-First Authentication** - Azure AD/Entra ID integration protecting sensitive patient data
+- 📱 **Mobile-Ready PWA** - Install and use offline on any device, crucial for crisis response
+- 🏗️ **Resilient Architecture** - Microservices design ensuring system availability during high-demand periods
+- 🌍 **Multi-Language Support** - Designed for international crisis response scenarios
 
 ## 🏗️ **System Architecture**
 
@@ -62,8 +73,8 @@ LeLink consists of four integrated components:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/lelink-full-app.git
-   cd lelink-full-app
+   git clone https://github.com/Modern-Miracle/LeLink.git
+   cd LeLink
    ```
 
 2. **Run the interactive setup wizard:**
@@ -359,5 +370,24 @@ We chose AGPL v3 to ensure that improvements to healthcare technology remain ope
 
 **See the [LICENSE](LICENSE) file for the complete license text.**
 
+## 🏛️ **Organizations**
+
+### [Hora e.V.](https://hora-ev.eu)
+Hora e.V. is a German non-profit organization dedicated to developing innovative solutions for social challenges, with a particular focus on supporting vulnerable populations through technology and community engagement.
+
+### [Modern Miracle](https://modern-miracle.com)
+Modern Miracle specializes in cutting-edge healthcare technology solutions, bringing together expertise in AI, blockchain, and digital health to create transformative applications for crisis situations.
+
+## 🇪🇺 **EU Funding & Acknowledgments**
+
+This project has received funding from the European Union's Horizon Europe research and innovation programme under the [NGI Sargasso](https://ngisargasso.eu/) initiative. NGI Sargasso fosters transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies, supporting innovation in:
+
+- 🔒 **Decentralized Technologies** - Blockchain solutions for healthcare data integrity
+- 🛡️ **Trust & Data Sovereignty** - Privacy-preserving healthcare systems
+- 🌐 **Internet Innovation** - Next-generation healthcare data management
+- 🤝 **Transatlantic Collaboration** - EU-US-Canada technology partnerships
+
 ### Commercial Licensing
-For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact the maintainers for alternative licensing arrangements.
+For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact:
+- **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
+- **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)

@@ -1,30 +1,36 @@
 # 📖 LeLink Project Overview
 
+> **🇪🇺 EU Funded Project**: LeLink is supported by the [NGI Sargasso](https://ngisargasso.eu/) programme under the European Union's Horizon Europe research and innovation programme, fostering innovation in decentralized healthcare technologies through transatlantic collaboration.
+
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on crisis healthcare solutions.
+
 ## 🎯 What is LeLink?
 
-LeLink is a **blockchain-based healthcare data tracking system** that provides secure, transparent, and immutable logging of healthcare data transactions. Think of it as a "digital ledger" that tracks who accessed, shared, or modified healthcare data, without storing the actual sensitive data on the blockchain.
+LeLink is a **blockchain-based crisis healthcare audit system** specifically designed for **people in vulnerable situations**. It provides secure, transparent, and immutable logging of medical data access during emergencies and crisis scenarios. Think of it as a "digital trust ledger" that tracks healthcare interactions while protecting patient privacy - no actual medical data is ever stored on the blockchain.
 
-## 🏥 The Healthcare Data Challenge
+## 🆘 The Crisis Healthcare Challenge
 
 ### Current Problems
 
-Healthcare organizations face several critical challenges with data management:
+During crisis situations, healthcare providers face unique challenges when treating vulnerable populations:
 
-1. **📋 Audit Trails**: Difficult to track who accessed patient data and when
-2. **🔒 Data Breaches**: Centralized systems create single points of failure
-3. **🤝 Data Sharing**: Complex, slow, and error-prone inter-organizational sharing
-4. **📊 Compliance**: HIPAA, GDPR, and other regulations require detailed access logs
-5. **🔍 Transparency**: Patients have limited visibility into how their data is used
+1. **📋 Trust Building**: Vulnerable populations need transparency about data usage
+2. **🔒 Privacy Protection**: Crisis situations require enhanced data protection
+3. **🤝 Multi-Agency Coordination**: Emergency response involves multiple organizations
+4. **📊 Regulatory Compliance**: HIPAA, GDPR compliance during emergency situations
+5. **🔍 Transparency**: Patients in crisis need assurance their data is protected
+6. **⚡ Rapid Response**: Time-critical situations need immediate, verifiable data access
 
-### How LeLink Solves These Problems
+### How LeLink Addresses Crisis Healthcare Needs
 
-LeLink uses blockchain technology to create an **immutable, transparent, and decentralized** audit trail for healthcare data operations:
+LeLink uses blockchain technology to create an **immutable, transparent, and decentralized** audit trail specifically for crisis healthcare scenarios:
 
-- ✅ **Complete Audit Trail**: Every action is permanently recorded
-- ✅ **Decentralized Security**: No single point of failure
-- ✅ **Real-time Transparency**: Instant visibility into data usage
-- ✅ **Regulatory Compliance**: Built-in HIPAA/GDPR compliance features
-- ✅ **Patient Empowerment**: Patients can see how their data is used
+- ✅ **Crisis Transparency**: Every medical interaction is permanently recorded for vulnerable populations
+- ✅ **Resilient Infrastructure**: No single point of failure during emergencies
+- ✅ **Real-time Trust Building**: Instant visibility builds confidence with crisis patients
+- ✅ **Emergency Compliance**: Maintains HIPAA/GDPR compliance even in crisis situations
+- ✅ **Vulnerable Population Protection**: Enhanced privacy safeguards for at-risk individuals
+- ✅ **Multi-Agency Coordination**: Secure audit trails for emergency response teams
 
 ## 🔧 How LeLink Works
 

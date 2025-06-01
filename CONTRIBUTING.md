@@ -1,6 +1,10 @@
 # Contributing to LeLink
 
-Thank you for your interest in contributing to LeLink! This guide will help you get started with contributing to this open-source healthcare data management system.
+Thank you for your interest in contributing to LeLink! This guide will help you get started with contributing to this open-source healthcare data management system designed for **people in crisis situations**.
+
+> **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
+
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative healthcare solutions for vulnerable populations.
 
 ## 🌟 **How to Contribute**
 
@@ -19,11 +23,11 @@ Thank you for your interest in contributing to LeLink! This guide will help you 
 ```bash
 # Fork the repository on GitHub
 # Then clone your fork
-git clone https://github.com/your-username/lelink-full-app.git
-cd lelink-full-app
+git clone https://github.com/your-username/LeLink.git
+cd LeLink
 
 # Add the original repository as upstream
-git remote add upstream https://github.com/original-owner/lelink-full-app.git
+git remote add upstream https://github.com/Modern-Miracle/LeLink.git
 ```
 
 ### **2. Set Up Development Environment**
@@ -201,8 +205,10 @@ cd sc/LeLink-SC && npm run test:coverage
 - Never commit real API keys or secrets
 - Use environment variables for all sensitive data
 - Follow OWASP guidelines for web application security
-- Ensure FHIR data handling complies with healthcare regulations
+- Ensure FHIR data handling complies with healthcare regulations (HIPAA, GDPR)
 - Test smart contracts thoroughly for common vulnerabilities
+- **Crisis Context**: Prioritize data protection for vulnerable populations
+- **Privacy-First**: Implement zero-knowledge patterns where possible
 
 ## 📚 **Documentation Standards**
 
@@ -281,6 +287,9 @@ We follow [Semantic Versioning](https://semver.org/):
 
 - **GitHub Issues**: For bugs and feature requests
 - **GitHub Discussions**: For questions and community discussion
-- **Email**: [maintainers@yourproject.com] for general inquiries
+- **Organizations**: 
+  - **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
+  - **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- **NGI Sargasso**: Contact via [NGI Sargasso](https://ngisargasso.eu/contact/) for programme-related inquiries
 
 Thank you for contributing to LeLink! Together, we can build better healthcare technology. 🏥✨

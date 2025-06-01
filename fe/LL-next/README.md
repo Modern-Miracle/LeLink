@@ -1,17 +1,28 @@
-# LeLink Frontend - Next.js Healthcare Application
+# LeLink Frontend - Crisis Healthcare PWA
 
-A modern, progressive web application built with Next.js 15, providing a comprehensive interface for healthcare data management, medical triage, and blockchain audit trail visualization.
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![NGI Sargasso](https://img.shields.io/badge/NGI-Sargasso-blue.svg)](https://ngisargasso.eu/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
+[![PWA](https://img.shields.io/badge/PWA-Ready-green.svg)](https://web.dev/progressive-web-apps/)
 
-## 🌟 **Features**
+A privacy-preserving progressive web application built with Next.js 15, specifically designed for **crisis healthcare situations**. Provides immediate access to AI-powered medical triage, FHIR-compliant data management, and blockchain audit trails for vulnerable populations.
 
-- 🏥 **Medical Triage Interface** - Interactive symptom assessment with AI-powered assistance
-- 👥 **Patient Management** - Comprehensive patient data viewing and management
-- 📊 **Dashboard Analytics** - Overview of appointments, records, and system status
-- 🔗 **Blockchain Integration** - Real-time audit trail visualization
-- 📱 **Progressive Web App** - Installable app with offline capabilities
-- 🔒 **Enterprise Authentication** - Azure AD/Entra ID and multi-provider support
-- 🎨 **Modern UI** - Built with shadcn/ui components and Tailwind CSS
-- ♿ **Accessibility** - WCAG compliant interface design
+> **🇪🇺 EU Funded Project**: This project is supported by the [NGI Sargasso](https://ngisargasso.eu/) programme under the European Union's Horizon Europe research and innovation programme, fostering transatlantic collaboration in Next Generation Internet technologies.
+
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com).
+
+## 🌟 **Crisis-Focused Features**
+
+- 🆘 **Crisis Triage Interface** - Immediate AI-powered medical assessment for emergency situations
+- 👥 **Vulnerable Population Support** - Specialized patient management for crisis contexts
+- 📊 **Real-Time Dashboard** - Critical health metrics and system status monitoring
+- 🔗 **Transparency Through Blockchain** - Immutable audit trails building trust with patients
+- 📱 **Offline-First PWA** - Works without internet connection, crucial for crisis areas
+- 🔒 **Privacy-First Authentication** - Secure access protecting sensitive crisis data
+- 🎨 **Accessible UI** - WCAG compliant design for users with disabilities
+- 🌍 **Multi-Language Ready** - Internationalization support for global crisis response
+- 📶 **Low-Bandwidth Optimized** - Efficient data usage for areas with poor connectivity
 
 ## 🛠️ **Technology Stack**
 
@@ -149,11 +160,13 @@ export const authConfig = {
 
 ## 📱 **Progressive Web App**
 
-### **PWA Features**
-- **Offline Support** - Cached pages and data
-- **Installable** - Add to home screen on mobile/desktop
-- **Background Sync** - Queue actions when offline
-- **Push Notifications** - Medical alerts and reminders
+### **Crisis-Ready PWA Features**
+- **Offline-First Architecture** - Full functionality without internet connectivity
+- **Emergency Installation** - Quick add to home screen for immediate access
+- **Background Sync** - Queue critical medical data when connectivity is restored
+- **Crisis Notifications** - Urgent medical alerts and emergency updates
+- **Data Persistence** - Local storage of essential patient information
+- **Bandwidth Optimization** - Minimal data usage for poor network conditions
 
 ### **Installation**
 Users can install the app directly from their browser:
@@ -336,6 +349,16 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 This ensures that any modifications or network-based services using this code must also be open source. See the [LICENSE](../../LICENSE) file for complete details.
+
+## 🏛️ **Organizations**
+
+**Developed by:**
+- **[Hora e.V.](https://hora-ev.eu)** - German non-profit focused on social innovation
+- **[Modern Miracle](https://modern-miracle.com)** - Healthcare technology specialists
+
+**Contact:**
+- Hora e.V.: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
+- Modern Miracle: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
 
 ---
 
