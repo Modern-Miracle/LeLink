@@ -67,8 +67,8 @@ async function checkAuth(): Promise<{ success: boolean; userId?: string; error?:
   try {
     console.log('🔐 [FHIR Storage Auth] Checking authentication...')
     
-    // Handle build-time calls gracefully
-    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development') {
+    // Handle build-time calls gracefully (only during actual build, not runtime)
+    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development' && process.env.CI === 'true') {
       console.log('🏗️ [FHIR Storage Auth] Build time - skipping auth check')
       return {
         success: false,
@@ -106,7 +106,7 @@ async function checkAuth(): Promise<{ success: boolean; userId?: string; error?:
     console.error('💥 [FHIR Storage Auth] Authentication error:', error)
     
     // If this is a build-time error, return graceful failure
-    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development') {
+    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development' && process.env.CI === 'true') {
       return {
         success: false,
         error: 'Build time - authentication not available',

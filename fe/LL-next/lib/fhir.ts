@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAzureCliAccessToken } from './azure-cli-auth';
 
-const baseUrl = process.env.FHIR_BASE_URL!;
+const baseUrl = process.env.NEXT_PUBLIC_FHIR_BASE_URL!;
 
 export async function useFHIRApi<T = any>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',

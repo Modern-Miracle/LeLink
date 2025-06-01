@@ -270,7 +270,7 @@ export interface FHIRStorageConfig {
 }
 
 export const DEFAULT_CONFIG: FHIRStorageConfig = {
-  baseURL: process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071/api/fhir-storage',
+  baseURL: (process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071') + '/api/fhir-storage',
   timeout: 30000, // Increase timeout to 30 seconds
   retries: 3, // Increase retries
   retryDelay: 2000, // Increase retry delay

@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
 async function checkUserHasResources(userId: string, userEmail?: string): Promise<boolean> {
   try {
     // First check by user ID
-    const userIdResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/patients/${userId}/resources`);
+    const userIdResponse = await fetch(`${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/patients/${userId}/resources`);
     if (userIdResponse.ok) {
       const data = await userIdResponse.json();
       if (data.success && data.data?.resources?.length > 0) {
@@ -144,7 +144,7 @@ async function checkUserHasResources(userId: string, userEmail?: string): Promis
 
     // Then check by email if provided
     if (userEmail) {
-      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/users/by-email/${encodeURIComponent(userEmail)}`);
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/users/by-email/${encodeURIComponent(userEmail)}`);
       if (emailResponse.ok) {
         const emailData = await emailResponse.json();
         if (emailData.success) {
@@ -282,7 +282,7 @@ async function createPatientResource(
   console.log('[FHIR_PATIENT_DEBUG] Patient resource:', JSON.stringify(patientResource, null, 2));
   
   // Call FHIR storage API with proper identifiers
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/patients`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/patients`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -371,7 +371,7 @@ async function createPractitionerResource(
   console.log('[FHIR_PRACTITIONER_DEBUG] Practitioner resource:', JSON.stringify(practitionerResource, null, 2));
   
   // Call FHIR storage API with proper identifiers
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/practitioners`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/practitioners`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
