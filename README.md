@@ -1,24 +1,128 @@
-# LeLink Backend
+# LeLink - Privacy-Preserving Healthcare Data Management for Crisis Situations
 
-A privacy-preserving healthcare data management system that combines:
-- 🏥 **AI-powered medical triage** using OpenAI
-- 📊 **FHIR-compliant resource generation**
-- 🔗 **Blockchain audit trails** for data integrity
-- 💾 **Secure FHIR storage** (Azurite/Azure FHIR Service)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![NGI Sargasso](https://img.shields.io/badge/NGI-Sargasso-blue.svg)](https://ngisargasso.eu/)
+[![EU Funding](https://img.shields.io/badge/EU-Horizon%20Europe-yellow.svg)](https://ec.europa.eu/info/research-and-innovation/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe_en)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28-purple.svg)](https://soliditylang.org/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-black.svg)](https://openai.com/)
+[![FHIR](https://img.shields.io/badge/FHIR-R4-red.svg)](https://hl7.org/fhir/)
+[![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-blue.svg)](https://ethereum.org/)
 
-## 🚀 Quick Start
+**LeLink** is a privacy-preserving healthcare data management system specifically designed for **people in crisis situations**. This open-source platform combines AI-powered medical triage, FHIR-compliant resource generation, blockchain audit trails, and secure data storage to provide immediate, transparent, and trustworthy healthcare assistance when it's needed most.
 
-### Prerequisites
-- Node.js v20 (required for Azure Functions)
-- Docker (optional, for running Azurite separately)
+> **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
 
-### Initial Setup
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative healthcare solutions for vulnerable populations.
+
+> **📋 License**: This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.en.html). This ensures that any modifications or network-based services using this code must also be open source.
+
+## 🌟 **Key Features for Crisis Healthcare**
+
+- 🆘 **Crisis-Focused Design** - Optimized for emergency and vulnerable population healthcare needs
+- 🏥 **AI-Powered Medical Triage** - Intelligent symptom assessment using OpenAI's GPT models for immediate guidance
+- 📊 **FHIR Compliance** - Standards-compliant healthcare resource generation and secure storage
+- 🔗 **Blockchain Audit Trails** - Immutable logging of data access ensuring transparency and data integrity
+- 💾 **Secure FHIR Storage** - Dual-mode support: Azurite (development) and Azure FHIR Service (production)
+- 🌐 **Accessible Web Interface** - Next.js 15 PWA with offline support for areas with limited connectivity
+- 🔒 **Privacy-First Authentication** - Azure AD/Entra ID integration protecting sensitive patient data
+- 📱 **Mobile-Ready PWA** - Install and use offline on any device, crucial for crisis response
+- 🏗️ **Resilient Architecture** - Microservices design ensuring system availability during high-demand periods
+- 🌍 **Multi-Language Support** - Designed for international crisis response scenarios
+
+## 🏗️ **System Architecture**
+
+LeLink consists of four integrated components:
+
+### 1. **Frontend (Next.js 15)** - `/fe/LL-next/`
+- Modern React-based web application with TypeScript
+- Progressive Web App (PWA) with offline capabilities
+- Azure AD/Entra ID authentication integration
+- Real-time triage interface and patient management
+- Blockchain audit trail visualization
+
+### 2. **Backend (Azure Functions)** - `/az/llmazfunc/`
+- Serverless medical triage assistant
+- OpenAI GPT integration for intelligent symptom assessment
+- FHIR resource generation (Observations, RiskAssessments)
+- Automatic blockchain logging of medical interactions
+
+### 3. **Smart Contract (Solidity)** - `/sc/LeLink-SC/`
+- Ethereum-compatible blockchain audit system
+- Immutable logging of healthcare data access
+- Privacy-preserving (stores only hashes, not patient data)
+- 100% test coverage with comprehensive security testing
+
+### 4. **FHIR Storage Layer**
+- **Development**: Azurite blob storage for local development
+- **Production**: Azure FHIR Service integration with multiple authentication methods
+- Full FHIR R4 compliance for healthcare interoperability
+
+## 🚀 **Quick Start**
+
+### **Prerequisites**
+- **Node.js v20** (required for Azure Functions)
+- **npm** or **yarn** package manager
+- **Git** for cloning the repository
+- **OpenAI API key** (required for medical triage functionality)
+- **Docker** (optional, for containerized deployment)
+
+### **Installation**
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Modern-Miracle/LeLink.git
+   cd LeLink
+   ```
+
+2. **Run the interactive setup wizard:**
+   ```bash
+   ./setup-wizard.sh
+   ```
+   This will guide you through configuring all necessary environment variables.
+
+3. **Start all services:**
+   ```bash
+   ./startup.sh
+   ```
+
+4. **Access the application:**
+   - **Frontend**: http://localhost:3000
+   - **Backend API**: http://localhost:7071
+   - **Blockchain**: http://localhost:8545
+
+### **Alternative Setup Methods**
+
+#### **Manual Configuration**
 ```bash
-# 1. Run the setup wizard to configure environment variables
-./setup-wizard.sh
+# Copy environment files
+cp .env.example .env
+cp fe/LL-next/.env.example fe/LL-next/.env.local
+cp az/llmazfunc/config/local.settings.json.example az/llmazfunc/config/local.settings.json
 
-# 2. Start all services
+# Edit the files with your configuration
+# Then start services
 ./startup.sh
+```
+
+#### **Development with Live Logs**
+```bash
+# See real-time colored logs from all services
+./startup-live.sh
+```
+
+#### **Component-Specific Startup**
+```bash
+# Start only backend services (skip frontend)
+./startup.sh --skip-fe
+
+# Start only smart contract and frontend (skip Azure Functions)
+./startup.sh --skip-az
+
+# Start with automatic testing
+./startup.sh --test
 ```
 
 ## 📜 Available Scripts
@@ -252,4 +356,38 @@ nvm use 20
 
 ## 📄 License
 
-See LICENSE file in repository root.
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+### What this means:
+- ✅ **Free to use** - Use this software for any purpose
+- ✅ **Free to modify** - Change the code to fit your needs
+- ✅ **Free to distribute** - Share your improvements with others
+- ⚠️ **Copyleft requirement** - Any modifications must also be open source
+- ⚠️ **Network copyleft** - If you run this as a web service, you must provide the source code
+
+### Why AGPL v3?
+We chose AGPL v3 to ensure that improvements to healthcare technology remain open and accessible to everyone, especially in network-deployed scenarios like healthcare SaaS platforms.
+
+**See the [LICENSE](LICENSE) file for the complete license text.**
+
+## 🏛️ **Organizations**
+
+### [Hora e.V.](https://hora-ev.eu)
+Hora e.V. is a German non-profit organization dedicated to developing innovative solutions for social challenges, with a particular focus on supporting vulnerable populations through technology and community engagement.
+
+### [Modern Miracle](https://modern-miracle.com)
+Modern Miracle specializes in cutting-edge healthcare technology solutions, bringing together expertise in AI, blockchain, and digital health to create transformative applications for crisis situations.
+
+## 🇪🇺 **EU Funding & Acknowledgments**
+
+This project has received funding from the European Union's Horizon Europe research and innovation programme under the [NGI Sargasso](https://ngisargasso.eu/) initiative. NGI Sargasso fosters transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies, supporting innovation in:
+
+- 🔒 **Decentralized Technologies** - Blockchain solutions for healthcare data integrity
+- 🛡️ **Trust & Data Sovereignty** - Privacy-preserving healthcare systems
+- 🌐 **Internet Innovation** - Next-generation healthcare data management
+- 🤝 **Transatlantic Collaboration** - EU-US-Canada technology partnerships
+
+### Commercial Licensing
+For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact:
+- **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
+- **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)

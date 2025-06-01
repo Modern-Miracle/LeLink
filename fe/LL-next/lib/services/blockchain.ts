@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { LELINK_ABI } from '../../../../sc/LeLink-SC/react/abi/lelink.abi';
+import { LeLinkAbi } from './abi';
 
 export interface BlockchainConfig {
   rpcUrl?: string;
@@ -104,17 +104,13 @@ export class BlockchainService {
   /**
    * Create a new record on the blockchain
    */
-  async createRecord(
-    resourceId: string,
-    dataHash: string,
-    owner?: string
-  ): Promise<ethers.TransactionReceipt | null> {
+  async createRecord(resourceId: string, dataHash: string, owner?: string): Promise<ethers.TransactionReceipt | null> {
     if (!this.signer) {
       throw new Error('No signer available. Please connect wallet first.');
     }
 
     try {
-      const ownerAddress = owner || await this.signer.getAddress();
+      const ownerAddress = owner || (await this.signer.getAddress());
       const tx = await this.contract.createRecord(resourceId, dataHash, ownerAddress);
       const receipt = await tx.wait();
       return receipt;
@@ -127,10 +123,7 @@ export class BlockchainService {
   /**
    * Update an existing record
    */
-  async updateRecord(
-    resourceId: string,
-    newDataHash: string
-  ): Promise<ethers.TransactionReceipt | null> {
+  async updateRecord(resourceId: string, newDataHash: string): Promise<ethers.TransactionReceipt | null> {
     if (!this.signer) {
       throw new Error('No signer available. Please connect wallet first.');
     }
@@ -148,10 +141,7 @@ export class BlockchainService {
   /**
    * Log access to a record
    */
-  async logAccess(
-    resourceId: string,
-    owner: string
-  ): Promise<ethers.TransactionReceipt | null> {
+  async logAccess(resourceId: string, owner: string): Promise<ethers.TransactionReceipt | null> {
     if (!this.signer) {
       throw new Error('No signer available. Please connect wallet first.');
     }
@@ -169,7 +159,10 @@ export class BlockchainService {
   /**
    * Get record details
    */
-  async getRecord(resourceId: string, owner: string): Promise<{
+  async getRecord(
+    resourceId: string,
+    owner: string
+  ): Promise<{
     creator: string;
     dataHash: string;
     createdAt: number;
@@ -181,7 +174,7 @@ export class BlockchainService {
         creator: record[0],
         dataHash: record[1],
         createdAt: Number(record[2]),
-        lastModified: Number(record[3])
+        lastModified: Number(record[3]),
       };
     } catch (error) {
       console.error('Failed to get record:', error);
@@ -228,13 +221,13 @@ export class BlockchainService {
         this.contract.filters.DataUpdated(recordId),
         this.contract.filters.DataShared(recordId),
         this.contract.filters.DataAccessRevoked(recordId),
-        this.contract.filters.DataDeleted(recordId)
+        this.contract.filters.DataDeleted(recordId),
       ];
 
       // Query each event type
       for (const filter of filters) {
         const events = await this.contract.queryFilter(filter);
-        
+
         for (const event of events) {
           const parsedLog = this.parseEventLog(event);
           if (parsedLog) {
@@ -273,7 +266,7 @@ export class BlockchainService {
             actor: parsedEvent.args[2], // creator
             resourceId: parsedEvent.args[3],
             dataHash: parsedEvent.args[4],
-            timestamp: Number(parsedEvent.args[5])
+            timestamp: Number(parsedEvent.args[5]),
           };
 
         case 'DataAccessed':
@@ -282,7 +275,7 @@ export class BlockchainService {
             eventType: 'accessed',
             actor: parsedEvent.args[1], // accessor
             resourceId: parsedEvent.args[2],
-            timestamp: Number(parsedEvent.args[3])
+            timestamp: Number(parsedEvent.args[3]),
           };
 
         case 'DataUpdated':
@@ -292,7 +285,7 @@ export class BlockchainService {
             actor: parsedEvent.args[1], // updater
             resourceId: parsedEvent.args[2],
             dataHash: parsedEvent.args[3],
-            timestamp: Number(parsedEvent.args[4])
+            timestamp: Number(parsedEvent.args[4]),
           };
 
         case 'DataShared':
@@ -302,7 +295,7 @@ export class BlockchainService {
             actor: parsedEvent.args[1], // sharer
             recipient: parsedEvent.args[2],
             resourceId: parsedEvent.args[3],
-            timestamp: Number(parsedEvent.args[4])
+            timestamp: Number(parsedEvent.args[4]),
           };
 
         case 'DataAccessRevoked':
@@ -312,7 +305,7 @@ export class BlockchainService {
             actor: parsedEvent.args[1], // revoker
             recipient: parsedEvent.args[2], // revoked user
             resourceId: parsedEvent.args[3],
-            timestamp: Number(parsedEvent.args[4])
+            timestamp: Number(parsedEvent.args[4]),
           };
 
         case 'DataDeleted':
@@ -321,7 +314,7 @@ export class BlockchainService {
             eventType: 'deleted',
             actor: parsedEvent.args[1], // deleter
             resourceId: parsedEvent.args[2],
-            timestamp: Number(parsedEvent.args[3])
+            timestamp: Number(parsedEvent.args[3]),
           };
 
         default:
@@ -346,14 +339,14 @@ export class BlockchainService {
       const [owner, paused, recordCount] = await Promise.all([
         this.contract.owner(),
         this.contract.paused(),
-        this.contract.getRecordCount()
+        this.contract.getRecordCount(),
       ]);
 
       return {
         address: await this.contract.getAddress(),
         owner,
         paused,
-        recordCount: Number(recordCount)
+        recordCount: Number(recordCount),
       };
     } catch (error) {
       console.error('Failed to get contract status:', error);
@@ -364,11 +357,7 @@ export class BlockchainService {
   /**
    * Verify data integrity by comparing hashes
    */
-  async verifyDataIntegrity(
-    resourceId: string,
-    owner: string,
-    currentDataHash: string
-  ): Promise<boolean> {
+  async verifyDataIntegrity(resourceId: string, owner: string, currentDataHash: string): Promise<boolean> {
     try {
       const onChainHash = await this.getRecordHash(resourceId, owner);
       return onChainHash === currentDataHash;
@@ -404,15 +393,37 @@ export function createBlockchainService(config?: BlockchainConfig): BlockchainSe
 
 // For backward compatibility
 export const blockchainService = {
-  get connectWallet() { return getBlockchainService().connectWallet.bind(getBlockchainService()); },
-  get getConnectedAddress() { return getBlockchainService().getConnectedAddress.bind(getBlockchainService()); },
-  get createRecord() { return getBlockchainService().createRecord.bind(getBlockchainService()); },
-  get updateRecord() { return getBlockchainService().updateRecord.bind(getBlockchainService()); },
-  get logAccess() { return getBlockchainService().logAccess.bind(getBlockchainService()); },
-  get getRecord() { return getBlockchainService().getRecord.bind(getBlockchainService()); },
-  get recordExists() { return getBlockchainService().recordExists.bind(getBlockchainService()); },
-  get getRecordHash() { return getBlockchainService().getRecordHash.bind(getBlockchainService()); },
-  get getAuditLogs() { return getBlockchainService().getAuditLogs.bind(getBlockchainService()); },
-  get getContractStatus() { return getBlockchainService().getContractStatus.bind(getBlockchainService()); },
-  get verifyDataIntegrity() { return getBlockchainService().verifyDataIntegrity.bind(getBlockchainService()); },
+  get connectWallet() {
+    return getBlockchainService().connectWallet.bind(getBlockchainService());
+  },
+  get getConnectedAddress() {
+    return getBlockchainService().getConnectedAddress.bind(getBlockchainService());
+  },
+  get createRecord() {
+    return getBlockchainService().createRecord.bind(getBlockchainService());
+  },
+  get updateRecord() {
+    return getBlockchainService().updateRecord.bind(getBlockchainService());
+  },
+  get logAccess() {
+    return getBlockchainService().logAccess.bind(getBlockchainService());
+  },
+  get getRecord() {
+    return getBlockchainService().getRecord.bind(getBlockchainService());
+  },
+  get recordExists() {
+    return getBlockchainService().recordExists.bind(getBlockchainService());
+  },
+  get getRecordHash() {
+    return getBlockchainService().getRecordHash.bind(getBlockchainService());
+  },
+  get getAuditLogs() {
+    return getBlockchainService().getAuditLogs.bind(getBlockchainService());
+  },
+  get getContractStatus() {
+    return getBlockchainService().getContractStatus.bind(getBlockchainService());
+  },
+  get verifyDataIntegrity() {
+    return getBlockchainService().verifyDataIntegrity.bind(getBlockchainService());
+  },
 };

@@ -1,10 +1,20 @@
 # LeLink Smart Contract Documentation
 
-Welcome to the LeLink smart contract documentation! This comprehensive guide will help you understand, deploy, and interact with the LeLink healthcare data tracking system, regardless of your blockchain development experience.
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![NGI Sargasso](https://img.shields.io/badge/NGI-Sargasso-blue.svg)](https://ngisargasso.eu/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28-purple.svg)](https://soliditylang.org/)
+[![Hardhat](https://img.shields.io/badge/Hardhat-Framework-yellow.svg)](https://hardhat.org/)
+[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)]()
+
+Welcome to the LeLink smart contract documentation! This comprehensive guide will help you understand, deploy, and interact with the **crisis healthcare data audit system**, designed to provide transparent and immutable logging for people in vulnerable situations.
+
+> **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme under the European Union's Horizon Europe research and innovation programme, fostering transatlantic collaboration in Next Generation Internet technologies.
+
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com).
 
 ## 📚 Documentation Overview
 
-LeLink is a smart contract system designed for secure healthcare data transaction logging. It provides a decentralized way to track healthcare data access, sharing, and modifications while maintaining privacy through cryptographic hashes.
+LeLink is a blockchain-based audit system specifically designed for **crisis healthcare situations**. It provides transparent, immutable logging of medical data access for vulnerable populations while maintaining absolute privacy through cryptographic hashes. No actual patient data ever touches the blockchain.
 
 ## 🗂️ Documentation Structure
 
@@ -68,7 +78,21 @@ LeLink is a smart contract system designed for secure healthcare data transactio
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the main project README for details.
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0) - see the main project README for details.
+
+## 🏛️ **Organizations**
+
+**Developed by:**
+- **[Hora e.V.](https://hora-ev.eu)** - German non-profit focused on social innovation and crisis response
+- **[Modern Miracle](https://modern-miracle.com)** - Blockchain and healthcare technology specialists
+
+**Contact:**
+- Hora e.V.: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
+- Modern Miracle: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+
+## 🇪🇺 **EU Funding Acknowledgments**
+
+This project has received funding from the European Union's Horizon Europe research and innovation programme under the [NGI Sargasso](https://ngisargasso.eu/) initiative, supporting innovation in decentralized healthcare technologies for crisis situations.
 
 ---
 

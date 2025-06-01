@@ -1,0 +1,20 @@
+{
+  "contractAddress": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+  "contractName": "LeLink",
+  "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "network": "localhost",
+  "blockNumber": 9,
+  "deploymentTime": "2025-05-30T12:55:40.616Z",
+  "deployerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "deploymentHash": "0x8eb1f957389dbc04697fc3d3ab9c9f3a6f8a248f802a41c8f221fd725b9f334d",
+  "gasUsed": "1854830",
+  "compiler": {
+    "version": "0.8.28",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      }
+    }
+  }
+}

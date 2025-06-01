@@ -1,16 +1,19 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
+import { Send, Activity, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Send, Bot, User, AlertCircle, Sparkles, Activity } from 'lucide-react';
-import { ResourceList } from '@/components/fhir';
-import { cn } from '@/lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { ChatMessage } from '@/components/ui/chat-message';
+import { TriageResponse } from '@/lib/types';
+import { AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { getResourceDisplayName, formatResourceDate, getResourceStatus } from '@/lib/fhir-storage/utils';
+import type { FHIRStorageResource } from '@/lib/fhir-storage/types';
 
 interface Message {
   id: string;
@@ -22,6 +25,7 @@ interface Message {
 }
 
 export default function TriagePage() {
+  const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -34,6 +38,10 @@ export default function TriagePage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Get patient ID from authenticated user session
+  const patientId = session?.user?.id || `anonymous-${Date.now()}`;
+
   const [threadId, setThreadId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +94,7 @@ export default function TriagePage() {
         body: JSON.stringify({
           message: messageText,
           threadId: threadId,
-          patientId: 'default-patient-001', // TODO: Get from user session when authentication is implemented
+          patientId: patientId, // Use authenticated user's ID
         }),
       });
 
@@ -213,14 +221,6 @@ export default function TriagePage() {
     }
   };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-  };
-
   return (
     <div className="flex flex-col h-[calc(100vh)] bg-teal-600 ">
       <div className="bg-teal-600 text-white">
@@ -240,85 +240,19 @@ export default function TriagePage() {
       <div className="flex-1 bg-gray-50 dark:bg-gray-900 relative overflow-hidden mb-1">
         <div className="max-w-4xl mx-auto h-full flex flex-col pb-[12px] mt-2 ">
           <ScrollArea className="flex-1 border shadow-md">
-            <div className="p-3 sm:p-6 space-y-3 sm:space-y-4">
+            <div className="p-3 sm:p-6 space-y-3 sm:space-y-4 mb-[30px]">
               <AnimatePresence initial={false}>
                 {messages.map((message, index) => (
-                  <motion.div
+                  <ChatMessage
                     key={message.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div
-                      className={cn('flex gap-2 sm:gap-3', message.role === 'user' ? 'justify-end' : 'justify-start')}
-                    >
-                      {message.role === 'assistant' && (
-                        <Avatar className="h-6 w-6 sm:h-8 sm:w-8 border-2 border-teal-200 flex-shrink-0">
-                          <AvatarFallback className="bg-teal-100">
-                            <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-teal-600" />
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-
-                      <div
-                        className={cn(
-                          'group relative max-w-[90%] sm:max-w-[85%] rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-sm shadow-sm',
-                          message.role === 'user'
-                            ? 'bg-teal-600 text-white ml-4 sm:ml-12'
-                            : 'bg-white dark:bg-gray-700 mr-4 sm:mr-12 border border-gray-200 dark:border-gray-600'
-                        )}
-                      >
-                        {message.isStreaming && (
-                          <Sparkles className="absolute -top-2 -right-2 h-4 w-4 text-teal-500 animate-pulse" />
-                        )}
-
-                        <div className="whitespace-pre-wrap break-words">
-                          {message.content}
-                          {message.isStreaming && message.content && (
-                            <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse" />
-                          )}
-                          {message.isStreaming && !message.content && (
-                            <div className="flex items-center gap-2">
-                              <Loader2 className="h-3 w-3 animate-spin text-teal-600" />
-                              <span className="text-gray-500 dark:text-gray-400">Thinking...</span>
-                            </div>
-                          )}
-                        </div>
-
-                        {message.timestamp && (
-                          <div
-                            className={cn(
-                              'text-xs mt-1 opacity-50',
-                              message.role === 'user' ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'
-                            )}
-                          >
-                            {formatTime(message.timestamp)}
-                          </div>
-                        )}
-                      </div>
-
-                      {message.role === 'user' && (
-                        <Avatar className="h-6 w-6 sm:h-8 sm:w-8 border-2 border-teal-200 flex-shrink-0">
-                          <AvatarFallback className="bg-teal-100">
-                            <User className="h-3 w-3 sm:h-4 sm:w-4 text-teal-600" />
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-                    </div>
-
-                    {/* Display FHIR resources if available */}
-                    {message.resources && message.resources.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        transition={{ duration: 0.3, delay: 0.1 }}
-                        className="mt-3 sm:mt-4 ml-8 sm:ml-11"
-                      >
-                        <ResourceList resources={message.resources} />
-                      </motion.div>
-                    )}
-                  </motion.div>
+                    id={message.id}
+                    role={message.role}
+                    content={message.content}
+                    timestamp={message.timestamp || new Date()}
+                    resources={message.resources}
+                    isStreaming={message.isStreaming}
+                    isLast={index === messages.length - 1}
+                  />
                 ))}
               </AnimatePresence>
               <div ref={messagesEndRef} />

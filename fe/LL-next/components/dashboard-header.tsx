@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/paths";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { signOut } from "next-auth/react";
 
 const navLinks = [
   { label: "Dashboard", href: DASHBOARD_PATH },
@@ -80,7 +82,7 @@ export default function DashboardHeader() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>
