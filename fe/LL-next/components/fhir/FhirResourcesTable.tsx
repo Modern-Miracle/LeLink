@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   RefreshCw, 
   User, 
@@ -18,96 +19,148 @@ import {
   CheckCircle,
   Clock
 } from "lucide-react";
-import { AnyFhirResource, Patient, Encounter, Observation, RiskAssessment } from "@/lib/types/fhir";
+import { getCurrentUserResources } from '@/lib/fhir-storage';
+import { 
+  getResourceDisplayName, 
+  formatResourceDate, 
+  getResourceStatus,
+  getRiskLevel,
+  isObservation,
+  isRiskAssessment,
+  isPatient,
+  isEncounter
+} from '@/lib/fhir-storage/utils';
+import type { 
+  FHIRStorageResource, 
+  ObservationResource, 
+  RiskAssessmentResource,
+  PatientResource,
+  EncounterResource,
+  PatientResourcesData
+} from '@/lib/fhir-storage/types';
 
 interface FhirResourcesTableProps {
   className?: string;
+  resourcesData?: PatientResourcesData | null;
+  onRefresh?: () => void;
+  loading?: boolean;
 }
 
-export function FhirResourcesTable({ className }: FhirResourcesTableProps) {
-  const [patients, setPatients] = useState<Patient[]>([]);
-  const [encounters, setEncounters] = useState<Encounter[]>([]);
-  const [observations, setObservations] = useState<Observation[]>([]);
-  const [riskAssessments, setRiskAssessments] = useState<RiskAssessment[]>([]);
-  const [loading, setLoading] = useState(true);
+export function FhirResourcesTable({ 
+  className, 
+  resourcesData, 
+  onRefresh,
+  loading: externalLoading 
+}: FhirResourcesTableProps) {
+  const [internalResourcesData, setInternalResourcesData] = useState<PatientResourcesData | null>(null);
+  const [internalLoading, setInternalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Use external data if provided, otherwise manage internally
+  const data = resourcesData || internalResourcesData;
+  const loading = externalLoading !== undefined ? externalLoading : internalLoading;
+  
+  // Separate resources by type
+  const resources = data?.resources || [];
+  const patients = resources.filter(isPatient) as PatientResource[];
+  const encounters = resources.filter(isEncounter) as EncounterResource[];
+  const observations = resources.filter(isObservation) as ObservationResource[];
+  const riskAssessments = resources.filter(isRiskAssessment) as RiskAssessmentResource[];
 
   const fetchData = async () => {
-    setLoading(true);
+    if (resourcesData) {
+      // If external data provided, use external refresh function
+      onRefresh?.();
+      return;
+    }
+    
+    // Internal data fetching
+    console.log('📊 [FhirResourcesTable] Fetching data internally...');
+    setInternalLoading(true);
     setError(null);
     try {
-      const [patientsRes, encountersRes, observationsRes, riskAssessmentsRes] = await Promise.all([
-        fetch('/api/patients'),
-        fetch('/api/ecounter'),
-        fetch('/api/observations'),
-        fetch('/api/risk-assessments')
-      ]);
-
-      if (!patientsRes.ok) throw new Error('Failed to fetch patients');
-      if (!encountersRes.ok) throw new Error('Failed to fetch encounters');
-      if (!observationsRes.ok) throw new Error('Failed to fetch observations');
-      if (!riskAssessmentsRes.ok) throw new Error('Failed to fetch risk assessments');
-
-      const [patientsData, encountersData, observationsData, riskAssessmentsData] = await Promise.all([
-        patientsRes.json(),
-        encountersRes.json(),
-        observationsRes.json(),
-        riskAssessmentsRes.json()
-      ]);
-
-      setPatients(patientsData);
-      setEncounters(encountersData);
-      setObservations(observationsData);
-      setRiskAssessments(riskAssessmentsData);
+      const result = await getCurrentUserResources();
+      
+      if (result.success && result.data) {
+        setInternalResourcesData(result.data);
+        console.log('✅ [FhirResourcesTable] Data fetched successfully:', {
+          totalCount: result.data.totalCount,
+          resourceCount: result.data.resources.length
+        });
+      } else {
+        throw new Error(result.error || 'Failed to fetch FHIR resources');
+      }
     } catch (err: any) {
+      console.error('💥 [FhirResourcesTable] Error fetching data:', err);
       setError(err.message);
     } finally {
-      setLoading(false);
+      setInternalLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // Only fetch internally if no external data provided
+    if (!resourcesData) {
+      fetchData();
+    }
+  }, [resourcesData]);
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatDate = (resource: FHIRStorageResource) => {
+    const formatted = formatResourceDate(resource);
+    return formatted || 'N/A';
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status.toLowerCase()) {
+  // Utility component for truncated text with tooltip
+  const TruncatedText = ({ text, maxLength = 30, className = "" }: { text: string; maxLength?: number; className?: string }) => {
+    if (!text || text.length <= maxLength) {
+      return <span className={className}>{text || 'N/A'}</span>;
+    }
+
+    const truncated = text.slice(0, maxLength) + '...';
+    
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className={`cursor-help ${className}`}>{truncated}</span>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-sm break-words bg-slate-900 text-white">
+          <p>{text}</p>
+        </TooltipContent>
+      </Tooltip>
+    );
+  };
+
+  const getStatusBadge = (resource: FHIRStorageResource) => {
+    const status = getResourceStatus(resource);
+    
+    switch (status.status.toLowerCase()) {
       case 'final':
       case 'finished':
       case 'completed':
-        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Final</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />{status.label}</Badge>;
       case 'preliminary':
       case 'in-progress':
-        return <Badge variant="secondary"><Clock className="h-3 w-3 mr-1" />Preliminary</Badge>;
+        return <Badge variant="secondary"><Clock className="h-3 w-3 mr-1" />{status.label}</Badge>;
       case 'cancelled':
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return <Badge variant="destructive">{status.label}</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant={status.variant}>{status.label}</Badge>;
     }
   };
 
-  const getRiskBadge = (risk?: string) => {
-    switch (risk?.toLowerCase()) {
+  const getRiskBadge = (resource: RiskAssessmentResource) => {
+    const risk = getRiskLevel(resource);
+    
+    switch (risk.level.toLowerCase()) {
       case 'high':
-        return <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" />High</Badge>;
-      case 'moderate':
+        return <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" />{risk.label}</Badge>;
       case 'medium':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Medium</Badge>;
+      case 'moderate':
+        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">{risk.label}</Badge>;
       case 'low':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Low</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800">{risk.label}</Badge>;
       default:
-        return <Badge variant="outline">{risk || 'Unknown'}</Badge>;
+        return <Badge variant={risk.variant}>{risk.label}</Badge>;
     }
   };
 
@@ -134,8 +187,9 @@ export function FhirResourcesTable({ className }: FhirResourcesTableProps) {
   }
 
   return (
-    <div className={className}>
-      <Card className="border-none shadow-lg bg-white/90 backdrop-blur-sm">
+    <TooltipProvider>
+      <div className={`w-full ${className}`}>
+        <Card className="border-none shadow-lg bg-white/90 backdrop-blur-sm">
         <CardHeader className="bg-gradient-to-r from-teal-50 to-transparent">
           <div className="flex items-center justify-between">
             <div>
@@ -158,29 +212,31 @@ export function FhirResourcesTable({ className }: FhirResourcesTableProps) {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="pt-6">
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="bg-white/50 backdrop-blur-sm p-1 rounded-full h-12 border shadow-sm">
-              <TabsTrigger value="overview" className="rounded-full h-10 px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300">
-                Overview ({patients.length + encounters.length + observations.length + riskAssessments.length})
-              </TabsTrigger>
-              <TabsTrigger value="patients" className="rounded-full h-10 px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300">
-                <User className="h-4 w-4 mr-1" />
-                Patients ({patients.length})
-              </TabsTrigger>
-              <TabsTrigger value="encounters" className="rounded-full h-10 px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300">
-                <MessageSquare className="h-4 w-4 mr-1" />
-                Encounters ({encounters.length})
-              </TabsTrigger>
-              <TabsTrigger value="observations" className="rounded-full h-10 px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300">
-                <Activity className="h-4 w-4 mr-1" />
-                Observations ({observations.length})
-              </TabsTrigger>
-              <TabsTrigger value="risks" className="rounded-full h-10 px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300">
-                <Shield className="h-4 w-4 mr-1" />
-                Risk Assessments ({riskAssessments.length})
-              </TabsTrigger>
-            </TabsList>
+        <CardContent className="pt-6 px-4 sm:px-6">
+          <Tabs defaultValue="overview" className="space-y-4 w-full">
+            <div className="overflow-x-auto">
+              <TabsList className="bg-white/50 backdrop-blur-sm p-1 rounded-full h-12 border shadow-sm inline-flex w-auto min-w-max">
+                <TabsTrigger value="overview" className="rounded-full h-10 px-3 sm:px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                  Overview ({data?.totalCount || 0})
+                </TabsTrigger>
+                <TabsTrigger value="patients" className="rounded-full h-10 px-3 sm:px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                  <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Patients</span> ({patients.length})
+                </TabsTrigger>
+                <TabsTrigger value="encounters" className="rounded-full h-10 px-3 sm:px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                  <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Encounters</span> ({encounters.length})
+                </TabsTrigger>
+                <TabsTrigger value="observations" className="rounded-full h-10 px-3 sm:px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                  <Activity className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Observations</span> ({observations.length})
+                </TabsTrigger>
+                <TabsTrigger value="risks" className="rounded-full h-10 px-3 sm:px-6 data-[state=active]:bg-teal-600 data-[state=active]:text-white transition-all duration-300 text-xs sm:text-sm whitespace-nowrap">
+                  <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">Risks</span> ({riskAssessments.length})
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-4">
@@ -210,231 +266,232 @@ export function FhirResourcesTable({ className }: FhirResourcesTableProps) {
                 <CardHeader>
                   <CardTitle>Recent Activity</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Resource Type</TableHead>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Last Updated</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {[
-                        ...patients.slice(0, 2).map(p => ({ type: 'Patient', id: p.id, status: 'Active', date: p.meta?.lastUpdated })),
-                        ...encounters.slice(0, 2).map(e => ({ type: 'Encounter', id: e.id, status: e.status, date: e.meta?.lastUpdated })),
-                        ...observations.slice(0, 2).map(o => ({ type: 'Observation', id: o.id, status: o.status, date: o.meta?.lastUpdated })),
-                        ...riskAssessments.slice(0, 2).map(r => ({ type: 'RiskAssessment', id: r.id, status: r.status, date: r.meta?.lastUpdated }))
-                      ].slice(0, 8).map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell className="font-medium">{item.type}</TableCell>
-                          <TableCell className="font-mono text-sm">
-                            <Hash className="h-3 w-3 inline mr-1" />
-                            {item.id || 'N/A'}
-                          </TableCell>
-                          <TableCell>{getStatusBadge(item.status || 'Unknown')}</TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
-                            {formatDate(item.date)}
-                          </TableCell>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="min-w-[120px]">Resource Type</TableHead>
+                          <TableHead className="min-w-[120px]">ID</TableHead>
+                          <TableHead className="min-w-[100px]">Status</TableHead>
+                          <TableHead className="min-w-[140px]">Last Updated</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {resources.slice(0, 8).map((resource, index) => (
+                          <TableRow key={resource.id || index}>
+                            <TableCell className="font-medium">{resource.resourceType}</TableCell>
+                            <TableCell className="font-mono text-sm">
+                              <Hash className="h-3 w-3 inline mr-1" />
+                              <TruncatedText text={resource.id || 'N/A'} maxLength={12} />
+                            </TableCell>
+                            <TableCell>{getStatusBadge(resource)}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">
+                              {formatDate(resource)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="patients">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Gender</TableHead>
-                    <TableHead>Birth Date</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Last Updated</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {patients.map((patient) => (
-                    <TableRow key={patient.id}>
-                      <TableCell className="font-mono text-sm">
-                        <Hash className="h-3 w-3 inline mr-1" />
-                        {patient.id || 'N/A'}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {patient.name?.[0] ? 
-                          `${patient.name[0].given?.join(' ')} ${patient.name[0].family}` : 
-                          'N/A'
-                        }
-                      </TableCell>
-                      <TableCell>{patient.gender || 'N/A'}</TableCell>
-                      <TableCell>{patient.birthDate || 'N/A'}</TableCell>
-                      <TableCell>
-                        {patient.telecom?.[0]?.value || 'N/A'}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(patient.meta?.lastUpdated)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {patients.length === 0 && (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                        No patients found
-                      </TableCell>
+                      <TableHead className="min-w-[120px]">ID</TableHead>
+                      <TableHead className="min-w-[150px]">Name</TableHead>
+                      <TableHead className="min-w-[80px]">Gender</TableHead>
+                      <TableHead className="min-w-[120px]">Birth Date</TableHead>
+                      <TableHead className="min-w-[140px]">Contact</TableHead>
+                      <TableHead className="min-w-[140px]">Last Updated</TableHead>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {patients.map((patient) => (
+                      <TableRow key={patient.id}>
+                        <TableCell className="font-mono text-sm">
+                          <Hash className="h-3 w-3 inline mr-1" />
+                          <TruncatedText text={patient.id || 'N/A'} maxLength={12} />
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          <TruncatedText text={getResourceDisplayName(patient)} maxLength={20} />
+                        </TableCell>
+                        <TableCell>{patient.gender || 'N/A'}</TableCell>
+                        <TableCell>{patient.birthDate || 'N/A'}</TableCell>
+                        <TableCell>
+                          <TruncatedText text={patient.telecom?.[0]?.value || 'N/A'} maxLength={18} />
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {formatDate(patient)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {patients.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No patients found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </TabsContent>
 
             <TabsContent value="encounters">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Class</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Period</TableHead>
-                    <TableHead>Last Updated</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {encounters.map((encounter) => (
-                    <TableRow key={encounter.id}>
-                      <TableCell className="font-mono text-sm">
-                        <Hash className="h-3 w-3 inline mr-1" />
-                        {encounter.id || 'N/A'}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(encounter.status || 'Unknown')}</TableCell>
-                      <TableCell>
-                        {encounter.class?.display || encounter.class?.code || 'N/A'}
-                      </TableCell>
-                      <TableCell className="font-mono text-sm">
-                        {encounter.subject?.reference || 'N/A'}
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {encounter.period?.start ? formatDate(encounter.period.start) : 'N/A'}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(encounter.meta?.lastUpdated)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {encounters.length === 0 && (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                        No encounters found
-                      </TableCell>
+                      <TableHead className="min-w-[120px]">ID</TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[120px]">Class</TableHead>
+                      <TableHead className="min-w-[140px]">Subject</TableHead>
+                      <TableHead className="min-w-[120px]">Period</TableHead>
+                      <TableHead className="min-w-[140px]">Last Updated</TableHead>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {encounters.map((encounter) => (
+                      <TableRow key={encounter.id}>
+                        <TableCell className="font-mono text-sm">
+                          <Hash className="h-3 w-3 inline mr-1" />
+                          <TruncatedText text={encounter.id || 'N/A'} maxLength={12} />
+                        </TableCell>
+                        <TableCell>{getStatusBadge(encounter)}</TableCell>
+                        <TableCell>
+                          <TruncatedText text={encounter.class?.display || encounter.class?.code || 'N/A'} maxLength={15} />
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">
+                          <TruncatedText text={encounter.subject?.reference || 'N/A'} maxLength={16} />
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {encounter.period?.start ? new Date(encounter.period.start).toLocaleDateString() : 'N/A'}
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {formatDate(encounter)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {encounters.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No encounters found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </TabsContent>
 
             <TabsContent value="observations">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Value</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Effective Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {observations.map((observation) => (
-                    <TableRow key={observation.id}>
-                      <TableCell className="font-mono text-sm">
-                        <Hash className="h-3 w-3 inline mr-1" />
-                        {observation.id || 'N/A'}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(observation.status || 'Unknown')}</TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {observation.code?.text || observation.code?.coding?.[0]?.display || 'N/A'}
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {observation.valueString || 
-                         (observation.valueQuantity ? `${observation.valueQuantity.value} ${observation.valueQuantity.unit || ''}` : '') ||
-                         observation.valueCodeableConcept?.text ||
-                         (observation.valueBoolean !== undefined ? (observation.valueBoolean ? 'Yes' : 'No') : '') ||
-                         'N/A'}
-                      </TableCell>
-                      <TableCell className="font-mono text-sm">
-                        {observation.subject?.reference || 'N/A'}
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {formatDate(observation.effectiveDateTime)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {observations.length === 0 && (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                        No observations found
-                      </TableCell>
+                      <TableHead className="min-w-[120px]">ID</TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[180px]">Code</TableHead>
+                      <TableHead className="min-w-[140px]">Value</TableHead>
+                      <TableHead className="min-w-[140px]">Subject</TableHead>
+                      <TableHead className="min-w-[140px]">Effective Date</TableHead>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {observations.map((observation) => (
+                      <TableRow key={observation.id}>
+                        <TableCell className="font-mono text-sm">
+                          <Hash className="h-3 w-3 inline mr-1" />
+                          <TruncatedText text={observation.id || 'N/A'} maxLength={12} />
+                        </TableCell>
+                        <TableCell>{getStatusBadge(observation)}</TableCell>
+                        <TableCell>
+                          <TruncatedText text={getResourceDisplayName(observation)} maxLength={25} />
+                        </TableCell>
+                        <TableCell>
+                          <TruncatedText 
+                            text={observation.valueString || 
+                                 (observation.valueQuantity ? `${observation.valueQuantity.value} ${observation.valueQuantity.unit || ''}` : '') ||
+                                 'N/A'} 
+                            maxLength={18} 
+                          />
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">
+                          <TruncatedText text={observation.subject?.reference || 'N/A'} maxLength={16} />
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {observation.effectiveDateTime ? new Date(observation.effectiveDateTime).toLocaleDateString() : 'N/A'}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {observations.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No observations found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </TabsContent>
 
             <TabsContent value="risks">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Risk Level</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Occurrence Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {riskAssessments.map((risk) => (
-                    <TableRow key={risk.id}>
-                      <TableCell className="font-mono text-sm">
-                        <Hash className="h-3 w-3 inline mr-1" />
-                        {risk.id || 'N/A'}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(risk.status || 'Unknown')}</TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {risk.code?.text || risk.code?.coding?.[0]?.display || 'N/A'}
-                      </TableCell>
-                      <TableCell>
-                        {getRiskBadge(
-                          risk.prediction?.[0]?.qualitativeRisk?.text || 
-                          risk.prediction?.[0]?.qualitativeRisk?.coding?.[0]?.display
-                        )}
-                      </TableCell>
-                      <TableCell className="font-mono text-sm">
-                        {risk.subject?.reference || 'N/A'}
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {formatDate(risk.occurrenceDateTime)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {riskAssessments.length === 0 && (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                        No risk assessments found
-                      </TableCell>
+                      <TableHead className="min-w-[120px]">ID</TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[180px]">Code</TableHead>
+                      <TableHead className="min-w-[120px]">Risk Level</TableHead>
+                      <TableHead className="min-w-[140px]">Subject</TableHead>
+                      <TableHead className="min-w-[140px]">Occurrence Date</TableHead>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {riskAssessments.map((risk) => (
+                      <TableRow key={risk.id}>
+                        <TableCell className="font-mono text-sm">
+                          <Hash className="h-3 w-3 inline mr-1" />
+                          <TruncatedText text={risk.id || 'N/A'} maxLength={12} />
+                        </TableCell>
+                        <TableCell>{getStatusBadge(risk)}</TableCell>
+                        <TableCell>
+                          <TruncatedText text={getResourceDisplayName(risk)} maxLength={25} />
+                        </TableCell>
+                        <TableCell>
+                          {getRiskBadge(risk)}
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">
+                          <TruncatedText text={risk.subject?.reference || 'N/A'} maxLength={16} />
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {risk.occurrenceDateTime ? new Date(risk.occurrenceDateTime).toLocaleDateString() : 'N/A'}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {riskAssessments.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No risk assessments found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </TabsContent>
           </Tabs>
         </CardContent>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </TooltipProvider>
   );
 }

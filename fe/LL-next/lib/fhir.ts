@@ -1,10 +1,10 @@
-import axios from "axios";
-import { getAzureCliAccessToken } from "./azure-cli-auth";
+import axios from 'axios';
+import { getAzureCliAccessToken } from './azure-cli-auth';
 
 const baseUrl = process.env.FHIR_BASE_URL!;
 
 export async function useFHIRApi<T = any>(
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   route: string,
   body?: any
 ): Promise<T> {
@@ -14,7 +14,7 @@ export async function useFHIRApi<T = any>(
     url: `${baseUrl}${route}`,
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/fhir+json",
+      'Content-Type': 'application/fhir+json',
     },
     ...(body && { data: body }),
   };
@@ -23,16 +23,16 @@ export async function useFHIRApi<T = any>(
 }
 
 export async function getPatient(id: string) {
-  return useFHIRApi("GET", `/Patient/${id}`);
+  return useFHIRApi('GET', `/Patient/${id}`);
 }
 
 export async function createPatient(data: any) {
-  return useFHIRApi("POST", `/Patient`, data);
+  return useFHIRApi('POST', `/Patient`, data);
 }
 
 export async function getAllPatients() {
   try {
-    const result = await useFHIRApi("GET", `/Patient`);
+    const result = await useFHIRApi('GET', `/Patient`);
     return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
     console.error(e);
@@ -42,7 +42,7 @@ export async function getAllPatients() {
 
 export async function getAllEncounters() {
   try {
-    const result = await useFHIRApi("GET", `/Encounter`);
+    const result = await useFHIRApi('GET', `/Encounter`);
     return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
     console.error(e);
@@ -51,7 +51,7 @@ export async function getAllEncounters() {
 }
 export async function getAllAppointments() {
   try {
-    const result = await useFHIRApi("GET", `/Encounter`);
+    const result = await useFHIRApi('GET', `/Encounter`);
     return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
     console.error(e);
@@ -61,7 +61,7 @@ export async function getAllAppointments() {
 
 export async function getAllObservations() {
   try {
-    const result = await useFHIRApi("GET", `/Observation`);
+    const result = await useFHIRApi('GET', `/Observation`);
     return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
     console.error(e);
@@ -71,7 +71,7 @@ export async function getAllObservations() {
 
 export async function getAllRiskAssessments() {
   try {
-    const result = await useFHIRApi("GET", `/RiskAssessment`);
+    const result = await useFHIRApi('GET', `/RiskAssessment`);
     return result.entry?.map((e: any) => e.resource) || [];
   } catch (e) {
     console.error(e);

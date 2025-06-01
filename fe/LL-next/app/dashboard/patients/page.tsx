@@ -1,31 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  Bell,
-  Shield,
-  Search,
-  Filter,
-  Plus,
-  User,
-  Calendar,
-  FileText,
-  MoreHorizontal,
-} from "lucide-react";
-import { useOffline } from "@/hooks/use-offline";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Bell, Shield, Search, Filter, Plus, User, Calendar, FileText, MoreHorizontal, ArrowLeft } from 'lucide-react';
+import { useOffline } from '@/hooks/use-offline';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -33,20 +23,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import DashboardHeaderWithModal from "@/components/dashboard-header-with-modal";
-import { Patient } from "@/lib/types/patient";
-import { calculateAge, getFullName, getInitials } from "@/lib/utils";
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import DashboardHeaderWithModal from '@/components/dashboard-header-with-modal';
+import { useRouter } from 'next/navigation';
+import { Patient } from '@/lib/types/patient';
+import { calculateAge, getFullName, getInitials } from '@/lib/utils';
 
 export default function PatientsPage() {
+  const router = useRouter();
   const [showNewPatient, setShowNewPatient] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
   const isOffline = useOffline();
@@ -62,7 +48,7 @@ export default function PatientsPage() {
     if (!isOffline) {
       async function fetchData() {
         try {
-          const res = await fetch("/api/patients");
+          const res = await fetch('/api/patients');
           const data = await res.json();
           setPatients(data);
           // Cache the data for offline use
@@ -75,21 +61,45 @@ export default function PatientsPage() {
     }
   }, [isOffline]);
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col container relative">
       <DashboardHeaderWithModal />
+      
+      {/* Coming Soon Overlay */}
+      <div className="absolute inset-0 bg-black/0 backdrop-blur-[1px] z-50 flex items-center justify-center">
+        <Card className="w-96 border-none shadow-2xl bg-white/95 backdrop-blur-sm">
+          <CardContent className="text-center p-8">
+            <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center">
+              <User className="h-8 w-8 text-teal-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Coming Soon</h2>
+            <p className="text-gray-600 mb-4">Patient management functionality is currently out of scope.</p>
+            <div className="flex flex-col gap-3 items-center">
+              <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-300">
+                Out of Scope
+              </Badge>
+              <Button 
+                onClick={() => router.push('/dashboard')} 
+                variant="outline" 
+                className="flex items-center gap-2 mt-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Dashboard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
       <main className="flex-1 p-4 sm:p-6">
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-teal-700">Patients</h1>
             <p className="text-muted-foreground">
               Manage and view patient information
-              {isOffline && " (Offline - Showing cached data)"}
+              {isOffline && ' (Offline - Showing cached data)'}
             </p>
           </div>
-          <Button
-            onClick={() => setShowNewPatient(true)}
-            className="bg-teal-600 hover:bg-teal-700"
-          >
+          <Button onClick={() => setShowNewPatient(true)} className="bg-teal-600 hover:bg-teal-700">
             <Plus className="mr-2 h-4 w-4" />
             Add Patient
           </Button>
@@ -112,11 +122,7 @@ export default function PatientsPage() {
           <div className="flex flex-1 gap-2 sm:max-w-md">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search patients..."
-                className="pl-8"
-              />
+              <Input type="search" placeholder="Search patients..." className="pl-8" />
             </div>
             <Button variant="outline" size="icon">
               <Filter className="h-4 w-4" />
@@ -153,9 +159,7 @@ export default function PatientsPage() {
                         <div>
                           <div className="flex items-center gap-2">
                             <h3 className="font-semibold">{fullName}</h3>
-                            <Badge className="bg-teal-100 text-teal-800">
-                              Active
-                            </Badge>
+                            <Badge className="bg-teal-100 text-teal-800">Active</Badge>
                           </div>
                           <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
@@ -176,11 +180,7 @@ export default function PatientsPage() {
                           </Button>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-8 w-8"
-                              >
+                              <Button variant="outline" size="icon" className="h-8 w-8">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
@@ -233,17 +233,11 @@ export default function PatientsPage() {
                     <CardContent className="p-6">
                       <div className="flex flex-col items-center text-center">
                         <Avatar className="h-20 w-20">
-                          <AvatarFallback className="text-lg">
-                            {initials}
-                          </AvatarFallback>
+                          <AvatarFallback className="text-lg">{initials}</AvatarFallback>
                         </Avatar>
-                        <h3 className="mt-4 text-lg font-semibold">
-                          {fullName}
-                        </h3>
+                        <h3 className="mt-4 text-lg font-semibold">{fullName}</h3>
 
-                        <Badge className="mt-2 bg-teal-100 text-teal-800">
-                          Active
-                        </Badge>
+                        <Badge className="mt-2 bg-teal-100 text-teal-800">Active</Badge>
 
                         <div className="mt-4 space-y-2 text-sm text-muted-foreground">
                           <div className="flex items-center justify-center gap-1">
@@ -259,17 +253,10 @@ export default function PatientsPage() {
                         </div>
 
                         <div className="mt-6 flex w-full gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1"
-                          >
+                          <Button variant="outline" size="sm" className="flex-1">
                             View Profile
                           </Button>
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-teal-600 hover:bg-teal-700"
-                          >
+                          <Button size="sm" className="flex-1 bg-teal-600 hover:bg-teal-700">
                             <Calendar className="mr-2 h-3.5 w-3.5" />
                             Schedule
                           </Button>
@@ -295,9 +282,7 @@ export default function PatientsPage() {
                     <User className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Total Patients
-                    </p>
+                    <p className="text-sm text-muted-foreground">Total Patients</p>
                     <p className="text-2xl font-bold">128</p>
                   </div>
                 </div>
@@ -325,9 +310,7 @@ export default function PatientsPage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Active Patients
-                    </p>
+                    <p className="text-sm text-muted-foreground">Active Patients</p>
                     <p className="text-2xl font-bold">98</p>
                   </div>
                 </div>
@@ -355,9 +338,7 @@ export default function PatientsPage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      New Patients (30d)
-                    </p>
+                    <p className="text-sm text-muted-foreground">New Patients (30d)</p>
                     <p className="text-2xl font-bold">12</p>
                   </div>
                 </div>
@@ -386,9 +367,7 @@ export default function PatientsPage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Appointments Today
-                    </p>
+                    <p className="text-sm text-muted-foreground">Appointments Today</p>
                     <p className="text-2xl font-bold">8</p>
                   </div>
                 </div>
@@ -401,9 +380,7 @@ export default function PatientsPage() {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Add New Patient</DialogTitle>
-              <DialogDescription>
-                Enter the details of the new patient.
-              </DialogDescription>
+              <DialogDescription>Enter the details of the new patient.</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
@@ -431,20 +408,14 @@ export default function PatientsPage() {
                       <SelectItem value="male">Male</SelectItem>
                       <SelectItem value="female">Female</SelectItem>
                       <SelectItem value="other">Other</SelectItem>
-                      <SelectItem value="prefer-not-to-say">
-                        Prefer not to say
-                      </SelectItem>
+                      <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john.doe@example.com"
-                />
+                <Input id="email" type="email" placeholder="john.doe@example.com" />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="phone">Phone Number</Label>
@@ -474,16 +445,10 @@ export default function PatientsPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setShowNewPatient(false)}
-              >
+              <Button variant="outline" onClick={() => setShowNewPatient(false)}>
                 Cancel
               </Button>
-              <Button
-                className="bg-teal-600 hover:bg-teal-700"
-                onClick={() => setShowNewPatient(false)}
-              >
+              <Button className="bg-teal-600 hover:bg-teal-700" onClick={() => setShowNewPatient(false)}>
                 Add Patient
               </Button>
             </DialogFooter>

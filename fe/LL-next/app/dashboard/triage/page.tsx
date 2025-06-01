@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 import { Send, Activity, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +12,8 @@ import { ChatMessage } from '@/components/ui/chat-message';
 import { TriageResponse } from '@/lib/types';
 import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { getResourceDisplayName, formatResourceDate, getResourceStatus } from '@/lib/fhir-storage/utils';
+import type { FHIRStorageResource } from '@/lib/fhir-storage/types';
 
 interface Message {
   id: string;
@@ -22,6 +25,7 @@ interface Message {
 }
 
 export default function TriagePage() {
+  const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -34,6 +38,10 @@ export default function TriagePage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Get patient ID from authenticated user session
+  const patientId = session?.user?.id || `anonymous-${Date.now()}`;
+
   const [threadId, setThreadId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +94,7 @@ export default function TriagePage() {
         body: JSON.stringify({
           message: messageText,
           threadId: threadId,
-          patientId: 'default-patient-001', // TODO: Get from user session when authentication is implemented
+          patientId: patientId, // Use authenticated user's ID
         }),
       });
 

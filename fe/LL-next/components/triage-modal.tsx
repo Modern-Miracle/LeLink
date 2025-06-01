@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, X, Activity, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,11 +28,18 @@ interface TriageModalProps {
 }
 
 export default function TriageModal({ open, onOpenChange }: TriageModalProps) {
+  const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [threadId, setThreadId] = useState<string | null>(null);
+
+  // Get patient ID from authenticated user session
+  const patientId = session?.user?.id || `anonymous-${Date.now()}`;
+  console.log('Patient ID:', patientId);
+
+  console.log('TriageModal rendered with patientId:', patientId);
 
   // Reset conversation when modal closes
   useEffect(() => {
@@ -79,7 +87,7 @@ export default function TriageModal({ open, onOpenChange }: TriageModalProps) {
         body: JSON.stringify({
           message: userMessage.content,
           threadId: threadId,
-          patientId: 'default-patient-001',
+          patientId: patientId,
         }),
       });
 
