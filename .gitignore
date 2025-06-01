@@ -122,5 +122,6 @@ __azurite_db_*.json
 .env.production
 .env.development
 api/
+AzuriteConfig
 
 
