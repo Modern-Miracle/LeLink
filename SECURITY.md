@@ -37,14 +37,14 @@ Given the critical nature of crisis healthcare, we provide security support for:
 If you discover a vulnerability that could affect people in crisis situations or compromise patient safety:
 
 **IMMEDIATE CONTACT:**
-- **Hora e.V.**: [security@hora-ev.eu](mailto:security@hora-ev.eu)
-- **Modern Miracle**: [security@modern-miracle.com](mailto:security@modern-miracle.com)
+- **Hora e.V.**: [info@hora-ev.eu](mailto:info@hora-ev.eu)
+- **Modern Miracle**: [hello@modern-miracle.com](mailto:info@modern-miracle.com)
 - **Subject Line**: `[CRITICAL SECURITY] Crisis Healthcare Vulnerability`
 
 ### **🟡 Standard Security Issues**
 For non-critical security issues:
 
-**Email**: [security@hora-ev.eu](mailto:security@hora-ev.eu)
+**Email**: [info@hora-ev.eu](mailto:info@hora-ev.eu)
 **Subject**: `[SECURITY] LeLink Vulnerability Report`
 
 ### **What to Include**
@@ -61,11 +61,6 @@ For non-critical security issues:
 - **Public Disclosure**: Don't share the vulnerability publicly until we've addressed it
 
 ## 🔍 **Our Security Response Process**
-
-### **Timeline Commitments**
-- **Crisis-Affecting Issues**: Response within 2 hours
-- **High Severity**: Response within 24 hours
-- **Medium/Low Severity**: Response within 72 hours
 
 ### **Process Steps**
 1. **Acknowledgment**: We confirm receipt and assign a tracking ID
@@ -175,12 +170,8 @@ Security researchers who help protect vulnerable populations will be:
 ## 📞 **Emergency Contacts**
 
 ### **For Security Emergencies Affecting Crisis Healthcare**
-- **Hora e.V. Security Team**: [security@hora-ev.eu](mailto:security@hora-ev.eu)
-- **Modern Miracle Security Team**: [security@modern-miracle.com](mailto:security@modern-miracle.com)
-
-### **For General Security Questions**
-- **GitHub Security Advisories**: Use GitHub's security advisory feature
-- **NGI Sargasso Programme**: [Contact via official channels](https://ngisargasso.eu/contact/)
+- **Hora e.V. Security Team**: [info@hora-ev.eu](mailto:info@hora-ev.eu)
+- **Modern Miracle Security Team**: [helo@modern-miracle.com](mailto:info@modern-miracle.com)
 
 ---
 
