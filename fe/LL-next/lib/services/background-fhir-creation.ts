@@ -1,6 +1,6 @@
 /**
  * Background FHIR Resource Creation Service
- * 
+ *
  * Automatically creates FHIR resources for Azure B2C users who have complete profiles
  * but haven't had FHIR resources created yet.
  */
@@ -22,7 +22,6 @@ interface UserProfile {
 }
 
 export class BackgroundFHIRCreationService {
-  
   /**
    * Automatically creates FHIR resources for Azure B2C users
    */
@@ -34,9 +33,9 @@ export class BackgroundFHIRCreationService {
       // Only proceed if user has sufficient profile data
       if (!userProfile.givenName || !userProfile.surname) {
         console.log('[BACKGROUND_FHIR] Insufficient profile data (missing name), skipping auto-creation');
-        console.log('[BACKGROUND_FHIR] Required: givenName, surname. Have:', { 
-          givenName: userProfile.givenName, 
-          surname: userProfile.surname 
+        console.log('[BACKGROUND_FHIR] Required: givenName, surname. Have:', {
+          givenName: userProfile.givenName,
+          surname: userProfile.surname,
         });
         return false;
       }
@@ -55,7 +54,7 @@ export class BackgroundFHIRCreationService {
 
       // Create FHIR resource based on role
       const resourceData = this.buildFHIRResourceFromProfile(userProfile);
-      
+
       if (userProfile.role === 'Patient') {
         await this.createPatientResource(userProfile.id, resourceData);
       } else if (userProfile.role === 'Practitioner') {
@@ -64,7 +63,6 @@ export class BackgroundFHIRCreationService {
 
       console.log('[BACKGROUND_FHIR] Successfully created FHIR resources for user:', userProfile.id);
       return true;
-
     } catch (error) {
       console.error('[BACKGROUND_FHIR] Failed to create FHIR resources:', error);
       return false;
@@ -76,11 +74,15 @@ export class BackgroundFHIRCreationService {
    */
   private static async checkExistingFHIRResources(userId: string): Promise<boolean> {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/patients/${userId}/resources`);
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'
+        }/api/fhir-storage/patients/${userId}/resources`
+      );
       if (response.ok) {
         const data = await response.json();
-        const hasPatientOrPractitioner = data.data?.resources?.some((r: any) => 
-          r.resourceType === 'Patient' || r.resourceType === 'Practitioner'
+        const hasPatientOrPractitioner = data.data?.resources?.some(
+          (r: any) => r.resourceType === 'Patient' || r.resourceType === 'Practitioner'
         );
         return hasPatientOrPractitioner || false;
       }
@@ -156,14 +158,17 @@ export class BackgroundFHIRCreationService {
       },
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/patients`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Idempotency-Key': userId,
-      },
-      body: JSON.stringify(patientResource),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/patients`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': userId,
+        },
+        body: JSON.stringify(patientResource),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to create Patient resource: ${response.status}`);
@@ -225,14 +230,17 @@ export class BackgroundFHIRCreationService {
       },
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7071'}/api/fhir-storage/practitioners`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Idempotency-Key': userId,
-      },
-      body: JSON.stringify(practitionerResource),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL || 'http://localhost:7071'}/api/fhir-storage/practitioners`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': userId,
+        },
+        body: JSON.stringify(practitionerResource),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to create Practitioner resource: ${response.status}`);

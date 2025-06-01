@@ -360,7 +360,10 @@ export async function getUpcomingAppointments(limit: number = 5): Promise<Action
     });
 
     if (!result.success) {
-      return result;
+      return {
+        success: false,
+        error: result.error,
+      };
     }
 
     return {

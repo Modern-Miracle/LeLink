@@ -47,18 +47,16 @@ if (!process.env.AUTH_SECRET) {
 function extractUserInfoFromAccessToken(accessToken: string): Partial<ExtendedUser> | null {
   try {
     const tokenPayload = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64').toString());
-    
+
     // Extract email from token (more reliable than profile)
-    const email = tokenPayload.unique_name || 
-                 tokenPayload.upn || 
-                 tokenPayload.email || 
-                 tokenPayload.preferred_username;
-    
+    const email = tokenPayload.unique_name || tokenPayload.upn || tokenPayload.email || tokenPayload.preferred_username;
+
     // Extract role from WIDS (Windows Identity Foundation role IDs)
     let role: 'Patient' | 'Practitioner' | 'Admin' | undefined;
     if (tokenPayload.wids && Array.isArray(tokenPayload.wids)) {
       for (const wid of tokenPayload.wids) {
-        if (wid === 'b79fbf4d-3ef9-4689-8143-76b194e85509') { // Global Administrator
+        if (wid === 'b79fbf4d-3ef9-4689-8143-76b194e85509') {
+          // Global Administrator
           role = 'Admin';
           console.log('[AUTH_TOKEN_EXTRACT] Admin role detected from WIDS');
           break;
@@ -66,12 +64,12 @@ function extractUserInfoFromAccessToken(accessToken: string): Partial<ExtendedUs
         // Add other role mappings here if needed
       }
     }
-    
+
     // Extract names
     const givenName = tokenPayload.given_name || '';
     const surname = tokenPayload.family_name || '';
     const name = tokenPayload.name || `${givenName} ${surname}`.trim();
-    
+
     const extractedInfo = {
       email,
       role,
@@ -80,10 +78,9 @@ function extractUserInfoFromAccessToken(accessToken: string): Partial<ExtendedUs
       name,
       displayName: name,
     };
-    
+
     console.log('[AUTH_TOKEN_EXTRACT] Extracted from token:', { email, role, name });
     return extractedInfo;
-    
   } catch (error) {
     console.error('[AUTH_TOKEN_EXTRACT] Error extracting from token:', error);
     return null;
@@ -94,7 +91,9 @@ function extractUserInfoFromAccessToken(accessToken: string): Partial<ExtendedUs
 async function getRoleFromFHIR(userId: string): Promise<'Patient' | 'Practitioner' | 'Admin' | null> {
   try {
     console.log('[AUTH_FHIR_FALLBACK] Checking FHIR role for user:', userId);
-    const response = await fetch(`http://localhost:7071/api/fhir-storage/users/${userId}/role`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/users/${userId}/role`
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -116,23 +115,25 @@ async function getRoleFromFHIR(userId: string): Promise<'Patient' | 'Practitione
 async function checkAndUpdateOnboardingStatus(user: ExtendedUser) {
   try {
     console.log('[AUTH_CHECK] Checking for user:', user.id, 'email:', user.email);
-    
+
     // Check by user ID first (most direct)
-    const userResponse = await fetch(`http://localhost:7071/api/fhir-storage/patients/${user.id}/resources`);
+    const userResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/patients/${user.id}/resources`
+    );
     if (userResponse.ok) {
       const userData = await userResponse.json();
       if (userData.success && userData.data?.resources?.length > 0) {
-        const userResource = userData.data.resources.find((r: any) => 
-          r.resourceType === 'Patient' || r.resourceType === 'Practitioner'
+        const userResource = userData.data.resources.find(
+          (r: any) => r.resourceType === 'Patient' || r.resourceType === 'Practitioner'
         );
-        
+
         if (userResource) {
           console.log('[AUTH_CHECK] Found resource by user ID:', userResource.resourceType);
           user.needsOnboarding = false;
-          
+
           // Extract role from extension
-          const roleExtension = userResource.extension?.find((ext: any) => 
-            ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
+          const roleExtension = userResource.extension?.find(
+            (ext: any) => ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
           );
           if (roleExtension?.valueString) {
             user.role = roleExtension.valueString;
@@ -148,17 +149,19 @@ async function checkAndUpdateOnboardingStatus(user: ExtendedUser) {
     // If not found by user ID and has email, check by email
     if (user.email) {
       const emailResponse = await fetch(
-        `http://localhost:7071/api/fhir-storage/users/by-email/${encodeURIComponent(user.email)}`
+        `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/users/by-email/${encodeURIComponent(
+          user.email
+        )}`
       );
       if (emailResponse.ok) {
         const emailData = await emailResponse.json();
         if (emailData.success && emailData.data?.resource) {
           console.log('[AUTH_CHECK] Found resource by email:', emailData.data.resource.resourceType);
           user.needsOnboarding = false;
-          
+
           // Extract role from extension
-          const roleExtension = emailData.data.resource.extension?.find((ext: any) => 
-            ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
+          const roleExtension = emailData.data.resource.extension?.find(
+            (ext: any) => ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
           );
           if (roleExtension?.valueString) {
             user.role = roleExtension.valueString;
@@ -166,7 +169,7 @@ async function checkAndUpdateOnboardingStatus(user: ExtendedUser) {
           } else {
             user.role = emailData.data.resource.resourceType; // fallback
           }
-          
+
           // Update user ID to match FHIR
           if (emailData.data.userId) {
             user.id = emailData.data.userId;
@@ -179,7 +182,6 @@ async function checkAndUpdateOnboardingStatus(user: ExtendedUser) {
     // No resources found
     user.needsOnboarding = true;
     console.log('[AUTH_CHECK] No resources found, needs onboarding');
-    
   } catch (error) {
     console.log('[AUTH_CHECK] Error:', error);
     // On error, don't change status to avoid loops
@@ -340,7 +342,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, user }: { token: any; account: any; user: any }) {
       console.log('[AUTH_DEBUG] JWT callback - account:', !!account, 'user:', !!user);
-      
+
       // Initial sign in
       if (account && user) {
         console.log('[AUTH_DEBUG] Initial sign in for provider:', account.provider);
@@ -350,7 +352,7 @@ export const authOptions: NextAuthOptions = {
         // For Azure B2C users, enhance user info from access token (more reliable than profile)
         if (account.provider === 'azure-ad-b2c' && account.access_token) {
           const tokenInfo = extractUserInfoFromAccessToken(account.access_token);
-          
+
           if (tokenInfo) {
             // Override/enhance user info with token data (more reliable)
             if (tokenInfo.email && !enhancedUser.email) {
@@ -377,45 +379,54 @@ export const authOptions: NextAuthOptions = {
 
         // FEDERATED IDENTITY HANDLING - Universal approach for all providers
         console.log('[AUTH_DEBUG] Starting federated identity processing for:', enhancedUser.provider);
-        
+
         if (enhancedUser.email) {
           try {
             // Check if user already exists by email (across all providers)
             const emailCheckResponse = await fetch(
-              `http://localhost:7071/api/fhir-storage/users/by-email/${encodeURIComponent(enhancedUser.email)}`
+              `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/users/by-email/${encodeURIComponent(
+                enhancedUser.email
+              )}`
             );
 
             if (emailCheckResponse.ok) {
               const emailData = await emailCheckResponse.json();
               if (emailData.success && emailData.data?.resource) {
                 console.log('[AUTH_DEBUG] Found existing FHIR resource for email');
-                console.log('[AUTH_DEBUG] Existing user ID:', emailData.data.userId, 'Current session ID:', enhancedUser.id);
-                
+                console.log(
+                  '[AUTH_DEBUG] Existing user ID:',
+                  emailData.data.userId,
+                  'Current session ID:',
+                  enhancedUser.id
+                );
+
                 // Extract role from existing resource
-                const roleExtension = emailData.data.resource.extension?.find((ext: any) => 
-                  ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
+                const roleExtension = emailData.data.resource.extension?.find(
+                  (ext: any) => ext.url === 'http://lelink.health/fhir/StructureDefinition/user-role'
                 );
                 if (roleExtension?.valueString) {
                   enhancedUser.role = roleExtension.valueString;
                 } else {
                   enhancedUser.role = emailData.data.resource.resourceType; // fallback
                 }
-                
+
                 console.log('[AUTH_DEBUG] User role from existing resource:', enhancedUser.role);
-                
+
                 // Check if current session ID is already in identifiers
                 const existingIdentifiers = emailData.data.resource.identifier || [];
-                const hasCurrentId = existingIdentifiers.some((id: any) => 
-                  id.system === 'http://lelink.healthcare/user-id' && id.value === enhancedUser.id
+                const hasCurrentId = existingIdentifiers.some(
+                  (id: any) => id.system === 'http://lelink.healthcare/user-id' && id.value === enhancedUser.id
                 );
-                
+
                 if (!hasCurrentId) {
                   console.log('[AUTH_DEBUG] Adding new provider session ID to existing resource');
-                  
+
                   // Add current session ID to identifiers via API call (using email for lookup)
                   try {
                     const updateResponse = await fetch(
-                      `http://localhost:7071/api/fhir-storage/users/${encodeURIComponent(enhancedUser.email)}/add-identifier`,
+                      `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/users/${encodeURIComponent(
+                        enhancedUser.email
+                      )}/add-identifier`,
                       {
                         method: 'POST',
                         headers: {
@@ -429,7 +440,7 @@ export const authOptions: NextAuthOptions = {
                         }),
                       }
                     );
-                    
+
                     if (updateResponse.ok) {
                       console.log('[AUTH_DEBUG] Successfully added new identifier to existing resource');
                     } else {
@@ -442,13 +453,17 @@ export const authOptions: NextAuthOptions = {
                 } else {
                   console.log('[AUTH_DEBUG] Current session ID already exists in identifiers');
                 }
-                
+
                 // Use existing resource's user ID for session consistency
                 enhancedUser.id = emailData.data.userId;
                 enhancedUser.needsOnboarding = false;
-                
-                console.log('[AUTH_DEBUG] Linked to existing resource - ID:', enhancedUser.id, 'Role:', enhancedUser.role);
-                
+
+                console.log(
+                  '[AUTH_DEBUG] Linked to existing resource - ID:',
+                  enhancedUser.id,
+                  'Role:',
+                  enhancedUser.role
+                );
               } else {
                 console.log('[AUTH_DEBUG] Email check successful but no resource data - needs onboarding');
                 enhancedUser.needsOnboarding = true;
@@ -456,7 +471,7 @@ export const authOptions: NextAuthOptions = {
             } else if (emailCheckResponse.status === 404) {
               console.log('[AUTH_DEBUG] No existing user found with email - proceeding with onboarding');
               enhancedUser.needsOnboarding = true;
-              
+
               // For Azure B2C users, auto-create if they have role
               if (enhancedUser.provider === 'azure-ad-b2c' && enhancedUser.role) {
                 console.log('[AUTH_DEBUG] Azure B2C user with role - creating FHIR resources');
@@ -485,7 +500,6 @@ export const authOptions: NextAuthOptions = {
                   console.error('[AUTH_DEBUG] FHIR creation failed for Azure B2C user:', error);
                 }
               }
-              
             } else {
               console.log('[AUTH_DEBUG] Email check failed with status:', emailCheckResponse.status);
               enhancedUser.needsOnboarding = true;
@@ -498,9 +512,17 @@ export const authOptions: NextAuthOptions = {
           console.log('[AUTH_DEBUG] User has no email - needs onboarding');
           enhancedUser.needsOnboarding = true;
         }
-        
-        console.log('[AUTH_DEBUG] Final federated identity result - Provider:', enhancedUser.provider, 
-                   'ID:', enhancedUser.id, 'Role:', enhancedUser.role, 'Needs onboarding:', enhancedUser.needsOnboarding);
+
+        console.log(
+          '[AUTH_DEBUG] Final federated identity result - Provider:',
+          enhancedUser.provider,
+          'ID:',
+          enhancedUser.id,
+          'Role:',
+          enhancedUser.role,
+          'Needs onboarding:',
+          enhancedUser.needsOnboarding
+        );
 
         return {
           ...token,
@@ -514,12 +536,17 @@ export const authOptions: NextAuthOptions = {
       if (token.user && token.user.needsOnboarding) {
         console.log('[AUTH_DEBUG] Checking onboarding for user:', token.user.id);
         const updatedUser = { ...token.user };
-        
+
         await checkAndUpdateOnboardingStatus(updatedUser);
-        
+
         // If status changed, return updated token
         if (updatedUser.needsOnboarding !== token.user.needsOnboarding || updatedUser.role !== token.user.role) {
-          console.log('[AUTH_DEBUG] Status updated - needsOnboarding:', updatedUser.needsOnboarding, 'role:', updatedUser.role);
+          console.log(
+            '[AUTH_DEBUG] Status updated - needsOnboarding:',
+            updatedUser.needsOnboarding,
+            'role:',
+            updatedUser.role
+          );
           return {
             ...token,
             user: updatedUser,

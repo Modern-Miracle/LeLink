@@ -7,18 +7,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  ArrowLeft, 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
+import {
+  ArrowLeft,
+  User,
+  Mail,
+  Phone,
+  MapPin,
   Calendar,
   FileText,
   Activity,
   AlertTriangle,
   CheckCircle,
-  Shield
+  Shield,
 } from 'lucide-react';
 import { FhirResourcesTable } from '@/components/fhir';
 import type { PatientResourcesData } from '@/lib/fhir-storage/types';
@@ -51,7 +51,7 @@ export default function UserDetailPage() {
   const params = useParams();
   const router = useRouter();
   const userId = params.userId as string;
-  
+
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [resourcesData, setResourcesData] = useState<PatientResourcesData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,14 +65,16 @@ export default function UserDetailPage() {
         setIsLoading(true);
         console.log('[User Detail] Loading profile for user:', userId);
 
-        const response = await fetch(`http://localhost:7071/api/fhir-storage/users/${userId}/profile`);
-        
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_AZURE_FUNCTIONS_URL}/api/fhir-storage/users/${userId}/profile`
+        );
+
         if (response.ok) {
           const data = await response.json();
-          
+
           if (data.success) {
             setUserProfile(data.data.profile);
-            
+
             // Transform data to match FhirResourcesTable format
             const transformedData: PatientResourcesData = {
               patientId: userId,
@@ -81,7 +83,7 @@ export default function UserDetailPage() {
               totalCount: data.data.totalResources,
               resourceTypes: data.data.resourceTypes,
             };
-            
+
             setResourcesData(transformedData);
             console.log('[User Detail] Profile loaded successfully');
           } else {
@@ -128,11 +130,7 @@ export default function UserDetailPage() {
           <p className="mt-2 text-sm text-gray-500">
             Unable to load user profile. Please try again or contact support.
           </p>
-          <Button 
-            onClick={() => router.back()} 
-            className="mt-4"
-            variant="outline"
-          >
+          <Button onClick={() => router.back()} className="mt-4" variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Go Back
           </Button>
@@ -160,11 +158,7 @@ export default function UserDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Button 
-            onClick={() => router.back()} 
-            variant="outline" 
-            size="sm"
-          >
+          <Button onClick={() => router.back()} variant="outline" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
@@ -189,9 +183,7 @@ export default function UserDetailPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{resourcesData?.totalCount || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              Medical records
-            </p>
+            <p className="text-xs text-muted-foreground">Medical records</p>
           </CardContent>
         </Card>
 
@@ -202,9 +194,7 @@ export default function UserDetailPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{getResourceCount('Observation')}</div>
-            <p className="text-xs text-muted-foreground">
-              Health observations
-            </p>
+            <p className="text-xs text-muted-foreground">Health observations</p>
           </CardContent>
         </Card>
 
@@ -215,9 +205,7 @@ export default function UserDetailPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{getResourceCount('RiskAssessment')}</div>
-            <p className="text-xs text-muted-foreground">
-              Clinical assessments
-            </p>
+            <p className="text-xs text-muted-foreground">Clinical assessments</p>
           </CardContent>
         </Card>
       </div>
@@ -235,9 +223,7 @@ export default function UserDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle>Personal Information</CardTitle>
-              <CardDescription>
-                User contact details and demographics
-              </CardDescription>
+              <CardDescription>User contact details and demographics</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
@@ -323,9 +309,7 @@ export default function UserDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle>All Medical Records</CardTitle>
-              <CardDescription>
-                Complete medical history and records for {userProfile.name.full}
-              </CardDescription>
+              <CardDescription>Complete medical history and records for {userProfile.name.full}</CardDescription>
             </CardHeader>
             <CardContent>
               {resourcesData ? (
@@ -334,9 +318,7 @@ export default function UserDetailPage() {
                 <div className="text-center py-8">
                   <FileText className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900">No records found</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    This user doesn't have any medical records yet.
-                  </p>
+                  <p className="mt-1 text-sm text-gray-500">This user doesn't have any medical records yet.</p>
                 </div>
               )}
             </CardContent>
@@ -347,9 +329,7 @@ export default function UserDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle>Health Observations</CardTitle>
-              <CardDescription>
-                Clinical observations and measurements
-              </CardDescription>
+              <CardDescription>Clinical observations and measurements</CardDescription>
             </CardHeader>
             <CardContent>
               {resourcesData?.resourcesByType?.Observation && resourcesData.resourcesByType.Observation.length > 0 ? (
@@ -360,7 +340,9 @@ export default function UserDetailPage() {
                         <div>
                           <h4 className="font-medium">{obs.code?.text || 'Observation'}</h4>
                           <p className="text-sm text-gray-500 mt-1">
-                            {obs.valueString || obs.valueQuantity?.value + ' ' + obs.valueQuantity?.unit || 'No value recorded'}
+                            {obs.valueString ||
+                              obs.valueQuantity?.value + ' ' + obs.valueQuantity?.unit ||
+                              'No value recorded'}
                           </p>
                         </div>
                         <Badge variant="outline">
@@ -374,9 +356,7 @@ export default function UserDetailPage() {
                 <div className="text-center py-8">
                   <Activity className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900">No observations</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    No health observations recorded for this user.
-                  </p>
+                  <p className="mt-1 text-sm text-gray-500">No health observations recorded for this user.</p>
                 </div>
               )}
             </CardContent>
@@ -387,12 +367,11 @@ export default function UserDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle>Risk Assessments</CardTitle>
-              <CardDescription>
-                Clinical risk assessments and evaluations
-              </CardDescription>
+              <CardDescription>Clinical risk assessments and evaluations</CardDescription>
             </CardHeader>
             <CardContent>
-              {resourcesData?.resourcesByType?.RiskAssessment && resourcesData.resourcesByType.RiskAssessment.length > 0 ? (
+              {resourcesData?.resourcesByType?.RiskAssessment &&
+              resourcesData.resourcesByType.RiskAssessment.length > 0 ? (
                 <div className="space-y-4">
                   {resourcesData.resourcesByType.RiskAssessment.map((assessment: any, index: number) => (
                     <div key={index} className="border rounded-lg p-4">
@@ -403,8 +382,10 @@ export default function UserDetailPage() {
                             Prediction: {assessment.prediction?.[0]?.outcome?.text || 'Not specified'}
                           </p>
                           <p className="text-sm text-gray-500">
-                            Probability: {assessment.prediction?.[0]?.probabilityDecimal ? 
-                              (assessment.prediction[0].probabilityDecimal * 100).toFixed(1) + '%' : 'Not specified'}
+                            Probability:{' '}
+                            {assessment.prediction?.[0]?.probabilityDecimal
+                              ? (assessment.prediction[0].probabilityDecimal * 100).toFixed(1) + '%'
+                              : 'Not specified'}
                           </p>
                         </div>
                         <Badge variant="outline">
@@ -418,9 +399,7 @@ export default function UserDetailPage() {
                 <div className="text-center py-8">
                   <Shield className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900">No assessments</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    No risk assessments recorded for this user.
-                  </p>
+                  <p className="mt-1 text-sm text-gray-500">No risk assessments recorded for this user.</p>
                 </div>
               )}
             </CardContent>
