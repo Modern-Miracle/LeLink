@@ -4,7 +4,7 @@ Thank you for your interest in contributing to LeLink! This guide will help you 
 
 > **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
 
-> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative healthcare solutions for vulnerable populations.
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com) and [JurisCanada](https://www.linkedin.com/company/juriscanada/about/) (Legal & Compliance), focusing on innovative healthcare solutions for vulnerable populations.
 
 ## 🌟 **How to Contribute**
 
@@ -290,6 +290,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - **Organizations**: 
   - **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
   - **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+  - **JurisCanada** (Legal & Compliance): [LinkedIn](https://www.linkedin.com/company/juriscanada/about/)
 - **NGI Sargasso**: Contact via [NGI Sargasso](https://ngisargasso.eu/contact/) for programme-related inquiries
 
 Thank you for contributing to LeLink! Together, we can build better healthcare technology. 🏥✨

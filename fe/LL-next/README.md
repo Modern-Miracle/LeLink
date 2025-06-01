@@ -10,7 +10,7 @@ A privacy-preserving progressive web application built with Next.js 15, specific
 
 > **🇪🇺 EU Funded Project**: This project is supported by the [NGI Sargasso](https://ngisargasso.eu/) programme under the European Union's Horizon Europe research and innovation programme, fostering transatlantic collaboration in Next Generation Internet technologies.
 
-> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com).
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com) and [JurisCanada](https://www.linkedin.com/company/juriscanada/about/) (Legal & Compliance).
 
 ## 🌟 **Crisis-Focused Features**
 
@@ -355,10 +355,12 @@ This ensures that any modifications or network-based services using this code mu
 **Developed by:**
 - **[Hora e.V.](https://hora-ev.eu)** - German non-profit focused on social innovation
 - **[Modern Miracle](https://modern-miracle.com)** - Healthcare technology specialists
+- **[JurisCanada](https://www.linkedin.com/company/juriscanada/about/)** - Legal and compliance expertise
 
 **Contact:**
 - Hora e.V.: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
 - Modern Miracle: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- JurisCanada: [LinkedIn](https://www.linkedin.com/company/juriscanada/about/)
 
 ---
 

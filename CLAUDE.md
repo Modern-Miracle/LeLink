@@ -8,7 +8,7 @@ LeLink is a **privacy-preserving healthcare data management system for crisis si
 
 > **🇪🇺 EU Funded Project**: Supported by [NGI Sargasso](https://ngisargasso.eu/) under the EU Horizon Europe programme.
 > 
-> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com).
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com) and [JurisCanada](https://www.linkedin.com/company/juriscanada/about/) (Legal & Compliance).
 
 1. **Frontend** (`fe/LL-next/`) - Next.js 15 application with authentication, patient management, and medical triage interfaces
 2. **Azure Functions Backend** (`az/llmazfunc/`) - A serverless medical triage assistant using OpenAI's API for symptom assessment and FHIR resource generation

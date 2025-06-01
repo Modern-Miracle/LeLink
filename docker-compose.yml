@@ -1,0 +1,245 @@
+# LeLink - Crisis Healthcare Data Management System
+# Docker Compose configuration for full-stack deployment
+# 
+# Organizations: Hora e.V. (hora-ev.eu) & Modern Miracle (modern-miracle.com)
+# EU Funding: NGI Sargasso under Horizon Europe programme
+
+version: '3.8'
+
+services:
+  # Frontend - Crisis Healthcare PWA
+  frontend:
+    build:
+      context: ./fe/LL-next
+      dockerfile: Dockerfile
+    container_name: lelink-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:80
+      - NEXT_PUBLIC_BLOCKCHAIN_RPC_URL=http://blockchain:8545
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - AUTH_MICROSOFT_ENTRA_ID_ID=${AUTH_MICROSOFT_ENTRA_ID_ID}
+      - AUTH_MICROSOFT_ENTRA_ID_SECRET=${AUTH_MICROSOFT_ENTRA_ID_SECRET}
+      - AUTH_MICROSOFT_ENTRA_ID_TENANT_ID=${AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}
+    depends_on:
+      - backend
+      - blockchain
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      - "crisis.healthcare=true"
+      - "ngi.sargasso=true"
+
+  # Backend - Azure Functions Medical Triage
+  backend:
+    build:
+      context: ./az/llmazfunc
+      dockerfile: Dockerfile
+    container_name: lelink-backend
+    ports:
+      - "7071:80"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_CONVERSATION_ASSISTANT_ID=${OPENAI_CONVERSATION_ASSISTANT_ID}
+      - OPENAI_ORGANIZATION_ID=${OPENAI_ORGANIZATION_ID}
+      - ENABLE_FHIR_STORAGE=true
+      - ENABLE_BLOCKCHAIN_LOGGING=true
+      - BLOCKCHAIN_RPC_URL=http://blockchain:8545
+      - LELINK_CONTRACT_ADDRESS=${LELINK_CONTRACT_ADDRESS}
+      - AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+    depends_on:
+      - azurite
+      - blockchain
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "crisis.healthcare=true"
+      - "medical.triage=true"
+      - "openai.integration=true"
+      - "fhir.compliant=true"
+
+  # Blockchain - Local Hardhat Network
+  blockchain:
+    image: node:20-alpine
+    container_name: lelink-blockchain
+    working_dir: /app
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./sc/LeLink-SC:/app
+      - blockchain-data:/app/cache
+    command: >
+      sh -c "
+        npm install &&
+        npx hardhat node --hostname 0.0.0.0 --port 8545
+      "
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "blockchain.network=hardhat"
+      - "crisis.healthcare=true"
+      - "audit.logging=true"
+
+  # FHIR Storage - Azurite for Development
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: lelink-azurite
+    ports:
+      - "10000:10000"  # Blob service
+      - "10001:10001"  # Queue service
+      - "10002:10002"  # Table service
+    volumes:
+      - azurite-data:/data
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data --debug /data/debug.log
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "fhir.storage=true"
+      - "healthcare.data=true"
+
+  # Smart Contract Deployment Service
+  contract-deployer:
+    image: node:20-alpine
+    container_name: lelink-contract-deployer
+    working_dir: /app
+    volumes:
+      - ./sc/LeLink-SC:/app
+    environment:
+      - BLOCKCHAIN_RPC_URL=http://blockchain:8545
+    command: >
+      sh -c "
+        npm install &&
+        echo 'Waiting for blockchain to be ready...' &&
+        sleep 30 &&
+        npx hardhat run scripts/deploy.ts --network localhost &&
+        echo 'Smart contract deployed successfully!'
+      "
+    depends_on:
+      - blockchain
+    networks:
+      - lelink-network
+    restart: "no"
+    labels:
+      - "smart.contract=true"
+      - "deployment.service=true"
+
+  # Database - PostgreSQL for production-like environment
+  database:
+    image: postgres:15-alpine
+    container_name: lelink-database
+    environment:
+      - POSTGRES_DB=lelink
+      - POSTGRES_USER=lelink
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-lelink_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "database.service=true"
+      - "healthcare.data=true"
+
+  # Redis - For session management and caching
+  redis:
+    image: redis:7-alpine
+    container_name: lelink-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "cache.service=true"
+      - "session.management=true"
+
+  # Monitoring - Prometheus for crisis healthcare metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: lelink-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "monitoring.service=true"
+      - "crisis.metrics=true"
+
+  # Log Management - for crisis healthcare audit trails
+  loki:
+    image: grafana/loki:latest
+    container_name: lelink-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./monitoring/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - lelink-network
+    restart: unless-stopped
+    labels:
+      - "logging.service=true"
+      - "audit.trails=true"
+
+# Networks
+networks:
+  lelink-network:
+    driver: bridge
+    labels:
+      - "crisis.healthcare.network=true"
+      - "ngi.sargasso=true"
+
+# Volumes for persistent data
+volumes:
+  azurite-data:
+    labels:
+      - "fhir.storage=true"
+  blockchain-data:
+    labels:
+      - "blockchain.data=true"
+  postgres-data:
+    labels:
+      - "database.data=true"
+  redis-data:
+    labels:
+      - "cache.data=true"
+  prometheus-data:
+    labels:
+      - "monitoring.data=true"
+  loki-data:
+    labels:
+      - "logging.data=true"
+
+# Health checks and monitoring
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 30s

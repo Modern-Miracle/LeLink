@@ -1,0 +1,231 @@
+# LeLink Development Environment
+# Docker Compose for local crisis healthcare development
+# 
+# Organizations: Hora e.V. (hora-ev.eu) & Modern Miracle (modern-miracle.com)
+# EU Funding: NGI Sargasso under Horizon Europe programme
+
+version: '3.8'
+
+services:
+  # Development Frontend with hot reload
+  frontend-dev:
+    build:
+      context: ./fe/LL-next
+      dockerfile: Dockerfile
+      target: deps  # Use deps stage for development
+    container_name: lelink-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./fe/LL-next:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:7071
+      - NEXT_PUBLIC_BLOCKCHAIN_RPC_URL=http://localhost:8545
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=development-secret-key
+      - FAST_REFRESH=true
+    command: npm run dev
+    depends_on:
+      - backend-dev
+      - blockchain-dev
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "crisis.healthcare=true"
+
+  # Development Backend with auto-reload
+  backend-dev:
+    build:
+      context: ./az/llmazfunc
+      dockerfile: Dockerfile
+    container_name: lelink-backend-dev
+    ports:
+      - "7071:80"
+    volumes:
+      - ./az/llmazfunc:/home/site/wwwroot
+      - /home/site/wwwroot/node_modules
+    environment:
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_CONVERSATION_ASSISTANT_ID=${OPENAI_CONVERSATION_ASSISTANT_ID}
+      - OPENAI_ORGANIZATION_ID=${OPENAI_ORGANIZATION_ID}
+      - ENABLE_FHIR_STORAGE=true
+      - ENABLE_BLOCKCHAIN_LOGGING=true
+      - BLOCKCHAIN_RPC_URL=http://blockchain-dev:8545
+      - AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite-dev:10000/devstoreaccount1;
+      - AzureWebJobsScriptRoot=/home/site/wwwroot
+      - AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+      - FUNCTIONS_WORKER_RUNTIME=node
+    depends_on:
+      - azurite-dev
+      - blockchain-dev
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "medical.triage=true"
+
+  # Development Blockchain with persistence
+  blockchain-dev:
+    image: node:20-alpine
+    container_name: lelink-blockchain-dev
+    working_dir: /app
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./sc/LeLink-SC:/app
+      - blockchain-dev-data:/app/cache
+      - blockchain-dev-data:/app/artifacts
+    environment:
+      - NODE_ENV=development
+    command: >
+      sh -c "
+        npm install &&
+        echo '🔗 Starting development blockchain for crisis healthcare...' &&
+        npx hardhat node --hostname 0.0.0.0 --port 8545
+      "
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "blockchain.network=hardhat"
+
+  # Development FHIR Storage
+  azurite-dev:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: lelink-azurite-dev
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    volumes:
+      - azurite-dev-data:/data
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data --debug /data/debug.log --loose
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "fhir.storage=true"
+
+  # Development Database with sample data
+  database-dev:
+    image: postgres:15-alpine
+    container_name: lelink-database-dev
+    environment:
+      - POSTGRES_DB=lelink_dev
+      - POSTGRES_USER=lelink_dev
+      - POSTGRES_PASSWORD=lelink_dev_password
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+      - ./database/dev-init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "database.service=true"
+
+  # Development Redis
+  redis-dev:
+    image: redis:7-alpine
+    container_name: lelink-redis-dev
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --loglevel verbose
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "cache.service=true"
+
+  # Development Mailcatcher for testing email functionality
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: lelink-mailcatcher-dev
+    ports:
+      - "1080:1080"  # Web interface
+      - "1025:1025"  # SMTP
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "email.testing=true"
+
+  # Documentation server for development
+  docs-dev:
+    image: nginx:alpine
+    container_name: lelink-docs-dev
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./docs/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - lelink-dev-network
+    restart: unless-stopped
+    labels:
+      - "development=true"
+      - "documentation=true"
+
+  # Smart Contract Development Tools
+  hardhat-dev:
+    image: node:20-alpine
+    container_name: lelink-hardhat-dev
+    working_dir: /app
+    volumes:
+      - ./sc/LeLink-SC:/app
+    environment:
+      - NODE_ENV=development
+    command: >
+      sh -c "
+        npm install &&
+        echo '🔧 Hardhat development environment ready' &&
+        echo 'Available commands:' &&
+        echo '  - npx hardhat compile' &&
+        echo '  - npx hardhat test' &&
+        echo '  - npx hardhat deploy' &&
+        tail -f /dev/null
+      "
+    depends_on:
+      - blockchain-dev
+    networks:
+      - lelink-dev-network
+    labels:
+      - "development=true"
+      - "smart.contract.tools=true"
+
+# Development Networks
+networks:
+  lelink-dev-network:
+    driver: bridge
+    labels:
+      - "development=true"
+      - "crisis.healthcare.network=true"
+
+# Development Volumes
+volumes:
+  azurite-dev-data:
+    labels:
+      - "development=true"
+      - "fhir.storage=true"
+  blockchain-dev-data:
+    labels:
+      - "development=true"
+      - "blockchain.data=true"
+  postgres-dev-data:
+    labels:
+      - "development=true"
+      - "database.data=true"

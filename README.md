@@ -15,7 +15,7 @@
 
 > **🇪🇺 EU Funded Project**: LeLink is proudly supported by the [NGI Sargasso](https://ngisargasso.eu/) programme, fostering transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies. This project has received funding from the European Union's Horizon Europe research and innovation programme.
 
-> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com), focusing on innovative healthcare solutions for vulnerable populations.
+> **🏛️ Organizations**: Developed by [Hora e.V.](https://hora-ev.eu) in collaboration with [Modern Miracle](https://modern-miracle.com) and [JurisCanada](https://www.linkedin.com/company/juriscanada/about/) (Legal & Compliance), focusing on innovative healthcare solutions for vulnerable populations.
 
 > **📋 License**: This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.en.html). This ensures that any modifications or network-based services using this code must also be open source.
 
@@ -97,7 +97,34 @@ LeLink consists of four integrated components:
 
 For demonstration purposes, a hosted version is available at: https://lelink.vercel.app
 
-### **Alternative Setup Methods**
+### **🐳 Docker Deployment (Recommended)**
+
+#### **Complete System with Docker Compose**
+```bash
+# Quick start with all services
+docker-compose up -d
+
+# Development environment with hot reload
+docker-compose -f docker-compose.development.yml up -d
+
+# View logs
+docker-compose logs -f
+```
+
+#### **Individual Service Containers**
+```bash
+# Build all Docker images
+./scripts/docker-build.sh --all
+
+# Run complete system in single container
+docker run -p 80:80 lelink-complete:latest
+
+# Run individual services
+docker run -p 3000:3000 lelink-frontend:latest
+docker run -p 7071:80 lelink-backend:latest
+```
+
+### **🛠️ Manual Setup (Development)**
 
 #### **Manual Configuration**
 ```bash
@@ -129,7 +156,84 @@ cp az/llmazfunc/config/local.settings.json.example az/llmazfunc/config/local.set
 ./startup.sh --test
 ```
 
-## 📜 Available Scripts
+## 🐳 **Docker Usage**
+
+### **Docker Compose Configurations**
+
+#### **Production Deployment**
+```bash
+# Start all services for production
+docker-compose up -d
+
+# Services included:
+# - Frontend (Next.js PWA) - Port 3000
+# - Backend (Azure Functions) - Port 7071  
+# - Blockchain (Hardhat) - Port 8545
+# - FHIR Storage (Azurite) - Port 10000
+# - Database (PostgreSQL) - Port 5432
+# - Cache (Redis) - Port 6379
+# - Monitoring (Prometheus) - Port 9090
+```
+
+#### **Development Environment**
+```bash
+# Start development environment with hot reload
+docker-compose -f docker-compose.development.yml up -d
+
+# Additional development services:
+# - Mailcatcher (testing) - Port 1080
+# - Documentation server - Port 8080
+# - Smart contract tools
+```
+
+### **Docker Build Script**
+```bash
+# Build all images
+./scripts/docker-build.sh --all
+
+# Build specific services
+./scripts/docker-build.sh --frontend --backend
+
+# Build and push to registry
+./scripts/docker-build.sh --all --push --registry your-registry.com/
+
+# Build with custom tag
+./scripts/docker-build.sh --complete --tag v1.0.0
+```
+
+### **Single Container Deployment**
+```bash
+# Run complete system in one container
+docker run -d \
+  --name lelink-crisis-healthcare \
+  -p 80:80 \
+  -e OPENAI_API_KEY=your-key \
+  -e NEXTAUTH_SECRET=your-secret \
+  lelink-complete:latest
+```
+
+### **Environment Variables for Docker**
+Create a `.env` file for Docker Compose:
+```bash
+# OpenAI Configuration
+OPENAI_API_KEY=sk-proj-your-key
+OPENAI_CONVERSATION_ASSISTANT_ID=asst_your-id
+OPENAI_ORGANIZATION_ID=org-your-id
+
+# Authentication
+NEXTAUTH_SECRET=your-nextauth-secret
+AUTH_MICROSOFT_ENTRA_ID_ID=your-azure-app-id
+AUTH_MICROSOFT_ENTRA_ID_SECRET=your-azure-secret
+AUTH_MICROSOFT_ENTRA_ID_TENANT_ID=your-tenant-id
+
+# Database
+DATABASE_PASSWORD=secure-password
+
+# Blockchain (auto-populated after deployment)
+LELINK_CONTRACT_ADDRESS=0x...
+```
+
+## 📜 **Available Scripts**
 
 ### 1. **startup.sh** - Standard Service Startup
 Starts all backend services with logs redirected to files.
@@ -382,6 +486,9 @@ Hora e.V. is a German non-profit organization dedicated to developing innovative
 ### [Modern Miracle](https://modern-miracle.com)
 Modern Miracle specializes in cutting-edge healthcare technology solutions, bringing together expertise in AI, blockchain, and digital health to create transformative applications for crisis situations.
 
+### [JurisCanada](https://www.linkedin.com/company/juriscanada/about/)
+JurisCanada provides legal and compliance expertise, ensuring that LeLink meets international healthcare regulations, data protection standards, and regulatory requirements across multiple jurisdictions, particularly focusing on crisis healthcare scenarios and vulnerable population protection.
+
 ## 🇪🇺 **EU Funding & Acknowledgments**
 
 This project has received funding from the European Union's Horizon Europe research and innovation programme under the [NGI Sargasso](https://ngisargasso.eu/) initiative. NGI Sargasso fosters transatlantic collaboration between the EU, US, and Canada in Next Generation Internet technologies, supporting innovation in:
@@ -395,3 +502,4 @@ This project has received funding from the European Union's Horizon Europe resea
 For proprietary or commercial use that cannot comply with AGPL v3 terms, please contact:
 - **Hora e.V.**: [contact@hora-ev.eu](mailto:contact@hora-ev.eu)
 - **Modern Miracle**: [contact@modern-miracle.com](mailto:contact@modern-miracle.com)
+- **JurisCanada** (Legal & Compliance): [LinkedIn](https://www.linkedin.com/company/juriscanada/about/)
