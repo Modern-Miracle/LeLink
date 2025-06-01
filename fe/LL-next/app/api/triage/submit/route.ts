@@ -9,19 +9,19 @@ export async function POST(req: NextRequest) {
   try {
     // Validate user session
     const session = await getServerSession(authOptions);
-    
+
     const { message, threadId, patientId } = await req.json();
-    
+
     // Use session user ID if available, otherwise use provided patientId
     // This ensures we always have a valid patient identifier
     const validatedPatientId = session?.user?.id || patientId || `anonymous-${Date.now()}`;
-    
+
     // Validate patient ID format
     if (!validatedPatientId || validatedPatientId.length < 3) {
       return new Response(
         JSON.stringify({
           error: 'Invalid patient identifier',
-          details: 'A valid patient ID is required for triage assessment'
+          details: 'A valid patient ID is required for triage assessment',
         }),
         {
           status: 400,

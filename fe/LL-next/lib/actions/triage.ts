@@ -111,6 +111,8 @@ export async function submitSymptoms(
       body: JSON.stringify(validatedInput),
     });
 
+    console.log('response', response);
+
     if (!response.ok) {
       const errorText = await response.text();
       return {
