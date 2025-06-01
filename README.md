@@ -93,6 +93,10 @@ LeLink consists of four integrated components:
    - **Backend API**: http://localhost:7071
    - **Blockchain**: http://localhost:8545
 
+### **Demo**
+
+For demonstration purposes, a hosted version is available at: https://lelink.vercel.app
+
 ### **Alternative Setup Methods**
 
 #### **Manual Configuration**
