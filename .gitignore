@@ -108,3 +108,19 @@ typechain-types/
 
 # Blockchain local data
 .chaindata/
+
+# azurite
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+
+__azurite_db_*.json
+
+#  Environment variables
+.env
+.env.local
+.env.production
+.env.development
+api/
+
+

@@ -1,12 +1,12 @@
 {
-  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "contractAddress": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
   "contractName": "LeLink",
   "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
   "network": "localhost",
-  "blockNumber": 1,
-  "deploymentTime": "2025-06-01T11:59:41.801Z",
+  "blockNumber": 16,
+  "deploymentTime": "2025-05-30T14:37:43.682Z",
   "deployerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-  "deploymentHash": "0x7b1a88f68879db9f91f72af228ded92c28f8593215aaffba04ad519d3d2e5bcf",
+  "deploymentHash": "0x1f7ff3cd54f8d2b1336c8fe0e4958d5122d870b128b9f9a3d98d133c52a9ca4b",
   "gasUsed": "1854830",
   "compiler": {
     "version": "0.8.28",
